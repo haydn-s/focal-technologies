@@ -63,4 +63,4 @@ The matching activity is an interaction demonstration, not a vision screening or
 
 Session data lives in Streamlit's server-side session memory. There is no database, account, analytics collector, or automatic submission. Refresh/reconnection behavior depends on Streamlit session lifetime. To retain a summary or feedback, download it. The session JSON includes activity choices, observations, chosen next step, checklist, download-request flag, feedback, and current-versus-fictional provenance. Avoid entering identifying information in free text.
 
-This is a working initial concept. Finish the prompt log, validate it with parents, rehearse twice, and publish an accessible shared URL.
+This is a working initial concept. Continue the [team prompt log](../../prompts.md#prototype-b-focal-family), validate it with parents, rehearse twice, and publish an accessible shared URL.

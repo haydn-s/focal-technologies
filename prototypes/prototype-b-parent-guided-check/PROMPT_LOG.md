@@ -1,6 +1,6 @@
 # Prototype B prompt log
 
-Record actual prompts as work continues. The assignment requires at least five per prototype; the two user prompts below are the prompts received for this initial build. Implementation steps are outcomes of these prompts, not additional prompts from the user.
+This is the initial Demo B build record from October 21, 2026. The ongoing [team prompt log](../../prompts.md#prototype-b-focal-family) contains these entries and is the place to record future prompts. Implementation steps are outcomes of the prompts, not additional prompts from the user.
 
 ## Prompt 1
 
@@ -30,4 +30,4 @@ Record actual prompts as work continues. The assignment requires at least five p
 
 ## Continue the log
 
-For each subsequent actual prompt, record its date, exact text, intent, change made, and what was learned from trying the result. At least three additional prompts are still needed for the assignment. Do not count the sample walkthrough or automated tests as user research.
+Add subsequent actual prompts to [the shared team file](../../prompts.md), including date, exact text, intent, change made, and what was learned from trying the result. Do not count the sample walkthrough or automated tests as user research.
