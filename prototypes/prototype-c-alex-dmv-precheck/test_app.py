@@ -40,6 +40,18 @@ class TestTestDesign(unittest.TestCase):
         self.assertEqual([l["letters"] for l in lines], [2, 3, 6, 3])
         self.assertEqual([l["role"] for l in lines], ["warm-up", "warm-up", "state line", "margin"])
 
+    def test_georgia_slots_a_20_60_line_into_the_ladder(self):
+        lines = app.build_test_lines(60)
+        self.assertEqual([l["denominator"] for l in lines], [100, 70, 60, 50])
+        self.assertEqual([l["letters"] for l in lines], [2, 2, 6, 3])
+        # Adding Georgia's line must not change the 20/40 test
+        self.assertEqual([l["denominator"] for l in app.build_test_lines(40)], [70, 50, 40, 30])
+
+    def test_new_jersey_uses_a_20_50_line(self):
+        lines = app.build_test_lines(50)
+        self.assertEqual([l["denominator"] for l in lines], [100, 70, 50, 40])
+        self.assertEqual([l["role"] for l in lines], ["warm-up", "warm-up", "state line", "margin"])
+
     def test_items_have_no_repeats_in_a_row_and_cover_all_directions_at_state_line(self):
         for seed in range(200):
             items = app.generate_items(app.build_test_lines(40), random.Random(seed))
@@ -154,7 +166,10 @@ class TestStateRules(unittest.TestCase):
         required = {"abbr", "possessive", "line", "rule", "glasses", "if_missed", "bring", "source_name", "source_url"}
         for name, state in app.STATES.items():
             self.assertTrue(required <= set(state), name)
-            self.assertIn(state["line"], app.SNELLEN_LADDER, name)
+            lines = app.build_test_lines(state["line"])
+            self.assertEqual([l["role"] for l in lines], ["warm-up", "warm-up", "state line", "margin"], name)
+            # The rule card must name the line the check actually tests
+            self.assertIn(f"20/{state['line']}", state["rule"], name)
             if state["source_url"]:
                 self.assertTrue(state["source_url"].startswith("https://"), name)
 
@@ -281,6 +296,29 @@ class TestClickableFlow(unittest.TestCase):
         go_to_check(at)
         answer_until_done(at, 4)
         self.assertIn("You're right at the line", all_markdown(at))
+
+    def test_georgia_shows_and_tests_its_own_20_60_line(self):
+        at = self.new_app()
+        at.button(key="btn_start").click().run()
+        at.selectbox(key="w_state").select("Georgia").run()
+        self.assertIn("20/60", all_markdown(at))
+        for key in app.SETUP_CHECKLIST:
+            at.checkbox(key=key).check().run()
+        at.button(key="btn_begin").click().run()
+        state_lines = {it["denominator"] for it in at.session_state["check_items"] if it["role"] == "state line"}
+        self.assertEqual(state_lines, {60})
+        answer_until_done(at, 6)
+        text = all_markdown(at)
+        self.assertIn("on track for Georgia", text)
+        self.assertIn("20/60 · Georgia's line", text)
+
+    def test_new_jersey_miss_names_form_st_14(self):
+        at = self.new_app()
+        go_to_check(at, state="New Jersey")
+        answer_until_done(at, 2)
+        text = all_markdown(at)
+        self.assertIn("might not pass New Jersey", text)
+        self.assertIn("ST-14", text)
 
     def test_start_over_resets_everything(self):
         at = self.new_app()

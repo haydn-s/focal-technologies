@@ -268,11 +268,31 @@ These entries come from Burak's Claude Code chat. The [Prototype C prompt log](p
 
 **Verification:** The updated A suite passed 51/51 on the `main` snapshot.
 
-**Prompt count:** Six prompts for C. C1–C4 and C6 shaped the product; C5 was integration work. The requests to open the pull request and to update this shared log are listed under shared repository work (R6–R7).
+### C7 Add states whose line isn't 20/40
+
+**Date:** October 22, 2026
+
+**Actual user prompts:**
+
+> maybe the demo should include Georgia NJ and Wyoming since those are the non 20/40 states. If we push will it end up on stream lit automatically?
+
+> yes do that.
+
+**Intent:** All five original states used 20/40, so in a live demo the state picker looked cosmetic. Show that the check really follows each state's own rule.
+
+**Result:** Checked each state's official source.
+- **Georgia (20/60) and New Jersey (20/50):** added, with their rule text and source links. Georgia's 20/60 line is slotted into the letter scale only for states that use it.
+- **Wyoming:** not added. Its WYDOT form also uses 20/40.
+- **Demo script:** now switches to Georgia so the class sees the line change.
+- **Deployment:** Streamlit redeploys from `main`, so the live app changes once this pull request merges.
+
+**Verification:** 31 automated tests pass, including 4 new ones, one of which checks that the 20/40 test is unchanged. The Georgia rule card was checked in the running app.
+
+**Prompt count:** Seven prompts for C. C1–C4, C6 and C7 shaped the product; C5 was integration work. Repository and presentation requests are listed under shared repository work (R6–R8).
 
 ## Shared repository work
 
-These requests supported the demos and their collaboration workflow. They are recorded separately from the product experiments. R1–R5 were made by Haydn and R6–R7 by Burak, all on October 21, 2026.
+These requests supported the demos and their collaboration workflow. They are recorded separately from the product experiments. R1–R5 were made by Haydn and R6–R8 by Burak, on October 21–22, 2026.
 
 ### R1 Push Demo B without a pull request
 
@@ -333,6 +353,20 @@ These requests supported the demos and their collaboration workflow. They are re
 > do that please yes
 
 **Intent and result:** Reviewed this pull request, added the C entries above on `prompt-logs`, and updated two paths in C's own prompt log that had pointed to folders removed in the repository reorganization.
+
+### R8 Draft a presentation and a demo script
+
+**Actual user prompts (Burak, October 21–22, 2026):**
+
+> do you remember the slide requirements?
+
+> the whole deck please.
+
+> ok just push my slides to that same branch where the other deck is. dont combine them now. another team member will deal with this.
+
+> now things are deployed. i will only present my demo. give me a 2 minute script.
+
+**Intent and result:** Drafted a separate 15-slide deck that follows the assignment's four presentation parts. It was pushed as a PDF, an HTML version and speaker notes to `docs/presentations/burak-draft/`, without being combined with Haydn's PPTX. Also wrote a two-minute live-demo script for Prototype C. The README's demo section now includes the Georgia state switch from C7.
 
 ## Entry format for teammates
 
