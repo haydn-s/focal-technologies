@@ -61,6 +61,7 @@ requirements-dev.txt        Combined installation for local development
 - [Team prompt log](prompts.md): build prompts and outcomes for A, B, and C, with shared repository work recorded separately.
 - [Deployment guide and shared links](docs/deployment.md): publish three apps from this repository, each with its own URL.
 - [Prototype assignment](docs/assignments/prototype-assignment.md): the supplied brief and deliverable requirements.
+- [Prototype presentation](<docs/presentations/Focal Prototype Presentation.pptx>): editable class slides with demo links and speaker notes. [Presenter handoff](docs/presentations/README.md) includes timing and rehearsal steps.
 - [Assignment readiness](docs/assignment-readiness.md): reviewed requirements, validation, and remaining deployment, presentation, rehearsal, and submission steps.
 
 Keep each demo's requirements beside its `app.py`. Keep the current prototype directory names when publishing updates so existing deployment paths remain stable.

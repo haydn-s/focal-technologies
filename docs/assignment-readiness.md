@@ -1,6 +1,6 @@
 # Prototype assignment readiness
 
-Reviewed October 21, 2026 against the [supplied assignment](assignments/prototype-assignment.md). The three local prototypes and their prompt logs are ready for the next preparation steps. The complete class submission is not yet finished: Haydn is deploying the demos, and the team plans to make the presentation next.
+Reviewed October 21, 2026 against the [supplied assignment](assignments/prototype-assignment.md). The three prototypes have public URLs, and an editable [prototype presentation](<presentations/Focal Prototype Presentation.pptx>) is available for team review. Human rehearsals and Canvas submission remain unrecorded.
 
 ## Teammate commits reviewed
 
@@ -20,8 +20,8 @@ The review preserves the teammate-supplied histories. Reported historical test r
 | Explicit hypotheses and learning goals | Documented | Each prototype README states its hypothesis and proposed success signals |
 | Deliberate prioritization | Documented | All three READMEs now include value, effort, complexity, success signals, and cuts |
 | At least five prompts per prototype | Recorded | [Shared prompt log](../prompts.md): A1–A5, B1–B5, and C1–C6. Repository work is separate |
-| Three live, accessible shared links | In progress · Haydn | Deploy and record actual URLs in [the deployment guide](deployment.md); verify each in a fresh browser session |
-| Presentation or document covering problem, approach, versions, hypotheses, and justification | Next team task | Haydn confirmed the presentation has not been made yet |
+| Three live, accessible shared links | URLs recorded; landing pages loaded | [Deployment guide](deployment.md) has all three public URLs supplied by Haydn. Finish public full-flow checks during rehearsals |
+| Presentation or document covering problem, approach, versions, hypotheses, and justification | Created; team review next | [14-slide PPTX](<presentations/Focal Prototype Presentation.pptx>) includes hypotheses, demo links, scope, tradeoffs, strategy, and speaker notes |
 | Two rehearsals per demo | Not yet evidenced | Record the two runs below after people complete them |
 | Links and presentation submitted to Canvas | Not yet evidenced | Complete before presentation day and record confirmation |
 | Class vote and response | After the demos | Record the vote and a reasoned decision; this is a later activity |
@@ -38,7 +38,7 @@ The review preserves the teammate-supplied histories. Reported historical test r
 
 ## Presentation preparation
 
-The team will create this next. Cover:
+The [editable deck](<presentations/Focal Prototype Presentation.pptx>) covers the following sections. The team should review the proposed narrative and presenter handoffs, then follow the [timing and rehearsal guide](presentations/README.md).
 
 1. **Problem and evolution · at most two minutes:** the original problem, the target users, and what changed after discovery.
 2. **Three hypotheses · about two minutes each:** each persona, the core flow, its difference from the others, and what the comparison can teach the team.
@@ -59,7 +59,7 @@ Fill these with actual runs and confirmations, not planned dates.
 
 | Submission item | Actual link or confirmation |
 | --- | --- |
-| Presentation | Not yet created |
+| Presentation | [Focal Prototype Presentation](<presentations/Focal Prototype Presentation.pptx>), created October 21, 2026; team review next |
 | Canvas submission | Not recorded |
 
 ## Class vote record

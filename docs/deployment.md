@@ -30,8 +30,10 @@ If adding `.streamlit/config.toml`, place it at the root and coordinate changes 
 
 | Demo | Published URL |
 | --- | --- |
-| A | Not recorded |
-| B | Not deployed |
-| C | Not deployed |
+| A | [Focal Monitor](https://focal-demo-a.streamlit.app/) |
+| B | [Focal Family](https://focal-demo-b.streamlit.app/) |
+| C | [Focal DMV Pre-Check](https://focal-demo-c.streamlit.app/) |
+
+Haydn supplied these URLs on October 21, 2026. All three public landing pages loaded during presentation preparation. Complete the main journeys in fresh public sessions during the two human rehearsals before class.
 
 Local addresses such as `http://localhost:8502` are previews on the developer's computer. The assignment requires accessible deployed links for all three demos.
