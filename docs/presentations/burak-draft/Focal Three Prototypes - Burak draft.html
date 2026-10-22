@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focal: Three Prototypes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400..700;1,400..700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400..700&display=swap">
+<style>
+html, body { margin: 0; background: #1B1F2A; }
+.frame { width: 1920px; height: 1080px; margin: 0 auto 24px auto; }
+section { width: 1920px; height: 1080px; box-sizing: border-box; position: relative; overflow: hidden; }
+section * { margin: 0; box-sizing: border-box; }
+section ul, section ol { padding-left: 1.3em; }
+section li + li { margin-top: 8px; }
+section table { border-collapse: collapse; }
+section th, section td { padding: 0.35em 0.6em; text-align: left; border-bottom: 1px solid #D6DFEC; }
+section hr { border: none; }
+section a { color: inherit; }
+@media print {
+  @page { size: 1920px 1080px; margin: 0; }
+  html, body { background: none; }
+  .frame { margin: 0; zoom: 1 !important; page-break-after: always; break-after: page; }
+}
+</style>
+</head>
+<body>
+<div class="frame"><section id="cover" data-transition="fade" style="background:#10265F;color:#F2F5FA;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:24px">
+<svg aria-label="Focal logo" width="96" height="96" viewBox="0 0 96 96"><circle cx="48" cy="48" r="47" fill="#F2F5FA"/><circle cx="48" cy="48" r="39" fill="none" stroke="#10265F" stroke-width="6.6" stroke-dasharray="34.8 9.18" transform="rotate(15 48 48)"/><circle cx="48" cy="48" r="31.8" fill="#F2F5FA"/><circle cx="48" cy="48" r="21.75" fill="#3E9BE0"/><circle cx="48" cy="48" r="9.45" fill="#071634"/></svg>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;letter-spacing:6px;color:#F2F5FA">FOCAL</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:32px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7DB8EA">MENG 570 · Prototype review · Team 5</p>
+<h1 style="font-family:'Source Serif 4', Georgia, serif;font-size:120px;font-weight:700;line-height:1.05;color:#F2F5FA">Three prototypes,<br>three hypotheses</h1>
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-style:italic;line-height:1.3;color:#BCD3EE">Which way should Focal help people act on their vision?</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:4px"><p style="font-size:32px;font-weight:600;color:#F2F5FA">Haydn Stucker</p><p style="font-size:24px;color:#BCD3EE">CEO</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px"><p style="font-size:32px;font-weight:600;color:#F2F5FA">Burak Donbekci</p><p style="font-size:24px;color:#BCD3EE">CTO</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px"><p style="font-size:32px;font-weight:600;color:#F2F5FA">Hadley McCormack</p><p style="font-size:24px;color:#BCD3EE">CFO</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px"><p style="font-size:32px;font-weight:600;color:#F2F5FA">Fan Zhang</p><p style="font-size:24px;color:#BCD3EE">CCO</p></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px"><p style="font-size:32px;font-weight:600;color:#F2F5FA">Qingyi Hu</p><p style="font-size:24px;color:#BCD3EE">CPO</p></div>
+</div>
+
+</section>
+</div><div class="frame"><section id="problem" data-transition="fade" style="background:#F2F5FA;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">The problem</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">Convenient or thorough: pick one</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:96px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:120px;font-weight:700;line-height:1.1;color:#10265F">2.2 billion</p>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">people live with a vision impairment. At least 1 billion of those cases were preventable or not yet addressed.</p>
+</div>
+<div style="flex:1.2;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px;border-left:6px solid #3E9BE0;padding:0 0 0 32px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2;color:#14213D">Access is hard</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Even a basic check means a clinic visit and a wait.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;border-left:6px solid #3E9BE0;padding:0 0 0 32px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2;color:#14213D">Change is hard to see</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">One snapshot can’t show a trend, and kids memorize home charts.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;border-left:6px solid #3E9BE0;padding:0 0 0 32px">
+<h3 style="font-size:32px;font-weight:700;line-height:1.2;color:#14213D">Online tests aren’t trusted</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">No credible source behind them, and a number with no next step.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B6882">Source: WHO, World report on vision (2019)</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">2</p>
+
+</section>
+</div><div class="frame"><section id="then-now" data-transition="fade" style="background:#F2F5FA;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">How our thinking changed</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">What we knew then vs. now</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#E4EAF3;padding:48px;border-radius:16px">
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#4A5874">When we started</h3>
+<ul style="font-size:32px;line-height:1.4;color:#4A5874">
+<li>The barrier is access: exams are hard to book.</li>
+<li>People need a more accurate test.</li>
+<li>Big institutional buyers: DMVs, airlines, pilots.</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px;background:#FCFDFF;padding:48px;border-left:8px solid #3E9BE0;border-radius:0 16px 16px 0">
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">After 10 interviews</h3>
+<ul style="font-size:32px;line-height:1.4;color:#14213D">
+<li>Avoidance isn’t only logistics: “maybe I’m fine” feels safer.</li>
+<li>Urgency comes from outside: a prescription, a school letter, a DMV date.</li>
+<li>Trust and a next step matter more than accuracy.</li>
+<li>Pilots dropped. Licensing agencies stay a hypothesis.</li>
+</ul>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B6882">10 interviews · 4 personas · 5 in person, 5 virtual (AI-simulated personas)</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">3</p>
+
+</section>
+</div><div class="frame"><section id="framing" data-transition="fade" data-section="Three versions: one hypothesis each, and how they differ" style="background:#F2F5FA;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Our experiment</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">Same job, three ways to help</h2>
+</div>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Every version serves the job we heard in every interview: <b style="color:#14213D">“Has my vision changed, and do I need to see an eye doctor?”</b> They differ in how much Focal judges for you.</p>
+<div style="display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:24px">
+<p style="font-size:24px;font-weight:700;color:#4A5874;white-space:nowrap">Less judgment</p>
+<div style="flex:1;height:40px;display:flex;flex-direction:row;align-items:center"><div style="flex:1;height:16px;background:#3E9BE0"></div><svg width="40" height="40" viewBox="0 0 40 40"><polygon points="0,0 40,20 0,40" fill="#3E9BE0"/></svg></div>
+<p style="font-size:24px;font-weight:700;color:#10265F;white-space:nowrap">More judgment</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">B · Parent Pat</p>
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">Focal Family</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">The parent decides what it means. No score at all.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">A · Riley</p>
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">Focal Monitor</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">You read the trend. Focal shows the change.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">C · Alex</p>
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">DMV Pre-Check</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Focal gives a verdict against a real rule.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B6882">FOCAL · Team 5 · MENG 570</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">4</p>
+
+</section>
+</div><div class="frame"><section id="proto-a" data-transition="fade" style="background:#FBFCFE;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Prototype A · Routine-Check Riley</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">Focal Monitor</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px;background:#EEF3F9;padding:40px;border-left:8px solid #3E9BE0;border-radius:0 16px 16px 0">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Hypothesis</p>
+<p style="font-size:32px;line-height:1.4;color:#14213D">Adults who notice their vision slipping will find ongoing tracking more useful than a single test result.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#EEF3F9;padding:32px 40px;border-radius:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Success signal (proposed)</p>
+<p style="font-size:32px;line-height:1.4;color:#14213D">3 of 5 Riley-like testers state a format preference and explain why.</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">The core flow</p>
+<ol style="font-size:32px;line-height:1.4;color:#14213D">
+<li>An eight-letter tumbling-E check</li>
+<li>Today’s result, shown on its own</li>
+<li>The same result on a seven-week trend (illustrative history)</li>
+<li>Neutral feedback: which view helped, and would you return?</li>
+</ol>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Why we believe it</p>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Riley goes by feel, with “no baseline to compare against.” A single score can’t show change.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B6882">Trigger: a prescription about to expire · Built by Qingyi and Fan</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">5</p>
+
+</section>
+</div><div class="frame"><section id="proto-b" data-transition="fade" style="background:#FBFCFE;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Prototype B · Parent Pat</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">Focal Family</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px;background:#EEF3F9;padding:40px;border-left:8px solid #3E9BE0;border-radius:0 16px 16px 0">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Hypothesis</p>
+<p style="font-size:32px;line-height:1.4;color:#14213D">Parents will finish a short picture game with their child, then use what they noticed to pick a next step.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#EEF3F9;padding:32px 40px;border-radius:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Success signal (proposed)</p>
+<p style="font-size:32px;line-height:1.4;color:#14213D">4 of 5 parents finish unaided; 3 of 5 prepare an appointment or school contact.</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">The core flow</p>
+<ol style="font-size:32px;line-height:1.4;color:#14213D">
+<li>Practice, then six large matching pictures</li>
+<li>The parent notes what they’ve noticed</li>
+<li>The parent picks a next step and prepares questions</li>
+<li>A summary to bring along. No score, by design.</li>
+</ol>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Why we believe it</p>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Kids memorize home charts, and Pat wants “a reasonable reason to get it checked.”</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B6882">Trigger: a school screening letter · Built by Haydn</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">6</p>
+
+</section>
+</div><div class="frame"><section id="proto-c" data-transition="fade" style="background:#FBFCFE;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Prototype C · Anxious Applicant Alex</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">DMV Pre-Check</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px;background:#EEF3F9;padding:40px;border-left:8px solid #3E9BE0;border-radius:0 16px 16px 0">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Hypothesis</p>
+<p style="font-size:32px;line-height:1.4;color:#14213D">People with a DMV eye test coming up will prefer, and act on, a check that answers “Will I pass my state’s test?”</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#EEF3F9;padding:32px 40px;border-radius:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Success signal (proposed)</p>
+<p style="font-size:32px;line-height:1.4;color:#14213D">60% with a DMV visit coming up would use it; 50% told to see a doctor first would book before the DMV.</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">The core flow</p>
+<ol style="font-size:32px;line-height:1.4;color:#14213D">
+<li>Pick your state and see its real rule</li>
+<li>Size the letters to your screen with any ID card</li>
+<li>Read 14 letters, six at the line that decides</li>
+<li>Get a verdict and a next-step plan</li>
+</ol>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Why we believe it</p>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">An online test gave Alex “20/30,” and he “didn’t even know if that’s a pass or a fail.”</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B6882">Trigger: a DMV vision screening coming up · Built by Burak</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">7</p>
+
+</section>
+</div><div class="frame"><section id="compare" data-transition="fade" style="background:#F2F5FA;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Side by side</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">What the comparison can teach us</h2>
+</div>
+<table style="width:1664px;font-size:28px;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif">
+<tr style="background:#10265F">
+<th style="width:22%;color:#F2F5FA"></th>
+<th style="width:26%;color:#F2F5FA">A · Focal Monitor</th>
+<th style="width:26%;color:#F2F5FA">B · Focal Family</th>
+<th style="width:26%;color:#F2F5FA">C · DMV Pre-Check</th>
+</tr>
+<tr style="background:#FCFDFF">
+<td style="color:#1F65A8">Persona and trigger</td>
+<td>Riley · a prescription expiring</td>
+<td>Pat · a school letter</td>
+<td>Alex · a DMV date</td>
+</tr>
+<tr style="background:#F2F5FA">
+<td style="color:#1F65A8">Who judges</td>
+<td>You read the trend</td>
+<td>The parent decides</td>
+<td>Focal gives a verdict</td>
+</tr>
+<tr style="background:#FCFDFF">
+<td style="color:#1F65A8">How it’s used</td>
+<td>Repeated checks over time</td>
+<td>One shared moment with a child</td>
+<td>One check before a deadline</td>
+</tr>
+<tr style="background:#F2F5FA">
+<td style="color:#1F65A8">Business role</td>
+<td>Premium personal tracking</td>
+<td>School nurse and pediatric channel</td>
+<td>Free DMV checker that brings users in</td>
+</tr>
+<tr style="background:#FCFDFF">
+<td style="color:#1F65A8">If it wins</td>
+<td>Tracking is the value</td>
+<td>Support beats judgment</td>
+<td>People want a clear answer</td>
+</tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B6882">Business roles come from our Lean Canvas revenue streams and channels</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">8</p>
+
+</section>
+</div><div class="frame"><section id="demo" data-transition="fade" data-section="Live demos of Prototypes A, B and C" style="background:#10265F;color:#F2F5FA;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7DB8EA">Live demo · about two minutes each</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:120px;font-weight:700;line-height:1.1;color:#F2F5FA">See it work</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:40px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;color:#7DB8EA;width:80px">A</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:32px;font-weight:700;color:#F2F5FA">Focal Monitor · watch the same result shown alone, then on a trend</p>
+<p style="font-size:24px;color:#BCD3EE"><a href="https://focal-demo-a.streamlit.app/">focal-demo-a.streamlit.app</a></p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:40px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;color:#7DB8EA;width:80px">B</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:32px;font-weight:700;color:#F2F5FA">Focal Family · watch a parent turn observations into a next step</p>
+<p style="font-size:24px;color:#BCD3EE"><a href="https://focal-demo-b.streamlit.app/">focal-demo-b.streamlit.app</a></p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:40px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;color:#7DB8EA;width:80px">C</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:32px;font-weight:700;color:#F2F5FA">DMV Pre-Check · watch a verdict against North Carolina’s real rule</p>
+<p style="font-size:24px;color:#BCD3EE"><a href="https://focal-demo-c.streamlit.app/">focal-demo-c.streamlit.app</a></p>
+</div>
+</div>
+</div>
+
+</section>
+</div><div class="frame"><section id="evidence" data-transition="fade" data-section="Justification and strategy: evidence, cuts, limits and direction" style="background:#F2F5FA;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Why we built it this way</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">Built from customer quotes</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;font-style:italic;line-height:1.4;color:#10265F">“No baseline to compare against.”</p>
+<p style="font-size:24px;color:#5B6882">Riley · virtual interview</p>
+<hr style="border-top:2px solid #D6DFEC">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">So A shows</p>
+<p style="font-size:32px;line-height:1.4;color:#14213D">A trend next to today’s result</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;font-style:italic;line-height:1.4;color:#10265F">“I want to know when there is a reasonable reason to get it checked.”</p>
+<p style="font-size:24px;color:#5B6882">Pat · virtual interview</p>
+<hr style="border-top:2px solid #D6DFEC">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">So B offers</p>
+<p style="font-size:32px;line-height:1.4;color:#14213D">Observations that lead to one next step</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:32px;font-style:italic;line-height:1.4;color:#10265F">“I didn’t even know if that’s a pass or a fail.”</p>
+<p style="font-size:24px;color:#5B6882">Alex · virtual interview</p>
+<hr style="border-top:2px solid #D6DFEC">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">So C gives</p>
+<p style="font-size:32px;line-height:1.4;color:#14213D">A verdict against your state’s real rule</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1400px;font-size:24px;color:#5B6882">Virtual interviews were AI-simulated personas; in-person interviews backed the same themes</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">10</p>
+
+</section>
+</div><div class="frame"><section id="cuts" data-transition="fade" style="background:#F2F5FA;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Prioritization</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">What we kept, what we cut</h2>
+</div>
+<table style="width:1664px;font-size:28px;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif">
+<tr style="background:#10265F">
+<th style="width:16%;color:#F2F5FA">Version</th>
+<th style="width:26%;color:#F2F5FA">Tests one thing</th>
+<th style="width:30%;color:#F2F5FA">Cut on purpose</th>
+<th style="width:28%;color:#F2F5FA">Right call?</th>
+</tr>
+<tr style="background:#FCFDFF">
+<td style="color:#1F65A8">A · Monitor</td>
+<td>Single result vs. trend</td>
+<td>Real history and accounts</td>
+<td>Yes for preference; not for return visits</td>
+</tr>
+<tr style="background:#F2F5FA">
+<td style="color:#1F65A8">B · Family</td>
+<td>Observations → next step</td>
+<td>Any score, camera, provider search</td>
+<td>Yes. Open question: do parents want a number?</td>
+</tr>
+<tr style="background:#FCFDFF">
+<td style="color:#1F65A8">C · Pre-Check</td>
+<td>Verdict vs. general score</td>
+<td>Per-eye testing, 45 states, agency view</td>
+<td>Mostly. Per-eye testing matters in CA and TX</td>
+</tr>
+</table>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FCFDFF;padding:32px 40px;border-left:8px solid #3E9BE0;border-radius:0 16px 16px 0">
+<p style="font-size:32px;line-height:1.4;color:#14213D"><b>Our biggest cut: no prototype for licensing agencies.</b> Lisa’s needs come only from AI-simulated interviews, so we test consumers first.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1400px;font-size:24px;color:#5B6882">All three skip accounts, stored data, real booking and clinical validation</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">11</p>
+
+</section>
+</div><div class="frame"><section id="limits" data-transition="fade" style="background:#F2F5FA;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Honest limits</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">What these prototypes can’t tell us</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+<div style="display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">Not clinical</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Nothing here is validated against a clinical eye chart.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">Thin evidence</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Ten interviews, half of them AI-simulated personas.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">One market untested</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">No prototype covers licensing agencies (Lisa).</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">Votes aren’t actions</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">A vote shows appeal, not who books an eye exam.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B6882">FOCAL · Team 5 · MENG 570</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">12</p>
+
+</section>
+</div><div class="frame"><section id="direction" data-transition="fade" style="background:#F2F5FA;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">Strategy</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">What three versions tell us</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:40px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:96px;font-weight:700;line-height:1;color:#3E9BE0;width:96px">1</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">Trust and a next step are the product</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Every version ends in a concrete next step, not a bare score.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:40px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:96px;font-weight:700;line-height:1;color:#3E9BE0;width:96px">2</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">Real-world triggers bring people in</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Each version hooks onto a moment that already forces action.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:40px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:96px;font-weight:700;line-height:1;color:#3E9BE0;width:96px">3</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">One check, different front doors</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">The check can be shared; the persona decides how the result is framed.</p>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;background:#FCFDFF;padding:24px 40px;border-left:8px solid #3E9BE0;border-radius:0 16px 16px 0">
+<p style="font-size:32px;line-height:1.4;color:#14213D"><b>Our pre-vote lean:</b> [Team: which version, and why, in one sentence]</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B6882">FOCAL · Team 5 · MENG 570</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">13</p>
+
+</section>
+</div><div class="frame"><section id="vote-read" data-transition="fade" data-section="The class vote and how we will read it" style="background:#F2F5FA;color:#14213D;font-family:'Source Sans 3', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">The class vote</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#10265F">How we’ll read the vote</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">If A wins</p>
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">Tracking is the value</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Next: real accounts and history; test if people return.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">If B wins</p>
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">Support beats judgment</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Next: real parents, via school nurses and pediatricians.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FCFDFF;padding:40px;border:1px solid #D6DFEC;border-radius:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#1F65A8">If C wins</p>
+<h3 style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:700;line-height:1.2;color:#10265F">People want a clear answer</h3>
+<p style="font-size:32px;line-height:1.4;color:#4A5874">Next: launch the free checker; validate DMVs with real staff.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;background:#FCFDFF;padding:32px 40px;border-left:8px solid #3E9BE0;border-radius:0 16px 16px 0">
+<p style="font-size:32px;line-height:1.4;color:#14213D"><b>One caveat:</b> this room is mostly students, close to Riley and Alex but not to parents. A low B vote may say more about the room than about parents.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B6882">The vote is data, not a verdict</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;color:#5B6882;text-align:right">14</p>
+
+</section>
+</div><div class="frame"><section id="close" data-transition="fade" style="background:#10265F;color:#F2F5FA;font-family:'Source Sans 3', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#7DB8EA">Your turn</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:120px;font-weight:700;line-height:1.1;color:#F2F5FA">Which one would you actually use?</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:40px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:4px solid #3E9BE0;padding:24px 0 0 0">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#7DB8EA">A</p>
+<p style="font-size:32px;font-weight:700;color:#F2F5FA">Focal Monitor</p>
+<p style="font-size:24px;color:#BCD3EE"><a href="https://focal-demo-a.streamlit.app/">focal-demo-a.streamlit.app</a></p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:4px solid #3E9BE0;padding:24px 0 0 0">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#7DB8EA">B</p>
+<p style="font-size:32px;font-weight:700;color:#F2F5FA">Focal Family</p>
+<p style="font-size:24px;color:#BCD3EE"><a href="https://focal-demo-b.streamlit.app/">focal-demo-b.streamlit.app</a></p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;border-top:4px solid #3E9BE0;padding:24px 0 0 0">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:72px;font-weight:700;line-height:1.1;color:#7DB8EA">C</p>
+<p style="font-size:32px;font-weight:700;color:#F2F5FA">DMV Pre-Check</p>
+<p style="font-size:24px;color:#BCD3EE"><a href="https://focal-demo-c.streamlit.app/">focal-demo-c.streamlit.app</a></p>
+</div>
+</div>
+<p style="font-size:24px;color:#BCD3EE">Thank you · Haydn, Burak, Hadley, Fan and Qingyi · Focal, Team 5</p>
+
+</section>
+</div>
+<script>
+// Scale the fixed 1920x1080 slides to the window width on screen.
+function fit() {
+  var s = Math.min(1, (window.innerWidth - 32) / 1920);
+  document.querySelectorAll('.frame').forEach(function (f) { f.style.zoom = s; });
+}
+if (!window.matchMedia('print').matches) { window.addEventListener('resize', fit); fit(); }
+</script>
+</body>
+</html>

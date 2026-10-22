@@ -2,6 +2,8 @@
 
 [Focal Prototype Presentation](<Focal Prototype Presentation.pptx>) is the editable class deck. It includes the problem and discovery findings, one hypothesis for each prototype, live-demo links, scope decisions, deliberate cuts, and a prompt for the class vote. Speaker notes contain the proposed timings, demo scripts, evidence sources, and limits of each experiment.
 
+A second draft by Burak is in [burak-draft/](burak-draft/) (PDF, HTML and speaker notes). The two decks have not been combined yet.
+
 ## Suggested timing
 
 | Slides | Section | Time |
