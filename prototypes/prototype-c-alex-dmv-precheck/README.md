@@ -51,7 +51,7 @@ Every feature traces back to something Alex said:
 | What Alex said | What the prototype does |
 |---|---|
 | "It gave me something like '20/30,' and I didn't even know if that's a pass or a fail." | The result is a **plain answer against your state's line**, never a bare number. |
-| "I had to google what the DMV standard is, and the first answers were for a different state." | **State picker** with the real rule and a link to the official source (NC, CA, NY, TX, FL). |
+| "I had to google what the DMV standard is, and the first answers were for a different state." | **State picker** with the real rule and a link to the official source (NC, CA, FL, GA, NJ, NY, TX). |
 | "My laptop and my phone are different sizes, so I didn't know if the letters were the right size." | **Screen calibration**: match an on-screen box to any ID card, and letters are sized in real millimetres. |
 | "The instructions said to stand a certain distance away... I just guessed." | **Distance step** (10 ft or 5 ft) with letters re-sized for the distance you pick. |
 | "I guessed on that last line and passed... I don't know if I passed because my eyes were fine or because I got lucky." | **No lucky guesses:** 6 letters at the deciding line, plus a "Can't tell" button. A pure guesser gets "on track" less than 1% of the time. |
@@ -79,7 +79,7 @@ It also draws on **Lisa** (DMV supervisor, virtual interviews). Her insight was 
 | Real reminders (email/SMS), accounts | Low now | High | ❌ | Needs personal data; intent is all we need to measure |
 | Real eye-doctor search, insurance lookup, booking | High later | High | ❌ | Partnerships first (Hill 3); a map link stands in |
 | Agency view for Lisa | Medium | Medium | ❌ | Lisa is still unvalidated; would dilute the consumer test |
-| All 50 states | Medium | High (verification) | ❌ | 5 states verified, plus a clearly labelled "Another state" fallback |
+| All 50 states | Medium | High (verification) | ❌ | 7 states verified, including Georgia (20/60) and New Jersey (20/50), plus a clearly labelled "Another state" fallback |
 | Night, glare, side or color vision | Medium | High | ❌ | Not what the DMV counter checks; disclosed |
 
 ### Complexity and success signals
@@ -99,7 +99,7 @@ These estimates complement the scope card above. The signals are proposed tests 
 
 1. **Welcome:** the promise, how it works, "Why should I trust this?" and "What this is not".
 2. **Setup:** state (with rule and source), glasses yes/no, card calibration, distance, and a 3-item checklist that must be ticked before starting.
-3. **Check:** about 14 Tumbling-E letters across 4 lines (20/70 → 20/50 → **20/40 × 6** → 20/30). Directions are random every time and never repeat twice in a row. The 20/30 line only appears after a clear pass, to measure how much room you have.
+3. **Check:** 13–14 Tumbling-E letters across 4 lines: two warm-up lines, **six letters at your state's line**, and one smaller line. For a 20/40 state that is 20/70 → 20/50 → **20/40 × 6** → 20/30; Georgia uses 20/100 → 20/70 → **20/60 × 6** → 20/50, and New Jersey 20/100 → 20/70 → **20/50 × 6** → 20/40. Directions are random every time and never repeat twice in a row. The smaller line only appears after a clear pass, to measure how much room you have.
 4. **Result:** On track, Right at the line, Might not pass yet, or Checks didn't agree. Shows what you read line by line, a next-step plan, the state's form, a reminder, a parent message, a summary to copy, and the limits.
 5. **Feedback:** 6 neutral questions (no defaults selected), one optional text question, and a JSON download.
 
@@ -112,8 +112,10 @@ These estimates complement the scope card above. The signals are proposed tests 
 | New York | 20/40 in either or both eyes; MV-619 or MV-80L from an eye doctor | [NY DMV](https://dmv.ny.gov/driver-license/vision-requirements-and-restrictions) |
 | Texas | 20/40 each eye and both for no restriction; lower means a corrective-lens restriction or specialist referral | [37 TAC §15.51](https://www.law.cornell.edu/regulations/texas/37-Tex-Admin-Code-SS-15-51) |
 | Florida | Minimum 20/70, but at 20/50 or worse a specialist must complete Form 72010 | [FLHSMV](https://flhsmv.gov/ddl/vision.html) |
+| Georgia | **20/60** in at least one eye, plus a 140-degree field of vision | [GA DDS](https://dds.georgia.gov/node/1846) |
+| New Jersey | **20/50**, glasses allowed; if you fail, visit your doctor and complete Form ST-14 | [NJ MVC](https://www.nj.gov/mvc/license/visiontest.htm) |
 
-All five draw the "pass at the counter with no extra steps" line at **20/40**. What differs is what happens if you miss it. That's why the state picker matters even though the line is the same.
+Five of the seven draw the "pass at the counter with no extra steps" line at **20/40**; Georgia (20/60) and New Jersey (20/50) do not. So the state picker changes both the line you're tested on and what happens if you miss it. Georgia's page does not name a form for failing the acuity part, so the app only suggests asking about its Vision Report Form (DDS-MR-274). Wyoming was checked too: its WYDOT form also uses 20/40.
 
 ## 6. Run it locally
 
@@ -124,7 +126,7 @@ python -m pip install -r prototypes/prototype-c-alex-dmv-precheck/requirements.t
 python -m streamlit run prototypes/prototype-c-alex-dmv-precheck/app.py --server.port 8503
 ```
 
-Run the tests (27 tests: scoring, letter sizing, state data, and every click path through the app using Streamlit's AppTest):
+Run the tests (31 tests: scoring, letter sizing, state data, and every click path through the app using Streamlit's AppTest):
 
 ```bash
 cd prototypes/prototype-c-alex-dmv-precheck
@@ -143,7 +145,7 @@ The app needs no secrets, database or API keys.
 ## 8. Two-minute demo script
 
 1. **Welcome (15s):** read the headline and point at the three chips. Open "Why should I trust this?" for one second.
-2. **Setup (30s):** pick **North Carolina** and show the rule card with its source link. Hold up an ID card to the calibration box. Tick the three boxes.
+2. **Setup (30s):** switch the state to **Georgia** so the rule card jumps to 20/60, then back to **North Carolina** (20/40), and point at the source link. Hold up an ID card to the calibration box. Tick the three boxes.
 3. **Check (45s):** answer a few letters, deliberately tap **"Can't tell"** on two or three at the 20/40 line, and finish.
 4. **Result (30s):** "Right at the line" or "Might not pass yet". Scroll the plan: map link, the state form, the parent message, **Remind me in 3 days**.
 5. **Close (10s):** "Same question every applicant has, answered against their own state's rule, with a next step instead of a number."

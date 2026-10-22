@@ -110,9 +110,40 @@ A's prompt log records those labels as a deliberate PM decision, so this was rai
 
 Repository requests from this chat (opening PR #3, and adding C to the shared [`prompts.md`](../../prompts.md)) are logged there under shared repository work (R6–R7).
 
-## Prompts 7+ (add as we iterate)
+## Prompt 7: Add states whose line isn't 20/40
+
+```text
+maybe the demo should include Georgia NJ and Wyoming since those are the non 20/40 states. If we
+push will it end up on stream lit automatically?
+```
+```text
+yes do that.
+```
+
+**Trying to learn:** All five original states used 20/40, so in a live demo the state picker looked cosmetic. Would adding states with a different line make "your state's *real* standard" visible?
+
+**What we found:**
+
+| State | Official source says | Decision |
+|---|---|---|
+| Georgia | 20/60 in at least one eye (GA DDS) | Added |
+| New Jersey | 20/50; if you fail, visit a doctor and complete Form ST-14 (NJ MVC) | Added |
+| Wyoming | 20/40 with both eyes (WYDOT form, 2014) | Not added: the same line as the others |
+
+**What changed:**
+- Georgia's 20/60 line is slotted into the letter scale only for states that use it, so the 20/40 test is unchanged (covered by a test).
+- Georgia's page names no form for failing the acuity part, so the app only suggests asking about its Vision Report Form (DDS-MR-274).
+- 4 new tests, for 31 in total.
+- The demo script now switches the state to Georgia so the class sees the line change.
+
+**On deployment:** Streamlit Community Cloud redeploys automatically when the branch it is deployed from changes, which is `main`. So this change reaches the live link only once its pull request is merged.
+
+---
+
+Requests from this chat about the presentation draft and demo script are logged under shared repository work in [`prompts.md`](../../prompts.md) (R8).
+
+## Prompts 8+ (add as we iterate)
 
 Log each new prompt here in the same format: the prompt, what we were trying to learn, and what changed. Likely next ones:
 - Rehearsal fixes after the first dry-run demo
-- Deploying to Streamlit Community Cloud for the class link
 - Changes based on early feedback from real users (ideally 2–3 students with a DMV visit coming up)

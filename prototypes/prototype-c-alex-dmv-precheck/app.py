@@ -56,8 +56,9 @@ STATE_LINE_LETTERS = 6
 ON_TRACK_MIN = 5
 CLOSE_MIN = 4
 
-# Summaries of official rules, checked October 2026. Every state below draws the
-# "pass at the counter with no extra steps" line at 20/40.
+# Summaries of official rules, checked October 2026. Most states draw the
+# "pass at the counter with no extra steps" line at 20/40; Georgia (20/60) and
+# New Jersey (20/50) do not, which is why the check is built around each state's line.
 RULES_CHECKED = "October 2026"
 STATES = {
     "North Carolina": {
@@ -82,6 +83,39 @@ STATES = {
         "source_name": "California DMV vision standards",
         "source_url": "https://www.dmv.ca.gov/portal/?p=1733",
     },
+    "Florida": {
+        "abbr": "FL",
+        "possessive": "Florida's",
+        "line": 40,
+        "rule": "The legal minimum is 20/70, but at 20/50 or worse in either eye an eye specialist must complete Form 72010, so 20/40 is the line to pass with no extra paperwork.",
+        "glasses": "Glasses or contacts are allowed. If you need them, your license will require them.",
+        "if_missed": "At 20/50 or worse in either eye, an eye specialist must complete FLHSMV Form 72010 before you are licensed.",
+        "bring": "Ask the eye specialist to complete FLHSMV Form 72010 and bring it with you.",
+        "source_name": "FLHSMV vision standards",
+        "source_url": "https://flhsmv.gov/ddl/vision.html",
+    },
+    "Georgia": {
+        "abbr": "GA",
+        "possessive": "Georgia's",
+        "line": 60,
+        "rule": "20/60 in at least one eye, plus a field of vision of at least 140 degrees.",
+        "glasses": "Glasses or contacts are allowed.",
+        "if_missed": "If you don't meet the standard at the counter, plan on an eye doctor visit before you are licensed.",
+        "bring": "Ask the eye doctor whether you need Georgia's Vision Report Form (DDS-MR-274), and bring it with you.",
+        "source_name": "Georgia DDS medical and vision information",
+        "source_url": "https://dds.georgia.gov/node/1846",
+    },
+    "New Jersey": {
+        "abbr": "NJ",
+        "possessive": "New Jersey's",
+        "line": 50,
+        "rule": "20/50 visual acuity, with or without glasses or contacts.",
+        "glasses": "If you need glasses or contacts to pass, your license will require them while driving.",
+        "if_missed": "If you fail the MVC vision test, you visit your doctor and complete Form ST-14.",
+        "bring": "Bring the completed Form ST-14 back to the MVC.",
+        "source_name": "NJ MVC vision test",
+        "source_url": "https://www.nj.gov/mvc/license/visiontest.htm",
+    },
     "New York": {
         "abbr": "NY",
         "possessive": "New York's",
@@ -103,17 +137,6 @@ STATES = {
         "bring": "Bring your glasses or contacts, and any statement your eye specialist gives you, to the DPS office.",
         "source_name": "37 Tex. Admin. Code § 15.51 (Vision Tests)",
         "source_url": "https://www.law.cornell.edu/regulations/texas/37-Tex-Admin-Code-SS-15-51",
-    },
-    "Florida": {
-        "abbr": "FL",
-        "possessive": "Florida's",
-        "line": 40,
-        "rule": "The legal minimum is 20/70, but at 20/50 or worse in either eye an eye specialist must complete Form 72010, so 20/40 is the line to pass with no extra paperwork.",
-        "glasses": "Glasses or contacts are allowed. If you need them, your license will require them.",
-        "if_missed": "At 20/50 or worse in either eye, an eye specialist must complete FLHSMV Form 72010 before you are licensed.",
-        "bring": "Ask the eye specialist to complete FLHSMV Form 72010 and bring it with you.",
-        "source_name": "FLHSMV vision standards",
-        "source_url": "https://flhsmv.gov/ddl/vision.html",
     },
     "Another state": {
         "abbr": "your state",
@@ -144,14 +167,16 @@ SETUP_CHECKLIST = {
 # Test logic (pure functions, covered by test_app.py)
 # -----------------------------------------------------------------------------
 def build_test_lines(state_line: int = 40):
-    """Two warm-up lines above the state line, the state line, and one line below it."""
-    idx = SNELLEN_LADDER.index(state_line)
+    """Two warm-up lines above the state line, the state line, and one line below it.
+    A state line that isn't on the standard ladder (Georgia's 20/60) is slotted into it."""
+    ladder = sorted(set(SNELLEN_LADDER) | {state_line}, reverse=True)
+    idx = ladder.index(state_line)
     lines = []
-    for denom in SNELLEN_LADDER[max(0, idx - 2):idx]:
+    for denom in ladder[max(0, idx - 2):idx]:
         lines.append({"denominator": denom, "letters": 2 if denom > 50 else 3, "role": "warm-up"})
     lines.append({"denominator": state_line, "letters": STATE_LINE_LETTERS, "role": "state line"})
-    if idx + 1 < len(SNELLEN_LADDER):
-        lines.append({"denominator": SNELLEN_LADDER[idx + 1], "letters": 3, "role": "margin"})
+    if idx + 1 < len(ladder):
+        lines.append({"denominator": ladder[idx + 1], "letters": 3, "role": "margin"})
     return lines
 
 
