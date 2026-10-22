@@ -53,6 +53,7 @@ DEMO_VISION_RESULTS = {
     8: {"acuity": "20/20", "status": "Normal vision", "message": "Visual clarity remained strong through the smallest size."},
 }
 ACUITY_ORDER = ["20/20", "20/25", "20/30", "20/40", "20/50", "20/70", "20/100", "20/160", "20/200"]
+DEMO_RESULT_NOTE = "Prototype demonstration: acuity labels illustrate the interface and are not calibrated measurements."
 
 # Fictional example baseline history representing persona "Riley" over 7 previous checks
 FICTIONAL_RECORDS = [
@@ -436,9 +437,30 @@ html, body, [class*="css"] {
 }
 
 .stApp {
+    color: var(--focal-ink);
     background:
         radial-gradient(circle at 76% -10%, rgba(14, 165, 233, 0.08), transparent 26rem),
         #FBFDFE;
+}
+
+/* The custom surfaces stay light, including when Streamlit's native theme is dark. */
+.stApp [data-testid="stMarkdownContainer"],
+.stApp [data-testid="stMarkdownContainer"] :is(h1, h2, h3, h4),
+.stApp [data-testid="stWidgetLabel"] p,
+.stApp [data-testid="stRadio"] label p,
+.stApp [data-testid="stCheckbox"] label p,
+.stApp [data-testid="stExpander"] summary p,
+.stApp [data-testid="stExpander"] summary svg {
+    color: var(--focal-ink);
+}
+
+.stApp [data-testid="stCaptionContainer"] {
+    color: var(--focal-muted);
+}
+
+.stApp button[kind="primary"] [data-testid="stMarkdownContainer"],
+.stApp div[data-testid="stFormSubmitButton"] [data-testid="stMarkdownContainer"] {
+    color: #FFFFFF;
 }
 
 [data-testid="stHeader"] {
@@ -463,6 +485,7 @@ html, body, [class*="css"] {
 
 [data-testid="stSidebarCollapseButton"] button,
 [data-testid="stExpandSidebarButton"] button {
+    color: var(--focal-ink) !important;
     border: 1px solid var(--focal-line) !important;
     border-radius: 10px !important;
     background: rgba(255, 255, 255, 0.92) !important;
@@ -565,6 +588,7 @@ html, body, [class*="css"] {
     height: 36px;
     border-radius: 10px;
     background: var(--focal-sky);
+    color: var(--focal-ink);
     font-size: 1rem;
 }
 
@@ -1055,7 +1079,7 @@ div[data-testid="stExpander"] {
         # 2-Minute Presenter Demo Guide
         with st.expander("⏱️ 2-Minute Presenter Guide", expanded=False):
             st.markdown(
-                "**Rehearsed Classroom Flow (~2 min):**\n\n"
+                "**Suggested Classroom Flow (~2 min):**\n\n"
                 "1. **0:00–0:25 Problem:** Welcome screen shows persona Riley (corrective lens wearer noticing vision drift between exams).\n"
                 "2. **0:25–0:55 Vision Check:** Click *Start Vision Check*. Answer 8 tumbling-E optotypes with progressive sizing.\n"
                 "3. **0:55–1:15 Results:** Review the immediate vision result and optional item breakdown.\n"
@@ -1107,6 +1131,7 @@ div[data-testid="stExpander"] {
 </div>""", unsafe_allow_html=True)
 
             st.button("Start Vision Check  →", type="primary", on_click=start_vision_check, **full_width())
+            st.caption(DEMO_RESULT_NOTE)
 
             with st.expander("📖 Testing Setup & Distance Calibration Guidance", expanded=False):
                 st.markdown(
@@ -1276,6 +1301,7 @@ div[data-testid="stExpander"] {
         # Completed Session Results (Exactly 8 questions answered)
         correct_count = sum(1 for a in answers if a["is_correct"])
         vision_result = get_demo_vision_result(correct_count, total_answers)
+        st.caption(DEMO_RESULT_NOTE)
         
         # Score Summary Card
         st.markdown(
@@ -1427,6 +1453,7 @@ Only completed 8-question sessions appear in completed results.
             label_visibility="collapsed"
         )
         st.session_state.active_comparison_view = selected_radio
+        st.caption(DEMO_RESULT_NOTE)
 
         # ---------------------------------------------------------------------
         # EXPERIENCE A: SINGLE RESULT VIEW

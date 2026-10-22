@@ -35,8 +35,9 @@ This is the shared reference library for the three product experiments. It combi
 
 ## Development and artwork
 
+- [Assignment readiness and remaining team steps](assignment-readiness.md)
 - [Development and contribution guide](../CONTRIBUTING.md)
 - [Streamlit deployment guide](deployment.md)
 - [Original Focal brand assets](../assets/brand/README.md)
 
-Put new materials in the matching topic directory and add them to this index. Keep the original document contents intact when reorganizing; a changed edition should have a distinct filename. Demo-specific hypotheses, scope cards, and prompt logs stay with each demo under `prototypes/`.
+Put new materials in the matching topic directory and add them to this index. Keep the original document contents intact when reorganizing; a changed edition should have a distinct filename. Demo-specific hypotheses and scope cards stay with each demo under `prototypes/`. Record ongoing build prompts in the shared [team prompt log](../prompts.md); original per-demo logs remain as references.

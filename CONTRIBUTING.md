@@ -1,6 +1,6 @@
 # Working on the Focal repository
 
-Each demo is a separate product experiment. Keep its entry point, dependencies, tests, scope, and prompt log together under `prototypes/`. Shared research belongs in `docs/`; original brand artwork belongs in `assets/brand/`.
+Each demo is a separate product experiment. Keep its entry point, dependencies, tests, and scope together under `prototypes/`. Record new build prompts in the shared [prompts.md](prompts.md); original per-prototype logs remain as references. Shared research belongs in `docs/`; original brand artwork belongs in `assets/brand/`.
 
 ## Set up a local environment
 
@@ -54,6 +54,10 @@ The [GitHub Actions workflow](.github/workflows/tests.yml) installs each demo's 
 
 Use descriptive filenames and add a link to the [document index](docs/README.md). Preserve edited versions and PDF exports when they serve different purposes. Consolidate copies only when their bytes are identical. Prompt logs preserve the original wording and may refer to the folders used before the reorganization.
 
+## Maintain the team prompt log
+
+Add actual build requests to the relevant A, B, or C section of [prompts.md](prompts.md), including date, author, intent, result, and learning. Keep shared repository requests in that file's separate section. Teammates can transfer their existing per-prototype entries into the shared file. Do not count internal implementation steps or repository maintenance as additional product-development prompts.
+
 ## Add another prototype
 
 Use the existing layout:
@@ -67,6 +71,6 @@ prototypes/prototype-<letter>-<focus>/
   test_*.py
 ```
 
-Record its persona, hypothesis, Feature Scope Card, demo journey, and actual build prompts. Add its requirements to `requirements-dev.txt`, its run/test shortcuts to `Makefile`, and its directory to the workflow matrix and root prototype table. Choose an unused local port and publish it as a separate Streamlit app following the [deployment guide](docs/deployment.md).
+Record its persona, hypothesis, Feature Scope Card, and demo journey in its README, and add a section for its actual build prompts to `prompts.md`. Keep `PROMPT_LOG.md` as a reference or a link to the shared log. Add its requirements to `requirements-dev.txt`, its run/test shortcuts to `Makefile`, and its directory to the workflow matrix and root prototype table. Choose an unused local port and publish it as a separate Streamlit app following the [deployment guide](docs/deployment.md).
 
 Import shared functions only when a concrete need emerges. Keep app entry points independent; importing another demo's `app.py` can mix page configuration and session state.

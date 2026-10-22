@@ -82,6 +82,19 @@ It also draws on **Lisa** (DMV supervisor, virtual interviews). Her insight was 
 | All 50 states | Medium | High (verification) | ❌ | 5 states verified, plus a clearly labelled "Another state" fallback |
 | Night, glare, side or color vision | Medium | High | ❌ | Not what the DMV counter checks; disclosed |
 
+### Complexity and success signals
+
+These estimates complement the scope card above. The signals are proposed tests of understanding and stated intent, not customer results or clinical validation.
+
+| Included scope | Complexity | Proposed success signal |
+| --- | --- | --- |
+| State picker and linked rules | Medium | Participants identify the selected state and find its source without facilitator help |
+| Card sizing and distance setup | Medium | Participants complete the setup checklist and can explain the chosen viewing distance |
+| Extra deciding-line letters and honest retake | Medium | Participants can explain a consistent or conflicting pair of attempts |
+| Result and next-step plan | Medium | At least 70% say they understand the practice-check result; at least 50% of the relevant group state intent to book before the DMV visit |
+| Reminder intent, parent message, and summary | Low | Participants identify what they would do next and distinguish simulated actions from completed bookings or messages |
+| Feedback and export | Low | At least 60% of deadline-relevant participants say they would likely use the experience before a DMV visit |
+
 ## 5. The flow
 
 1. **Welcome:** the promise, how it works, "Why should I trust this?" and "What this is not".

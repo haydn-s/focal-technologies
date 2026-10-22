@@ -58,14 +58,16 @@ requirements-dev.txt        Combined installation for local development
 - [Document library](docs/README.md): research, Lean Canvas, business model, and phase workbooks. This consolidates the former `fundamentals` and `Focal Knowledge Base` directories.
 - [Brand assets](assets/brand/README.md): the team's original logo files.
 - [Development guide](CONTRIBUTING.md): setup, testing, and adding another demo.
+- [Team prompt log](prompts.md): build prompts and outcomes for A, B, and C, with shared repository work recorded separately.
 - [Deployment guide and shared links](docs/deployment.md): publish three apps from this repository, each with its own URL.
 - [Prototype assignment](docs/assignments/prototype-assignment.md): the supplied brief and deliverable requirements.
+- [Assignment readiness](docs/assignment-readiness.md): reviewed requirements, validation, and remaining deployment, presentation, rehearsal, and submission steps.
 
 Keep each demo's requirements beside its `app.py`. Keep the current prototype directory names when publishing updates so existing deployment paths remain stable.
 
 ## Before presenting
 
-Confirm each prototype works without a guided explanation, has a distinct hypothesis and Feature Scope Card, and has at least five actual prompts in its log. Rehearse each demo twice, check its published URL from a fresh session, and submit the links and presentation to Canvas. Record the class vote and the team's response for the remaining semester work.
+Confirm each prototype works without a guided explanation, has a distinct hypothesis and Feature Scope Card, and has at least five actual prompts in the [team prompt log](prompts.md). Rehearse each demo twice, check its published URL from a fresh session, and submit the links and presentation to Canvas. Record the class vote and the team's response for the remaining semester work.
 
 ## License
 
