@@ -1,6 +1,11 @@
 PYTHON ?= python
 
-.PHONY: install demo-a demo-b demo-c test test-a test-b test-c
+.DEFAULT_GOAL := help
+
+.PHONY: help install demo-a demo-b demo-c test test-a test-b test-c
+
+help:
+	@printf '%s\n' 'make install  Install dependencies for all three demos' 'make demo-a   Run Focal Monitor on port 8501' 'make demo-b   Run Focal Family on port 8502' 'make demo-c   Run Focal DMV Pre-Check on port 8503' 'make test     Run all three independent test suites' 'make test-a   Run only Demo A tests (also test-b, test-c)' 'Use PYTHON=.venv/bin/python when the environment is not activated.'
 
 install:
 	$(PYTHON) -m pip install -r requirements-dev.txt

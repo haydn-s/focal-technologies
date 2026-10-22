@@ -6,9 +6,9 @@ Focal Family is an initial concept for **Parent Pat**, a working parent of child
 
 **Proposed hypothesis:** Parents will complete a short picture activity and use an observation summary to choose a concrete follow-up step.
 
-The [customer discovery workbook](../../fundamentals/Customer%20Discovery%20Interview%20Workbook%20-%20Team%205.docx) describes Parent Pat and records a real parent's concern that children memorize a fixed home chart. That parent already kept historical examination records, so another tracking dashboard alone would not address the observed gap. The [discovery presentation](../../fundamentals/Team%205%20Customer%20Discovery%20Slide%20Deck.pptx) identifies trust, result framing, and next-step guidance as questions for further testing.
+The [customer discovery workbook](../../docs/research/customer-discovery/interview-workbook.docx) describes Parent Pat and records a real parent's concern that children memorize a fixed home chart. That parent already kept historical examination records, so another tracking dashboard alone would not address the observed gap. The [discovery presentation](../../docs/research/customer-discovery/presentation.pptx) identifies trust, result framing, and next-step guidance as questions for further testing.
 
-This concept explores engagement and preparation for follow-up. Randomizing pictures varies the interaction; it does not establish clinical validity or solve chart memorization in a validated screening. The persona choice and hypothesis are provisional and can change when new material is added to `fundamentals/`.
+This concept explores engagement and preparation for follow-up. Randomizing pictures varies the interaction; it does not establish clinical validity or solve chart memorization in a validated screening. The persona choice and hypothesis are provisional and can change when new material is added to [the research library](../../docs/README.md).
 
 **Difference from Demo A:** A explores whether a corrective-lens wearer values trends over a single result. B explores a parent-and-child workflow and whether parents can turn their own observations into a concrete next step.
 
@@ -44,7 +44,7 @@ python -m unittest discover -p 'test_*.py'
 
 `app.py` renders the interface. `demo.py` handles activity state, fictional examples, and text exports. Each user session has independent state; “Start over” clears the activity, observations, checklist, and feedback.
 
-For Streamlit Community Cloud, set the main file to `prototypes/prototype-b-parent-guided-check/app.py`. Its adjacent requirements file is independent of A's. [Repository setup and deployment](../../README.md) explains how to run both demos and publish separate links.
+For Streamlit Community Cloud, set the main file to `prototypes/prototype-b-parent-guided-check/app.py`. Its adjacent requirements file is independent of A's. The [deployment guide](../../docs/deployment.md) explains how to publish separate links for the three demos.
 
 ## Demo rehearsal
 
