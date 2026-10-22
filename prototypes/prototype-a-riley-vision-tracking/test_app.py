@@ -26,6 +26,16 @@ class TestFocalMonitor(unittest.TestCase):
             
         # Verify that multiple directions are represented
         self.assertGreaterEqual(len(directions_found), 2, "Questions should have directional variety")
+
+    def test_demo_vision_result_mapping(self):
+        """The product UI translates prompt performance into familiar visual-acuity results."""
+        self.assertEqual(app.get_demo_vision_result(8)["acuity"], "20/20")
+        self.assertEqual(app.get_demo_vision_result(8)["status"], "Normal vision")
+        self.assertEqual(app.get_demo_vision_result(7)["acuity"], "20/25")
+        self.assertEqual(app.get_demo_vision_result(0)["acuity"], "20/200")
+        self.assertEqual(app.get_demo_vision_result(4, 4)["acuity"], "20/20")
+        with self.assertRaises(ValueError):
+            app.get_demo_vision_result(4, 0)
         
     def test_render_tumbling_e_svg(self):
         for direction in ["up", "right", "down", "left"]:
@@ -392,15 +402,15 @@ class TestFocalMonitor(unittest.TestCase):
         app.initialize_session_state()
 
         st.session_state.submitted_feedback = {
-            "q1_preferred_experience": "Experience B (Trend Tracking)",
+            "q1_preferred_experience": "Trend Tracking",
             "q2_main_reason": "Context over time",
-            "q3_easier_to_understand": "Experience A (Single Result)",
+            "q3_easier_to_understand": "Single Result",
             "q4_reuse_likelihood": "Likely",
             "initial_assigned_order": "trend_first",
             "assignment_source": "participant_randomized",
             "both_views_visited": True,
             "views_visited": ["Experience B: Trend Tracking", "Experience A: Single Result"],
-            "evaluated_score": "8/8",
+            "evaluated_score": "20/20",
             "submitted_at": "2026-10-21 02:00:00"
         }
         st.session_state.feedback_locked = True
@@ -429,7 +439,7 @@ class TestFocalMonitor(unittest.TestCase):
         """Prompt 4.1: feedback payload validates schema with exposure status and metadata."""
         import json
         feedback_record = {
-            "q1_preferred_experience": "Experience B (Trend Tracking)",
+            "q1_preferred_experience": "Trend Tracking",
             "q2_main_reason": "Helps detect gradual changes over weeks.",
             "q3_easier_to_understand": "Both are equally clear",
             "q4_reuse_likelihood": "Very likely",
@@ -437,7 +447,7 @@ class TestFocalMonitor(unittest.TestCase):
             "assignment_source": "participant_randomized",
             "both_views_visited": True,
             "views_visited": ["Experience A: Single Result", "Experience B: Trend Tracking"],
-            "evaluated_score": "7/8",
+            "evaluated_score": "20/25",
             "submitted_at": "2026-10-21 02:00:00"
         }
         serialized = json.dumps(feedback_record, indent=2)

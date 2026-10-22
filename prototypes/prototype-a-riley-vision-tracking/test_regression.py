@@ -127,11 +127,11 @@ class TestFocalMonitorRegression(unittest.TestCase):
         self.assertIsNotNone(at.session_state.completed_at)
         
         results_text = " ".join([m.value for m in at.markdown])
-        self.assertIn("Demo Session Completed", results_text)
+        self.assertIn("Check complete", results_text)
         self.assertIn(at.session_state.completed_at, results_text)
         
         # Navigate to History
-        history_btn = [b for b in at.button if "View Vision History" in b.label or "Compare Experiences" in b.label][0]
+        history_btn = [b for b in at.button if "View Vision History" in b.label or "Compare Results" in b.label][0]
         history_btn.click().run()
         self.assertEqual(at.session_state.step, "vision_history")
         if at.session_state.active_comparison_view != "Experience B: Trend Tracking":
@@ -161,15 +161,17 @@ class TestFocalMonitorRegression(unittest.TestCase):
         
         # Results page check
         results_text = " ".join([m.value for m in at.markdown])
-        self.assertIn("0 / 8 Correct", results_text)
+        self.assertIn("20/200", results_text)
+        self.assertIn("Significantly reduced vision", results_text)
         
         # Navigate to History
-        history_btn = [b for b in at.button if "View Vision History" in b.label or "Compare Experiences" in b.label][0]
+        history_btn = [b for b in at.button if "View Vision History" in b.label or "Compare Results" in b.label][0]
         history_btn.click().run()
         if at.session_state.active_comparison_view != "Experience B: Trend Tracking":
             at.radio[0].set_value("Experience B: Trend Tracking").run()
         history_text = " ".join([m.value for m in at.markdown])
-        self.assertIn("0/8 Correct — 0.0%", history_text)
+        self.assertIn("20/200", history_text)
+        self.assertIn("Significantly reduced vision", history_text)
 
     def test_eight_correct_answers_full_score_visible(self):
         """AT 6: Eight correct answers -> 8/8 appears correctly."""
@@ -190,14 +192,16 @@ class TestFocalMonitorRegression(unittest.TestCase):
         self.assertEqual(score, 8, "Score should be 8/8")
         
         results_text = " ".join([m.value for m in at.markdown])
-        self.assertIn("8 / 8 Correct", results_text)
+        self.assertIn("20/20", results_text)
+        self.assertIn("Normal vision", results_text)
         
-        history_btn = [b for b in at.button if "View Vision History" in b.label or "Compare Experiences" in b.label][0]
+        history_btn = [b for b in at.button if "View Vision History" in b.label or "Compare Results" in b.label][0]
         history_btn.click().run()
         if at.session_state.active_comparison_view != "Experience B: Trend Tracking":
             at.radio[0].set_value("Experience B: Trend Tracking").run()
         history_text = " ".join([m.value for m in at.markdown])
-        self.assertIn("8/8 Correct — 100.0%", history_text)
+        self.assertIn("20/20", history_text)
+        self.assertIn("Normal vision", history_text)
 
     def test_reset_clears_live_session_results_only_fictional_remains(self):
         """AT 7: Reset -> All live-session results are cleared; only fictional history remains."""
@@ -244,7 +248,7 @@ class TestFocalMonitorRegression(unittest.TestCase):
         self.assertEqual(len(at.session_state.answers), 8)
         self.assertEqual(at.session_state.step, "results")
         
-        history_btn = [b for b in at.button if "View Vision History" in b.label][0]
+        history_btn = [b for b in at.button if "View Vision History" in b.label or "Compare Results" in b.label][0]
         history_btn.click().run()
         self.assertEqual(at.session_state.step, "vision_history")
         
@@ -264,7 +268,7 @@ class TestFocalMonitorRegression(unittest.TestCase):
         self.assertEqual(len(at.session_state.answers), 8)
         self.assertEqual(at.session_state.step, "results")
         
-        history_btn = [b for b in at.button if "View Vision History" in b.label][0]
+        history_btn = [b for b in at.button if "View Vision History" in b.label or "Compare Results" in b.label][0]
         history_btn.click().run()
         self.assertEqual(at.session_state.step, "vision_history")
 
@@ -523,7 +527,7 @@ class TestFocalMonitorRegression(unittest.TestCase):
         self.assertEqual(at.session_state.step, "results")
 
         # Proceed to comparison view via button
-        history_btn = [b for b in at.button if "Compare Experiences" in b.label or "View Vision History" in b.label][0]
+        history_btn = [b for b in at.button if "Compare Results" in b.label or "View Vision History" in b.label][0]
         history_btn.click().run()
         self.assertEqual(at.session_state.step, "vision_history")
 
@@ -531,21 +535,22 @@ class TestFocalMonitorRegression(unittest.TestCase):
         at.radio[0].set_value("Experience A: Single Result").run()
         self.assertEqual(at.session_state.active_comparison_view, "Experience A: Single Result")
         exp_a_text = " ".join([m.value for m in at.markdown])
-        self.assertIn("Experience A: Single Result", exp_a_text)
-        self.assertIn("Demonstration Score: 8 / 8 Correct", exp_a_text)
-        self.assertIn("Single Check Questions Breakdown", exp_a_text)
+        self.assertIn("Single Result", exp_a_text)
+        self.assertIn("20/20", exp_a_text)
+        self.assertIn("Normal vision", exp_a_text)
+        self.assertIn("Question breakdown", exp_a_text)
         self.assertNotIn("Longitudinal View", exp_a_text)
         self.assertNotIn("Understanding Longitudinal Trend Tracking", exp_a_text)
 
-        # Switch to Experience B via button
-        switch_b_btn = [b for b in at.button if "Switch to Experience B" in b.label][0]
-        switch_b_btn.click().run()
+        # Switch to Experience B via the single segmented presentation control
+        at.radio[0].set_value("Experience B: Trend Tracking").run()
         self.assertEqual(at.session_state.active_comparison_view, "Experience B: Trend Tracking")
         exp_b_text = " ".join([m.value for m in at.markdown])
-        self.assertIn("Experience B: Trend Tracking", exp_b_text)
-        self.assertIn("Demonstration Score: 8 / 8 Correct", exp_b_text)
+        self.assertIn("Trend Tracking", exp_b_text)
+        self.assertIn("20/20", exp_b_text)
+        self.assertIn("Normal vision", exp_b_text)
         self.assertIn("Longitudinal Vision Trend", exp_b_text)
-        self.assertNotIn("Single Check Questions Breakdown", exp_b_text)
+        self.assertNotIn("Question breakdown", exp_b_text)
 
     def test_feedback_submission_validation_and_confirmation(self):
         """Prompt 4: Neutral feedback validates required questions, records response, and reveals debrief."""
@@ -559,7 +564,7 @@ class TestFocalMonitorRegression(unittest.TestCase):
         submit_btn = [b for b in at.button if "Submit Anonymous Feedback" in b.label][0]
         submit_btn.click().run()
         self.assertGreater(len(at.info), 0)
-        self.assertIn("Please view both Experience A", at.info[0].value)
+        self.assertIn("Please view both Single Result", at.info[0].value)
         self.assertIsNone(at.session_state.submitted_feedback)
 
         # Visit Experience A so both views are visited
@@ -580,9 +585,9 @@ class TestFocalMonitorRegression(unittest.TestCase):
         self.assertIsNone(at.session_state.submitted_feedback)
 
         # Fill in answers
-        at.radio[1].set_value("Experience B (Trend Tracking)")
+        at.radio[1].set_value("Trend Tracking")
         at.text_area[0].input("Longitudinal tracking provides helpful trends.")
-        at.radio[2].set_value("Experience A (Single Result)")
+        at.radio[2].set_value("Single Result")
         at.radio[3].set_value("Likely")
 
         # Submit valid form
@@ -592,9 +597,9 @@ class TestFocalMonitorRegression(unittest.TestCase):
         # Check recorded feedback in session_state
         self.assertIsNotNone(at.session_state.submitted_feedback)
         fb = at.session_state.submitted_feedback
-        self.assertEqual(fb["q1_preferred_experience"], "Experience B (Trend Tracking)")
+        self.assertEqual(fb["q1_preferred_experience"], "Trend Tracking")
         self.assertEqual(fb["q2_main_reason"], "Longitudinal tracking provides helpful trends.")
-        self.assertEqual(fb["q3_easier_to_understand"], "Experience A (Single Result)")
+        self.assertEqual(fb["q3_easier_to_understand"], "Single Result")
         self.assertEqual(fb["q4_reuse_likelihood"], "Likely")
         self.assertTrue(at.session_state.feedback_locked)
 
@@ -621,8 +626,8 @@ class TestFocalMonitorRegression(unittest.TestCase):
         at.radio[0].set_value("Experience A: Single Result").run()
         at.radio[0].set_value("Experience B: Trend Tracking").run()
 
-        at.radio[1].set_value("Experience A (Single Result)")
-        at.radio[2].set_value("Experience A (Single Result)")
+        at.radio[1].set_value("Single Result")
+        at.radio[2].set_value("Single Result")
         at.radio[3].set_value("Neutral")
         submit_btn = [b for b in at.button if "Submit Anonymous Feedback" in b.label][0]
         submit_btn.click().run()
@@ -653,9 +658,9 @@ class TestFocalMonitorRegression(unittest.TestCase):
         at = AppTest.from_file("app.py", default_timeout=10)
         at.run()
 
-        # Welcome text and hero subtitle must be neutral
+        # Welcome text must be concise and neutral
         welcome_text = " ".join([m.value for m in at.markdown])
-        self.assertIn("Focal Vision Check & Result Comparison", welcome_text)
+        self.assertIn("Ready for a 2-minute vision check?", welcome_text)
         self.assertNotIn("self-track visual clarity trends at home", welcome_text)
 
         # Complete 8 questions correctly
@@ -667,29 +672,26 @@ class TestFocalMonitorRegression(unittest.TestCase):
             btn.click().run()
 
         # Proceed to comparison
-        history_btn = [b for b in at.button if "Compare Experiences" in b.label or "View Vision History" in b.label][0]
+        history_btn = [b for b in at.button if "Compare Results" in b.label or "View Vision History" in b.label][0]
         history_btn.click().run()
 
         # Switch to Experience A
         at.radio[0].set_value("Experience A: Single Result").run()
         exp_a_text = " ".join([m.value for m in at.markdown])
-        self.assertIn("Demonstration Score: 8 / 8 Correct", exp_a_text)
-        self.assertIn("Overall accuracy for this check:", exp_a_text)
-        self.assertIn("100.0%", exp_a_text)
-        self.assertIn("Essential Non-Clinical Limitations", exp_a_text)
+        self.assertIn("20/20", exp_a_text)
+        self.assertIn("Normal vision", exp_a_text)
+        self.assertNotIn("Essential Non-Clinical Limitations", exp_a_text)
         # Chart-oriented banner must NOT appear in Single Result
         self.assertNotIn("is plotted below as a distinct comparison point", exp_a_text)
 
-        # Switch to Experience B
-        switch_b_btn = [b for b in at.button if "Switch to Experience B" in b.label][0]
-        switch_b_btn.click().run()
+        # Switch to Experience B with the same presentation control
+        at.radio[0].set_value("Experience B: Trend Tracking").run()
         exp_b_text = " ".join([m.value for m in at.markdown])
-        self.assertIn("Demonstration Score: 8 / 8 Correct", exp_b_text)
-        self.assertIn("Overall accuracy for this check:", exp_b_text)
-        self.assertIn("100.0%", exp_b_text)
-        self.assertIn("Essential Non-Clinical Limitations", exp_b_text)
+        self.assertIn("20/20", exp_b_text)
+        self.assertIn("Normal vision", exp_b_text)
+        self.assertNotIn("Essential Non-Clinical Limitations", exp_b_text)
         # Chart-oriented banner is present in Experience B above chart
-        self.assertIn("is plotted below as a distinct comparison point", exp_b_text)
+        self.assertIn("is plotted below with the previous readings", exp_b_text)
 
     def test_research_defect2_initial_order_randomized_once_and_preserved(self):
         """Prompt 4.1: Initial comparison order is assigned once and preserved across view switching and reentry."""
@@ -705,7 +707,7 @@ class TestFocalMonitorRegression(unittest.TestCase):
             btn.click().run()
 
         # Proceed to comparison
-        history_btn = [b for b in at.button if "Compare Experiences" in b.label or "View Vision History" in b.label][0]
+        history_btn = [b for b in at.button if "Compare Results" in b.label or "View Vision History" in b.label][0]
         history_btn.click().run()
 
         initial_order = at.session_state.comparison_view_order
@@ -722,7 +724,7 @@ class TestFocalMonitorRegression(unittest.TestCase):
         self.assertEqual(at.session_state.step, "results")
 
         # Re-enter comparison via button
-        history_btn = [b for b in at.button if "Compare Experiences" in b.label or "View Vision History" in b.label][0]
+        history_btn = [b for b in at.button if "Compare Results" in b.label or "View Vision History" in b.label][0]
         history_btn.click().run()
 
         # Preserved!
@@ -743,7 +745,7 @@ class TestFocalMonitorRegression(unittest.TestCase):
         submit_btn = [b for b in at.button if "Submit Anonymous Feedback" in b.label][0]
         submit_btn.click().run()
         self.assertGreater(len(at.info), 0)
-        self.assertIn("Please view both Experience A", at.info[0].value)
+        self.assertIn("Please view both Single Result", at.info[0].value)
         self.assertIsNone(at.session_state.submitted_feedback)
 
         # Visit other view
@@ -751,7 +753,7 @@ class TestFocalMonitorRegression(unittest.TestCase):
         self.assertEqual(len(at.session_state.views_visited), 2)
 
         # Fill and submit
-        at.radio[1].set_value("Experience A (Single Result)")
+        at.radio[1].set_value("Single Result")
         at.radio[2].set_value("Both are equally clear")
         at.radio[3].set_value("Likely")
         submit_btn = [b for b in at.button if "Submit Anonymous Feedback" in b.label][0]
@@ -771,9 +773,9 @@ class TestFocalMonitorRegression(unittest.TestCase):
         at.radio[0].set_value("Experience A: Single Result").run()
         at.radio[0].set_value("Experience B: Trend Tracking").run()
 
-        at.radio[1].set_value("Experience B (Trend Tracking)")
+        at.radio[1].set_value("Trend Tracking")
         at.text_area[0].input("Initial uninfluenced perspective.")
-        at.radio[2].set_value("Experience B (Trend Tracking)")
+        at.radio[2].set_value("Trend Tracking")
         at.radio[3].set_value("Very likely")
         submit_btn = [b for b in at.button if "Submit Anonymous Feedback" in b.label][0]
         submit_btn.click().run()

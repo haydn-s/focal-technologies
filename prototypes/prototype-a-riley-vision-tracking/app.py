@@ -39,6 +39,21 @@ DIRECTION_LABELS = {
 # 8 Tumbling-E sizes in px (illustrative dynamic difficulty scaling)
 DEMO_SIZES = [130, 110, 95, 80, 68, 58, 48, 40]
 
+# Product-demo mapping from the eight progressively smaller prompts to a familiar
+# visual-acuity result. The UI intentionally presents the result, not quiz points.
+DEMO_VISION_RESULTS = {
+    0: {"acuity": "20/200", "status": "Significantly reduced vision", "message": "Visual clarity was limited at the larger sizes."},
+    1: {"acuity": "20/160", "status": "Significantly reduced vision", "message": "Visual clarity was limited at the larger sizes."},
+    2: {"acuity": "20/100", "status": "Reduced vision", "message": "Visual clarity decreased early in the check."},
+    3: {"acuity": "20/70", "status": "Reduced vision", "message": "Visual clarity decreased before the smaller sizes."},
+    4: {"acuity": "20/50", "status": "Moderately reduced vision", "message": "Some of the smaller shapes were difficult to identify."},
+    5: {"acuity": "20/40", "status": "Mildly reduced vision", "message": "Visual clarity was good through the mid-size shapes."},
+    6: {"acuity": "20/30", "status": "Slightly reduced vision", "message": "Visual clarity remained strong through most sizes."},
+    7: {"acuity": "20/25", "status": "Near-normal vision", "message": "Visual clarity was strong through the smaller sizes."},
+    8: {"acuity": "20/20", "status": "Normal vision", "message": "Visual clarity remained strong through the smallest size."},
+}
+ACUITY_ORDER = ["20/20", "20/25", "20/30", "20/40", "20/50", "20/70", "20/100", "20/160", "20/200"]
+
 # Fictional example baseline history representing persona "Riley" over 7 previous checks
 FICTIONAL_RECORDS = [
     {"Date": "2026-09-03", "Session": "Week 1", "Correct": 8, "Total": 8, "Accuracy": 100.0, "Type": "Illustrative Demo Data", "Notes": "Initial baseline check with contacts"},
@@ -71,6 +86,16 @@ def generate_questions():
             "size_px": DEMO_SIZES[i]
         })
     return questions
+
+
+def get_demo_vision_result(correct_count: int, total_questions: int = 8) -> dict:
+    """Translates demo performance into the visual-acuity result shown by the prototype."""
+    if type(correct_count) is not int or type(total_questions) is not int or total_questions <= 0:
+        raise ValueError("correct_count and total_questions must be valid integers")
+
+    bounded_correct = min(max(correct_count, 0), total_questions)
+    mapped_level = round((bounded_correct / total_questions) * 8)
+    return DEMO_VISION_RESULTS[mapped_level].copy()
 
 
 def render_tumbling_e_svg(direction: str, size_px: int) -> str:
@@ -395,68 +420,331 @@ def main():
     if "nav_jump_select" not in st.session_state or st.session_state.nav_jump_select != st.session_state.step:
         st.session_state.nav_jump_select = st.session_state.step
     st.markdown("""<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root {
+    --focal-navy: #102A43;
+    --focal-blue: #0B74B8;
+    --focal-blue-dark: #075985;
+    --focal-sky: #EAF5FB;
+    --focal-ink: #172B3A;
+    --focal-muted: #5D7080;
+    --focal-line: #D9E4EA;
+    --focal-surface: #FFFFFF;
+}
 
 html, body, [class*="css"] {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+
+.stApp {
+    background:
+        radial-gradient(circle at 76% -10%, rgba(14, 165, 233, 0.08), transparent 26rem),
+        #FBFDFE;
+}
+
+[data-testid="stHeader"] {
+    background: transparent;
+}
+
+[data-testid="stToolbar"] {
+    display: flex;
+}
+
+[data-testid="stDeployButton"],
+[data-testid="stMainMenu"] {
+    display: none !important;
+}
+
+[data-testid="stSidebarCollapseButton"],
+[data-testid="stExpandSidebarButton"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+[data-testid="stSidebarCollapseButton"] button,
+[data-testid="stExpandSidebarButton"] button {
+    border: 1px solid var(--focal-line) !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    box-shadow: 0 3px 12px rgba(16, 42, 67, 0.08) !important;
 }
 
 .stMainBlockContainer {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
+    max-width: 1240px;
+    padding-top: 1.35rem !important;
+    padding-right: 2.25rem !important;
+    padding-bottom: 4rem !important;
+    padding-left: 2.25rem !important;
 }
 
-/* Top Banner / Hero Card */
-.hero-card {
-    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-    border-radius: 10px;
-    padding: 8px 14px;
-    color: #F8FAFC;
-    margin-bottom: 6px;
-    border-left: 5px solid #0284C7;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+[data-testid="stSidebar"] {
+    background: #F4F8FA;
+    border-right: 1px solid var(--focal-line);
 }
 
-.hero-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #FFFFFF;
-    margin: 0 0 2px 0;
-    letter-spacing: -0.01em;
+[data-testid="stSidebar"] > div:first-child {
+    width: 19rem;
 }
 
-.hero-subtitle {
-    font-size: 0.82rem;
-    color: #CBD5E1;
+[data-testid="stSidebarContent"] {
+    padding-top: 1.35rem;
+}
+
+[data-testid="stSidebar"] hr {
+    margin: 1rem 0;
+    border-color: var(--focal-line);
+}
+
+/* Welcome screen */
+.welcome-intro {
+    max-width: 760px;
+    margin: 10px 0 20px;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 9px;
+    border-radius: 999px;
+    color: #075985;
+    background: #E0F2FE;
+    font-size: 0.69rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.welcome-title {
+    margin: 10px 0 8px;
+    color: var(--focal-ink);
+    font-size: clamp(2rem, 4vw, 3.15rem);
+    line-height: 1.03;
+    letter-spacing: -0.045em;
+    font-weight: 780;
+}
+
+.welcome-copy {
+    max-width: 690px;
     margin: 0;
+    color: var(--focal-muted);
+    font-size: 1rem;
+    line-height: 1.6;
 }
 
-/* Healthcare disclaimer alert box - High Contrast */
-.disclaimer-card {
-    background-color: #FFFBEB;
-    border: 1px solid #FCD34D;
-    border-left: 5px solid #D97706;
-    border-radius: 6px;
-    padding: 6px 10px;
-    color: #92400E;
-    font-size: 0.78rem;
-    line-height: 1.35;
-    margin-bottom: 6px;
+.panel-heading {
+    margin: 0 0 4px;
+    color: var(--focal-ink);
+    font-size: 1.02rem;
+    font-weight: 730;
 }
 
-/* Metric & Instruction cards - Theme Responsive */
-.info-card {
-    background-color: rgba(128, 128, 128, 0.08);
-    border: 1px solid rgba(128, 128, 128, 0.2);
+.setup-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 10px 0 14px;
+}
+
+.setup-item {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 11px;
+    min-height: 58px;
+    padding: 8px 12px;
+    background: #FFFFFF;
+    border: 1px solid var(--focal-line);
+    border-radius: 13px;
+    box-shadow: 0 2px 8px rgba(16, 42, 67, 0.035);
+}
+
+.setup-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
     border-radius: 10px;
-    padding: 10px 14px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    margin-bottom: 8px;
+    background: var(--focal-sky);
+    font-size: 1rem;
+}
+
+.setup-label {
+    color: var(--focal-ink);
+    font-size: 0.86rem;
+    font-weight: 690;
+}
+
+.setup-value {
+    color: var(--focal-muted);
+    font-size: 0.79rem;
+    text-align: right;
+}
+
+.page-intro {
+    margin: 18px 0 20px;
+}
+
+.page-title {
+    margin: 7px 0 5px;
+    color: var(--focal-ink);
+    font-size: clamp(1.75rem, 3vw, 2.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+}
+
+.page-copy {
+    margin: 0;
+    color: var(--focal-muted);
+    font-size: 0.92rem;
+}
+
+.view-label {
+    margin: 8px 0 6px;
+    color: var(--focal-muted);
+    font-size: 0.75rem;
+    font-weight: 750;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.result-card {
+    display: grid;
+    grid-template-columns: minmax(170px, 0.75fr) minmax(260px, 1.25fr) auto;
+    align-items: center;
+    gap: 24px;
+    margin: 16px 0;
+    padding: 22px 24px;
+    background: #FFFFFF;
+    border: 1px solid var(--focal-line);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(16, 42, 67, 0.06);
+}
+
+.result-score {
+    color: var(--focal-ink);
+    font-size: 3.5rem;
+    line-height: 1;
+    font-weight: 790;
+    letter-spacing: -0.055em;
+    white-space: nowrap;
+}
+
+.result-score span {
+    color: #8A9AA5;
+    font-size: 1.55rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+}
+
+.result-summary strong {
+    display: block;
+    color: var(--focal-ink);
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.result-summary p,
+.result-meta {
+    margin: 0;
+    color: var(--focal-muted);
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+.result-meta {
+    text-align: right;
+}
+
+.result-note {
+    margin: -6px 0 14px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: #F3F8FB;
+    color: #476579;
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+.chart-legend {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 8px 0 -2px;
+    color: var(--focal-muted);
+    font-size: 0.78rem;
+    font-weight: 620;
+}
+
+.chart-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.chart-legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #3B82B8;
+}
+
+.chart-legend-diamond {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: #F07F5A;
+    transform: rotate(45deg);
+}
+
+div[data-testid="stVegaLiteChart"] {
+    margin-top: 8px;
+    padding: 12px 10px 2px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFD 100%);
+    border: 1px solid var(--focal-line);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(16, 42, 67, 0.055);
+    overflow: hidden;
+}
+
+/* Turn the comparison radio into one compact segmented control. */
+div[data-testid="stRadio"] div[role="radiogroup"] {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid var(--focal-line);
+    border-radius: 12px;
+    background: #F3F7F9;
+}
+
+div[data-testid="stRadio"] div[role="radiogroup"] label {
+    margin: 0;
+    padding: 8px 13px;
+    border-radius: 9px;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+div[data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked) {
+    background: #FFFFFF;
+    box-shadow: 0 2px 7px rgba(16, 42, 67, 0.1);
+}
+
+div[data-testid="stRadio"] input[type="radio"] {
+    accent-color: var(--focal-blue);
+}
+
+/* Reusable app cards */
+.info-card {
+    background-color: rgba(255, 255, 255, 0.82);
+    border: 1px solid var(--focal-line);
+    border-radius: 14px;
+    padding: 12px 15px;
+    box-shadow: 0 3px 12px rgba(16, 42, 67, 0.04);
+    margin-bottom: 10px;
     color: inherit;
 }
 
 .info-card-header {
-    font-weight: 600;
+    font-weight: 680;
     font-size: 0.92rem;
     color: inherit;
     margin-bottom: 3px;
@@ -464,116 +752,225 @@ html, body, [class*="css"] {
 
 .info-card-body {
     color: inherit;
-    opacity: 0.9;
+    opacity: 0.84;
     font-size: 0.84rem;
-    line-height: 1.4;
+    line-height: 1.45;
     margin: 0;
 }
 
-/* Tumbling E test display stage */
 .optotype-stage {
     background-color: #FFFFFF;
-    border: 2px solid #CBD5E1;
-    border-radius: 14px;
+    border: 1px solid var(--focal-line);
+    border-radius: 18px;
     padding: 26px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 12px 30px rgba(16, 42, 67, 0.08);
     margin: 14px auto;
     min-height: 220px;
 }
 
-/* Badges */
 .badge-demo {
     display: inline-block;
     background-color: #E0F2FE;
     color: #0369A1;
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.69rem;
+    font-weight: 750;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 3px 9px;
+    letter-spacing: 0.07em;
+    padding: 4px 9px;
     border-radius: 9999px;
     margin-bottom: 8px;
 }
 
-/* Sidebar Theme-Aware Typography */
-.sidebar-body-text {
-    font-size: 0.85rem;
-    color: inherit;
-    opacity: 0.9;
-    line-height: 1.45;
-    margin-bottom: 12px;
+/* Sidebar */
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
 }
 
-.sidebar-step-inactive {
-    color: inherit;
-    opacity: 0.7;
-    font-size: 0.88rem;
-    padding: 2px 0;
+.sidebar-logo {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    color: #FFFFFF;
+    background: linear-gradient(145deg, #075985, #0EA5E9);
+    box-shadow: 0 7px 16px rgba(3, 105, 161, 0.22);
+}
+
+.sidebar-brand-name {
+    color: var(--focal-ink);
+    font-size: 1rem;
+    font-weight: 770;
+    letter-spacing: -0.02em;
+}
+
+.sidebar-brand-subtitle {
+    color: var(--focal-muted);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.sidebar-section-label {
+    margin: 14px 0 8px;
+    color: #7B8C98;
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.progress-step {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: center;
+    gap: 9px;
+    min-height: 42px;
+    margin: 4px 0;
+    padding: 6px 8px;
+    border-radius: 11px;
+    color: #758591;
+    font-size: 0.79rem;
+    font-weight: 570;
+}
+
+.progress-step .step-number {
+    display: grid;
+    place-items: center;
+    width: 27px;
+    height: 27px;
+    border-radius: 9px;
+    background: #E5EDF1;
+    color: #637684;
+    font-size: 0.72rem;
+    font-weight: 760;
+}
+
+.progress-step.is-active {
+    background: #E4F2F9;
+    color: #075985;
+    font-weight: 720;
+}
+
+.progress-step.is-active .step-number {
+    color: #FFFFFF;
+    background: var(--focal-blue);
+    box-shadow: 0 5px 12px rgba(11, 116, 184, 0.22);
+}
+
+.progress-step.is-complete {
+    color: #3F596A;
+}
+
+.progress-step.is-complete .step-number {
+    color: #166534;
+    background: #DCFCE7;
+}
+
+.sidebar-body-text {
+    font-size: 0.8rem;
+    color: var(--focal-muted);
+    line-height: 1.5;
+    margin-bottom: 10px;
 }
 
 .sidebar-footer-note {
-    font-size: 0.76rem;
-    color: inherit;
-    opacity: 0.8;
+    margin-top: 16px;
+    font-size: 0.7rem;
+    color: #71838F;
     text-align: center;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
-/* Accessibility Note */
-.accessibility-note {
-    background-color: rgba(128, 128, 128, 0.08);
-    border: 1px solid rgba(128, 128, 128, 0.2);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 0.82rem;
-    color: inherit;
-    opacity: 0.9;
-    line-height: 1.45;
-    margin-top: 12px;
-}
-
-/* Touch-friendly, accessible button styling */
-div[data-testid="stButton"] > button {
-    border-radius: 8px;
-    font-weight: 600;
-    min-height: 42px;
-    transition: all 0.15s ease-in-out;
+/* Native controls */
+div[data-testid="stButton"] > button,
+div[data-testid="stFormSubmitButton"] > button,
+div[data-testid="stDownloadButton"] > button {
+    border-radius: 11px;
+    font-weight: 670;
+    min-height: 44px;
+    border-color: #CAD9E1;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
     white-space: normal;
     word-break: break-word;
 }
 
-/* High-contrast primary button styling (Focal brand identity, >= 4.5:1 contrast) */
+div[data-testid="stButton"] > button:hover,
+div[data-testid="stDownloadButton"] > button:hover {
+    transform: translateY(-1px);
+    border-color: #7DB9D7;
+    box-shadow: 0 6px 16px rgba(16, 42, 67, 0.09);
+}
+
 button[kind="primary"],
 button[data-testid="stBaseButton-primary"],
 div[data-testid="stFormSubmitButton"] > button {
-    background-color: #0369A1 !important;
-    border: 1px solid #0369A1 !important;
+    background: linear-gradient(120deg, #075985, #0B74B8) !important;
+    border: 1px solid #075985 !important;
     color: #FFFFFF !important;
+    min-height: 48px;
+    box-shadow: 0 8px 20px rgba(3, 105, 161, 0.2);
 }
 
 button[kind="primary"]:hover,
 button[data-testid="stBaseButton-primary"]:hover,
 div[data-testid="stFormSubmitButton"] > button:hover {
-    background-color: #075985 !important;
-    border-color: #075985 !important;
+    background: linear-gradient(120deg, #064C73, #08689F) !important;
+    border-color: #064C73 !important;
     color: #FFFFFF !important;
 }
 
-button[kind="primary"]:active,
-button[data-testid="stBaseButton-primary"]:active,
-div[data-testid="stFormSubmitButton"] > button:active {
-    background-color: #0C4A6E !important;
-    border-color: #0C4A6E !important;
-    color: #FFFFFF !important;
+button[kind="primary"]:focus-visible,
+button[data-testid="stBaseButton-primary"]:focus-visible {
+    box-shadow: 0 0 0 0.22rem rgba(14, 165, 233, 0.35) !important;
 }
 
-button[kind="primary"]:focus:not(:focus-visible),
-button[data-testid="stBaseButton-primary"]:focus:not(:focus-visible) {
-    box-shadow: 0 0 0 0.2rem rgba(3, 105, 161, 0.4) !important;
+div[data-testid="stExpander"] {
+    border-color: var(--focal-line);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.72);
+}
+
+@media (max-width: 900px) {
+    .stMainBlockContainer {
+        padding-right: 1rem !important;
+        padding-left: 1rem !important;
+    }
+    .welcome-title {
+        font-size: 2.25rem;
+    }
+    .result-card {
+        grid-template-columns: 1fr 1.5fr;
+    }
+    .result-meta {
+        grid-column: 1 / -1;
+        text-align: left;
+    }
+}
+
+@media (max-width: 560px) {
+    .setup-item {
+        grid-template-columns: 34px minmax(0, 1fr);
+    }
+    .setup-value {
+        grid-column: 2;
+        text-align: left;
+    }
+    .result-card {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 18px;
+    }
+    .result-meta {
+        grid-column: auto;
+    }
 }
 </style>""", unsafe_allow_html=True)
 
@@ -581,71 +978,79 @@ button[data-testid="stBaseButton-primary"]:focus:not(:focus-visible) {
     # Sidebar
     # -------------------------------------------------------------------------
     with st.sidebar:
-        st.markdown("### 👁️ **Focal Monitor**")
-        st.caption("Duke University • MENG 570 Product Management")
-        st.markdown("---")
-        
-        st.markdown("**User Persona: Riley**")
         st.markdown(
-            "<div class='sidebar-body-text'>"
-            "Adult wearing corrective glasses/contacts who notices possible subtle vision changes "
-            "between annual professional eye doctor visits."
-            "</div>",
+            """<div class="sidebar-brand">
+<div class="sidebar-logo" aria-hidden="true">◉</div>
+<div>
+<div class="sidebar-brand-name">Focal Monitor</div>
+<div class="sidebar-brand-subtitle">Vision clarity companion</div>
+</div>
+</div>""",
             unsafe_allow_html=True
         )
-        
-        if st.session_state.submitted_feedback:
-            st.markdown("**Course Hypothesis (Debriefed)**")
-            st.markdown(
-                "<div class='sidebar-body-text' style='font-style:italic;'>"
-                "“Adults who suspect their vision is changing will find ongoing vision tracking "
-                "more useful than receiving a single test result.”"
-                "</div>",
-                unsafe_allow_html=True
-            )
-        else:
-            st.markdown("**Research Evaluation**")
-            st.markdown(
-                "<div class='sidebar-body-text'>"
-                "Evaluating two distinct presentation formats for demonstration vision-check results."
-                "</div>",
-                unsafe_allow_html=True
-            )
-        
-        st.markdown("---")
-        st.markdown("**Demo Progress Flow**")
-        
+        st.caption("Duke University • MENG 570")
+        st.markdown("<div class='sidebar-section-label'>Your progress</div>", unsafe_allow_html=True)
+
         step_labels = {
             "welcome": "1. Welcome & Setup",
             "vision_check": "2. Vision Check (8 Items)",
             "results": "3. Immediate Results",
-            "vision_history": "4. Compare Experiences & Feedback"
+            "vision_history": "4. Compare Results & Feedback"
         }
-        
+
+        step_order = list(step_labels)
         current_step = st.session_state.step
-        for key, name in step_labels.items():
-            if key == current_step:
-                st.markdown(f"👉 **{name}**")
+        current_position = step_order.index(current_step) if current_step in step_order else 0
+        for index, (key, name) in enumerate(step_labels.items()):
+            state_class = "is-active" if key == current_step else "is-complete" if index < current_position else ""
+            number_content = "✓" if index < current_position else str(index + 1)
+            display_name = name.split(". ", 1)[-1]
+            st.markdown(
+                f"<div class='progress-step {state_class}'><span class='step-number'>{number_content}</span>"
+                f"<span>{display_name}</span></div>",
+                unsafe_allow_html=True
+            )
+
+        with st.expander("About this research", expanded=False):
+            st.markdown("**User Persona: Riley**")
+            st.markdown(
+                "<div class='sidebar-body-text'>"
+                "Adult wearing corrective glasses/contacts who notices possible subtle vision changes "
+                "between annual professional eye doctor visits."
+                "</div>",
+                unsafe_allow_html=True
+            )
+            if st.session_state.submitted_feedback:
+                st.markdown("**Course Hypothesis (Debriefed)**")
+                st.markdown(
+                    "<div class='sidebar-body-text' style='font-style:italic;'>"
+                    "“Adults who suspect their vision is changing will find ongoing vision tracking "
+                    "more useful than receiving a single test result.”"
+                    "</div>",
+                    unsafe_allow_html=True
+                )
             else:
-                st.markdown(f"<div class='sidebar-step-inactive'>{name}</div>", unsafe_allow_html=True)
-                
-        st.markdown("---")
-        
-        # Evaluator Quick Jump
-        st.markdown("**Evaluator Navigation**")
-        def on_nav_jump():
-            st.session_state.step = st.session_state.nav_jump_select
+                st.markdown("**Research Evaluation**")
+                st.markdown(
+                    "<div class='sidebar-body-text'>"
+                    "Evaluating two distinct presentation formats for demonstration vision-check results."
+                    "</div>",
+                    unsafe_allow_html=True
+                )
 
-        st.selectbox(
-            "Jump directly to step:",
-            options=["welcome", "vision_check", "results", "vision_history"],
-            format_func=lambda s: step_labels[s],
-            key="nav_jump_select",
-            on_change=on_nav_jump
-        )
+        # Evaluator Quick Jump remains available, but is visually secondary for participants.
+        with st.expander("Evaluator Navigation", expanded=False):
+            def on_nav_jump():
+                st.session_state.step = st.session_state.nav_jump_select
 
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.button("🔄 Reset Demo", on_click=reset_demo, help="Clear responses and restart from Step 1", **full_width())
+            st.selectbox(
+                "Jump directly to step:",
+                options=["welcome", "vision_check", "results", "vision_history"],
+                format_func=lambda s: step_labels[s],
+                key="nav_jump_select",
+                on_change=on_nav_jump
+            )
+            st.button("🔄 Reset Demo", on_click=reset_demo, help="Clear responses and restart from Step 1", **full_width())
 
         # 2-Minute Presenter Demo Guide
         with st.expander("⏱️ 2-Minute Presenter Guide", expanded=False):
@@ -653,86 +1058,56 @@ button[data-testid="stBaseButton-primary"]:focus:not(:focus-visible) {
                 "**Rehearsed Classroom Flow (~2 min):**\n\n"
                 "1. **0:00–0:25 Problem:** Welcome screen shows persona Riley (corrective lens wearer noticing vision drift between exams).\n"
                 "2. **0:25–0:55 Vision Check:** Click *Start Vision Check*. Answer 8 tumbling-E optotypes with progressive sizing.\n"
-                "3. **0:55–1:15 Results:** Review immediate score card, item breakdown, and non-clinical limitations.\n"
-                "4. **1:15–1:45 Comparison:** Click *Compare Experiences*. Switch between **Experience A (Single Result)** and **Experience B (Trend Tracking)** to contrast snapshot vs 7-week baseline context.\n"
+                "3. **0:55–1:15 Results:** Review the immediate vision result and optional item breakdown.\n"
+                "4. **1:15–1:45 Comparison:** Click *Compare Results*. Switch between **Single Result** and **Trend Tracking** to contrast snapshot vs 7-week baseline context.\n"
                 "5. **1:45–2:00 Feedback & Debrief:** Submit neutral feedback, observe locking and JSON export, and reveal research debrief."
             )
 
-        st.markdown("---")
         st.markdown(
             "<div class='sidebar-footer-note'>"
-            "⚠️ Non-clinical interactive prototype.<br>Not a medical device. No personal health data collected."
+            "No account required · Demo session"
             "</div>",
             unsafe_allow_html=True
         )
-
-    # -------------------------------------------------------------------------
-    # Top Header Banner
-    # -------------------------------------------------------------------------
-    st.markdown("""
-    <div class="hero-card">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
-            <div>
-                <div class="hero-title">Focal Monitor <span style="font-size:0.95rem; font-weight:500; background:#0284C7; padding:2px 8px; border-radius:4px; margin-left:8px; vertical-align:middle;">Prototype A</span></div>
-                <p class="hero-subtitle">Focal Vision Check & Result Comparison • Duke University MENG 570</p>
-            </div>
-            <div style="text-align: right; margin-top: 4px;">
-                <span class="badge-demo">Academic PM Prototype</span>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # Prominent Medical Disclaimer
-    st.markdown("""
-    <div class="disclaimer-card">
-        <strong>⚠️ Medical & Regulatory Notice:</strong> 
-        Focal Monitor is an educational, non-clinical software prototype. 
-        It does <strong>not</strong> provide medical diagnoses, clinical visual acuity measurements (such as 20/20 or LogMAR), 
-        or corrective lens prescriptions. It is <strong>not</strong> a substitute for comprehensive in-person eye examinations 
-        by a licensed optometrist or ophthalmologist.
-    </div>
-    """, unsafe_allow_html=True)
 
     # =========================================================================
     # STEP 1: WELCOME & SETUP
     # =========================================================================
     if st.session_state.step == "welcome":
-        st.markdown("<h3 style='margin:0 0 2px 0; font-size:1.2rem;'>Step 1: Welcome to Focal Monitor</h3>", unsafe_allow_html=True)
-        st.markdown(
-            "<p style='margin:0 0 8px 0; font-size:0.88rem; line-height:1.4;'>"
-            "Focal Monitor enables adults like <strong>Riley</strong> to check visual clarity at home and compare "
-            "result presentation formats between regular eye doctor visits."
-            "</p>",
-            unsafe_allow_html=True
-        )
-        
-        col1, col2 = st.columns([3, 2], gap="large")
-        
-        with col1:
-            st.markdown("<h4 style='margin:0 0 6px 0; font-size:1.02rem;'>Setup & Environment Instructions</h4>", unsafe_allow_html=True)
-            
-            st.markdown("""<div style="display:flex; flex-direction:column; gap:5px; margin-bottom:8px;">
-<div class="info-card" style="padding:5px 8px; margin:0; display:flex; align-items:center; justify-content:space-between; gap:6px;">
-<span class="info-card-header" style="margin:0; font-size:0.83rem; white-space:nowrap;">👓 1. Corrective Lenses</span>
-<span class="info-card-body" style="font-size:0.80rem; text-align:right;">Keep glasses/contacts on</span>
-</div>
-<div class="info-card" style="padding:5px 8px; margin:0; display:flex; align-items:center; justify-content:space-between; gap:6px;">
-<span class="info-card-header" style="margin:0; font-size:0.83rem; white-space:nowrap;">📏 2. Arm's-Length Distance</span>
-<span class="info-card-body" style="font-size:0.80rem; text-align:right;">~20–24 in (50–60 cm)</span>
-</div>
-<div class="info-card" style="padding:5px 8px; margin:0; display:flex; align-items:center; justify-content:space-between; gap:6px;">
-<span class="info-card-header" style="margin:0; font-size:0.83rem; white-space:nowrap;">💡 3. Screen Lighting</span>
-<span class="info-card-body" style="font-size:0.80rem; text-align:right;">Comfortable, glare-free</span>
-</div>
-<div class="info-card" style="padding:5px 8px; margin:0; display:flex; align-items:center; justify-content:space-between; gap:6px;">
-<span class="info-card-header" style="margin:0; font-size:0.83rem; white-space:nowrap;">🎯 4. Interactive Task</span>
-<span class="info-card-body" style="font-size:0.80rem; text-align:right;">Identify prong direction</span>
-</div>
+        _, focus_col, _ = st.columns([1, 5, 1])
+
+        with focus_col:
+            st.markdown("""<section class="welcome-intro">
+<span class="eyebrow">Step 1 of 4</span>
+<h1 class="welcome-title">Ready for a 2-minute vision check?</h1>
+<p class="welcome-copy">Set up your screen, then identify the open direction of eight E shapes.</p>
+</section>
+<div class="panel-heading">Before you begin</div>
+<div class="setup-list">
+    <div class="setup-item">
+        <span class="setup-icon" aria-hidden="true">👓</span>
+        <span class="setup-label">1. Corrective Lenses</span>
+        <span class="setup-value">Keep glasses or contacts on</span>
+    </div>
+    <div class="setup-item">
+        <span class="setup-icon" aria-hidden="true">↔</span>
+        <span class="setup-label">2. Arm's-Length Distance</span>
+        <span class="setup-value">20–24 in · 50–60 cm</span>
+    </div>
+    <div class="setup-item">
+        <span class="setup-icon" aria-hidden="true">☀</span>
+        <span class="setup-label">3. Screen Lighting</span>
+        <span class="setup-value">Comfortable and glare-free</span>
+    </div>
+    <div class="setup-item">
+        <span class="setup-icon" aria-hidden="true">E</span>
+        <span class="setup-label">4. Interactive Task</span>
+        <span class="setup-value">Identify the open direction</span>
+    </div>
 </div>""", unsafe_allow_html=True)
-            
-            st.button("🚀 Start Vision Check", type="primary", on_click=start_vision_check, **full_width())
-            
+
+            st.button("Start Vision Check  →", type="primary", on_click=start_vision_check, **full_width())
+
             with st.expander("📖 Testing Setup & Distance Calibration Guidance", expanded=False):
                 st.markdown(
                     "- **Viewing Distance:** Sit comfortably at approximately arm's length (20–24 inches or 50–60 cm). Keep your posture upright.\n"
@@ -741,24 +1116,14 @@ button[data-testid="stBaseButton-primary"]:focus:not(:focus-visible) {
                     "- **Pacing:** Each of the 8 optotypes appears immediately after your response; take whatever time is comfortable."
                 )
 
-        with col2:
-            st.markdown("#### Product Context & Evaluation Purpose")
-            st.info(
-                "**Evaluation Study Overview:**\n\n"
-                "This prototype evaluates **two distinct ways of presenting demonstration vision-check information** "
-                "for adult users like Riley who monitor visual clarity between regular professional eye exams.\n\n"
-                "After completing 8 demonstration tumbling-E questions, you will review and compare two different result experiences, "
-                "then provide objective feedback on which presentation format you find more useful and clear."
-            )
-            
-            st.markdown("""<div class="info-card" style="padding:14px; font-size:0.85rem;">
-<strong style="color:inherit;">🔒 Privacy & Safety Safeguards:</strong>
-<ul style="margin-top:6px; padding-left:18px; color:inherit; opacity:0.9;">
-<li>No personal medical information or identifiers are collected.</li>
-<li>No external APIs, databases, or cookies are utilized.</li>
-<li>All interactions execute strictly within your local session memory.</li>
-</ul>
-</div>""", unsafe_allow_html=True)
+            with st.expander("What happens after the check?", expanded=False):
+                st.markdown(
+                    "**Product Context & Evaluation Purpose**\n\n"
+                    "1. Review your vision result.\n"
+                    "2. Compare the same result as a single reading and with trend context.\n"
+                    "3. Share anonymous product feedback.\n\n"
+                    "No name or account is required."
+                )
 
     # =========================================================================
     # STEP 2: VISION CHECK (8 Interactive Tumbling-E Questions)
@@ -773,49 +1138,27 @@ button[data-testid="stBaseButton-primary"]:focus:not(:focus-visible) {
             navigate_to("results")
             return
             
-        st.markdown("### Step 2: Interactive Vision Check")
-        
-        progress_val = curr_idx / total_q
-        st.progress(progress_val)
-        
-        col_stat1, col_stat2 = st.columns([1, 1])
-        with col_stat1:
-            st.markdown(f"**Question {curr_idx + 1} of {total_q}**")
-        with col_stat2:
-            st.markdown(
-                f"<div style='text-align:right; color:inherit; opacity:0.85; font-size:0.88rem;'>"
-                f"Completed: {curr_idx} &nbsp;|&nbsp; Remaining: {total_q - curr_idx}</div>",
-                unsafe_allow_html=True
-            )
-            
+        st.markdown(
+            f"""<section class="page-intro">
+<span class="eyebrow">Question {curr_idx + 1} of {total_q}</span>
+<h1 class="page-title">Which direction is the E open?</h1>
+</section>""",
+            unsafe_allow_html=True
+        )
+        st.progress((curr_idx + 1) / total_q)
+
         curr_q = st.session_state.questions[curr_idx]
         target_dir = curr_q["direction"]
         size_px = curr_q["size_px"]
-        
-        # Explicit illustrative demonstration disclaimer
-        st.markdown(
-            f"""<div style="background-color:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px; padding:10px 14px; font-size:0.84rem; color:#1E40AF; margin-bottom:12px;">
-ℹ️ <strong>Demonstration Sizing (Level {curr_idx + 1} of {total_q}):</strong> 
-Optotype scale reduces to demonstrate interactive difficulty progression. 
-<em>This is an illustrative demonstration only and does not represent calibrated clinical visual acuity.</em>
-</div>""",
-            unsafe_allow_html=True
-        )
-        
+
         # Optotype Stage Card
         st.markdown(
             f"""<div class="optotype-stage">
-<div style="font-size:0.88rem; color:#334155; margin-bottom:12px; font-weight:600;">
-Which direction are the open prongs of the 'E' facing?
-</div>
 {render_tumbling_e_svg(target_dir, size_px)}
 </div>""",
             unsafe_allow_html=True
         )
-        
-        # Interactive Directional Response Controls
-        st.markdown("<p style='text-align:center; font-weight:600; color:inherit; margin-top:6px;'>Select the direction of the open prongs:</p>", unsafe_allow_html=True)
-        
+
         # Direction buttons in an intuitive layout
         btn_col1, btn_col2, btn_col3, btn_col4 = st.columns(4)
         
@@ -852,18 +1195,22 @@ Which direction are the open prongs of the 'E' facing?
                 **full_width()
             )
                 
-        # Honest Accessibility Disclosure Note
-        st.markdown("""<div class="accessibility-note">
-♿ <strong>Accessibility Disclosure:</strong> This vision check relies on visual resolution of high-contrast optotypes on your screen. 
-Screen readers and text alternatives intentionally do not announce optotype orientations during the test to preserve testing validity. 
-Users who require non-visual interfaces or specialized clinical testing should consult a licensed optometrist or ophthalmologist.
-</div>""", unsafe_allow_html=True)
+        with st.expander("About this demonstration", expanded=False):
+            st.markdown(
+                f"**Size {curr_idx + 1} of {total_q}:** The E becomes smaller as the check progresses.\n\n"
+                "**Accessibility Disclosure:** This task relies on visual resolution of high-contrast optotypes. "
+                "Screen readers and text alternatives intentionally do not announce optotype orientations during the test "
+                "to preserve the interaction."
+            )
 
     # =========================================================================
     # STEP 3: RESULTS & DEMO LIMITATIONS
     # =========================================================================
     elif st.session_state.step == "results":
-        st.markdown("### Step 3: Vision Check Results")
+        st.markdown("""<section class="page-intro">
+<span class="eyebrow">Step 3 of 4</span>
+<h1 class="page-title">Your result</h1>
+</section>""", unsafe_allow_html=True)
         
         answers = st.session_state.answers
         questions = st.session_state.questions
@@ -879,7 +1226,7 @@ Users who require non-visual interfaces or specialized clinical testing should c
                 header_text = f"Vision Check Incomplete ({total_answers} of {total_q} Questions Answered)"
                 body_text = (
                     f"A completed test must contain exactly {total_q} valid, unique question responses "
-                    f"to generate demonstration accuracy results. No score or completion timestamp has been recorded for this session."
+                    f"to generate a vision result. No result or completion timestamp has been recorded for this session."
                 )
             else:
                 header_text = f"Vision Check Incomplete ({total_answers} of {total_q} Questions Answered)"
@@ -928,31 +1275,25 @@ Users who require non-visual interfaces or specialized clinical testing should c
             
         # Completed Session Results (Exactly 8 questions answered)
         correct_count = sum(1 for a in answers if a["is_correct"])
-        accuracy_pct = round((correct_count / total_answers) * 100, 1)
+        vision_result = get_demo_vision_result(correct_count, total_answers)
         
         # Score Summary Card
         st.markdown(
-            f"""<div class="info-card" style="border-left:6px solid #0284C7; padding:20px; margin-bottom:18px;">
-<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+            f"""<div class="result-card">
 <div>
-<span class="badge-demo">Demo Session Completed</span>
-<h2 style="margin:4px 0 0 0; color:inherit;">Interactive Demo Score: {correct_count} / {total_answers} Correct</h2>
-<p style="color:inherit; opacity:0.9; margin:4px 0 0 0; font-size:0.92rem;">
-Overall demonstration question accuracy: <strong>{accuracy_pct}%</strong>
-</p>
+    <span class="badge-demo">Check complete</span>
+    <div class="result-score">{vision_result['acuity']}</div>
 </div>
-<div style="text-align:right; font-size:0.85rem; color:inherit; opacity:0.85; margin-top:8px;">
-Completed: {st.session_state.completed_at or 'Session Recorded'}
+<div class="result-summary">
+    <strong>{vision_result['status']}</strong>
+    <p>{vision_result['message']}</p>
 </div>
-</div>
+<div class="result-meta">{st.session_state.completed_at or 'Session recorded'}<br><strong>Vision result</strong></div>
 </div>""",
             unsafe_allow_html=True
         )
-        
-        # Two Columns: Detailed Breakdown vs Educational Limitations
-        col_res1, col_res2 = st.columns([1, 1], gap="large")
-        
-        with col_res1:
+
+        with st.expander("View question breakdown", expanded=False):
             st.markdown("#### Demo Questions Breakdown")
             breakdown_rows = []
             for a in answers:
@@ -966,47 +1307,20 @@ Completed: {st.session_state.completed_at or 'Session Recorded'}
                 
             breakdown_df = pd.DataFrame(breakdown_rows)
             st.dataframe(breakdown_df, hide_index=True, **full_width())
-            st.caption("Demo sizing levels demonstrate responsive scaling; they do not correspond to Snellen acuity.")
+            st.caption("Responses across eight progressively smaller E shapes.")
 
-        with col_res2:
-            st.markdown("#### ⚠️ Essential Non-Clinical Limitations")
-            st.markdown("""<div class="info-card" style="border-left: 5px solid #0284C7;">
-<strong style="color:inherit; font-size:0.95rem;">Why this score is NOT a medical measurement:</strong>
-<ul style="color:inherit; opacity:0.9; font-size:0.88rem; line-height:1.55; margin-top:8px; padding-left:18px;">
-<li><strong>No Visual Acuity Rating:</strong> This score represents simple demonstration accuracy only. It does <em>not</em> calculate 20/20, LogMAR, or Snellen fractions.</li>
-<li><strong>No Prescriptions or Diagnostics:</strong> Focal cannot diagnose refractive errors (astigmatism, myopia, hyperopia, presbyopia) or organic eye pathology (glaucoma, cataracts, macular changes).</li>
-<li><strong>Screen Calibration Limits:</strong> Consumer computer screens vary widely in resolution, pixel pitch, brightness, and distance. Without hardware calibration, true visual angle cannot be measured.</li>
-<li><strong>Professional Recommendation:</strong> If you notice vision changes or eye discomfort, schedule a comprehensive in-person exam with a licensed optometrist or ophthalmologist.</li>
-</ul>
-</div>""", unsafe_allow_html=True)
-            
-        st.markdown("---")
-        
         # Transition to Step 4
-        col_nav1, col_nav2 = st.columns([2, 1])
-        with col_nav1:
-            st.markdown(
-                "**Next Step:** Compare **Experience A (Single Result)** and **Experience B (Trend Tracking)** "
-                "to evaluate how different presentation formats affect clarity and usefulness."
-            )
-        with col_nav2:
-            st.button("📊 View Vision History & Compare Experiences ➡️", type="primary", on_click=proceed_to_comparison, **full_width())
+        st.button("Compare Results  →", type="primary", on_click=proceed_to_comparison, **full_width())
 
     # =========================================================================
     # STEP 4: EXPERIENCE COMPARISON & EVALUATION FEEDBACK
     # =========================================================================
     elif st.session_state.step == "vision_history":
-        st.markdown("### Step 4: Compare Result Experiences & Evaluation Feedback")
-        
-        # Narrative Context for Riley
-        st.markdown("""<div class="info-card" style="padding:16px; margin-bottom:18px;">
-<strong style="color:inherit;">Persona Context: Riley's Vision Journey</strong><br>
-<span style="color:inherit; opacity:0.9; font-size:0.9rem;">
-Riley checks visual clarity periodically between annual eye exams. 
-Below, you will evaluate <strong>two distinct presentation formats</strong> (Experience A and Experience B) 
-using the <strong>same underlying demonstration check score</strong> to compare how each format communicates vision-check results.
-</span>
-</div>""", unsafe_allow_html=True)
+        st.markdown("""<section class="page-intro">
+<span class="eyebrow">Step 4 of 4</span>
+<h1 class="page-title">Compare your result</h1>
+<p class="page-copy">The vision result stays the same. Only the presentation changes.</p>
+</section>""", unsafe_allow_html=True)
         
         # Determine whether a completed live session exists
         answers = st.session_state.answers
@@ -1023,7 +1337,6 @@ using the <strong>same underlying demonstration check score</strong> to compare 
             current_date = parsed_dt.strftime("%Y-%m-%d") if parsed_dt else datetime.now().strftime("%Y-%m-%d")
             current_timestamp = st.session_state.completed_at
             current_type = "Your Completed Demo Check"
-            current_notes = f"Your live session ({current_correct}/{total_q} correct)"
             current_breakdown = [
                 {
                     "Question": f"Q{a['question_num']}",
@@ -1052,6 +1365,10 @@ using the <strong>same underlying demonstration check score</strong> to compare 
                 {"Question": "Q8", "Target Direction": "Down", "Your Response": "Down", "Result": "✅ Correct", "Demo Sizing": "40px"}
             ]
 
+        current_vision = get_demo_vision_result(current_correct, total_q)
+        if has_completed_session:
+            current_notes = f"Your vision result ({current_vision['acuity']})"
+
         # Step 4 State Tracking: Researcher preview and view exposure
         if not st.session_state.get("comparison_order_assigned", False):
             st.session_state.comparison_order_assigned = True
@@ -1074,7 +1391,7 @@ using the <strong>same underlying demonstration check score</strong> to compare 
                 f"""<div style="background-color:#FFFBEB; border:1px solid #FCD34D; border-left:6px solid #F59E0B; border-radius:10px; padding:14px 18px; margin-bottom:18px;">
 <strong style="color:#92400E;">⚠️ Incomplete Test in Progress ({len(answers)} of {total_q} Answered):</strong> 
 <span style="color:#78350F; font-size:0.9rem;">
-Partial scores are excluded from completed evaluation to maintain data integrity. 
+Partial responses are excluded from completed results.
 Only completed 8-question sessions appear in completed results.
 </span>
 </div>""",
@@ -1086,15 +1403,7 @@ Only completed 8-question sessions appear in completed results.
         # ---------------------------------------------------------------------
         # View Switcher & Presentation Order
         # ---------------------------------------------------------------------
-        st.markdown("---")
-        st.markdown("#### Direct Presentation Comparison")
-        st.markdown(
-            "<span style='color:inherit; opacity:0.9; font-size:0.92rem;'>"
-            "Inspect both experiences below. Both views use the <strong>exact same demonstration score</strong> "
-            f"({current_correct}/{total_q} Correct). Switch between views to evaluate single-result clarity versus trend context."
-            "</span>",
-            unsafe_allow_html=True
-        )
+        st.markdown("<div class='view-label'>Choose a result view</div>", unsafe_allow_html=True)
 
         display_options = (
             ["Experience B: Trend Tracking", "Experience A: Single Result"]
@@ -1105,99 +1414,58 @@ Only completed 8-question sessions appear in completed results.
         if st.session_state.get("comparison_view_selector") != st.session_state.active_comparison_view:
             st.session_state.comparison_view_selector = st.session_state.active_comparison_view
 
-        col_sw1, col_sw2 = st.columns([3, 2], gap="medium")
-        with col_sw1:
-            def on_view_radio_change():
-                st.session_state.active_comparison_view = st.session_state.comparison_view_selector
+        def on_view_radio_change():
+            st.session_state.active_comparison_view = st.session_state.comparison_view_selector
 
-            selected_radio = st.radio(
-                "Choose presentation format to inspect:",
-                options=display_options,
-                horizontal=True,
-                key="comparison_view_selector",
-                on_change=on_view_radio_change
-            )
-            st.session_state.active_comparison_view = selected_radio
-
-        with col_sw2:
-            if st.session_state.active_comparison_view == "Experience A: Single Result":
-                st.button(
-                    "Switch to Experience B ➡️",
-                    on_click=set_active_view,
-                    args=("Experience B: Trend Tracking",),
-                    **full_width()
-                )
-            else:
-                st.button(
-                    "⬅️ Switch to Experience A",
-                    on_click=set_active_view,
-                    args=("Experience A: Single Result",),
-                    **full_width()
-                )
-
-        st.markdown("<br>", unsafe_allow_html=True)
+        selected_radio = st.radio(
+            "Choose presentation format to inspect:",
+            options=display_options,
+            format_func=lambda option: option.split(": ", 1)[1],
+            horizontal=True,
+            key="comparison_view_selector",
+            on_change=on_view_radio_change,
+            label_visibility="collapsed"
+        )
+        st.session_state.active_comparison_view = selected_radio
 
         # ---------------------------------------------------------------------
         # EXPERIENCE A: SINGLE RESULT VIEW
         # ---------------------------------------------------------------------
         if st.session_state.active_comparison_view == "Experience A: Single Result":
             st.markdown(
-                f"""<div class="info-card" style="border-left:6px solid #0284C7; padding:20px; margin-bottom:16px;">
-<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                f"""<div class="result-card">
 <div>
-<span class="badge-demo">Experience A: Single Result</span>
-<h3 style="margin:4px 0 0 0; color:inherit;">Demonstration Score: {current_correct} / {total_q} Correct</h3>
-<p style="color:inherit; opacity:0.9; margin:4px 0 0 0; font-size:0.92rem;">
-Overall accuracy for this check: <strong>{current_accuracy}%</strong> • Recorded Date: <strong>{current_date}</strong>
-</p>
+    <span class="badge-demo">Single Result</span>
+    <div class="result-score">{current_vision['acuity']}</div>
 </div>
-<div style="text-align:right; font-size:0.85rem; color:inherit; opacity:0.85; margin-top:6px;">
-Classification: <strong>{current_type}</strong>
+<div class="result-summary">
+    <strong>{current_vision['status']}</strong>
+    <p>{current_vision['message']}</p>
 </div>
-</div>
+<div class="result-meta">{current_date}<br><strong>{current_type}</strong></div>
 </div>""",
                 unsafe_allow_html=True
             )
 
-            col_exp_a1, col_exp_a2 = st.columns([1, 1], gap="large")
-            with col_exp_a1:
-                st.markdown("##### Single Check Questions Breakdown")
-                breakdown_df = pd.DataFrame(current_breakdown)
-                st.dataframe(breakdown_df, hide_index=True, **full_width())
-                st.caption("Demonstrates isolated question accuracy without historical context.")
-
-            with col_exp_a2:
-                st.markdown("##### ⚠️ Essential Non-Clinical Limitations")
-                st.markdown("""<div class="info-card" style="border-left: 5px solid #0284C7;">
-<strong style="color:inherit; font-size:0.95rem;">Understanding Vision Check Results:</strong>
-<ul style="color:inherit; opacity:0.9; font-size:0.88rem; line-height:1.55; margin-top:8px; padding-left:18px;">
-<li><strong>Snapshot Accuracy Only:</strong> Represents demonstration accuracy for one interactive test. Does not estimate 20/20, LogMAR, or refractive acuity.</li>
-<li><strong>No Prescriptions or Medical Diagnosis:</strong> Cannot detect astigmatism, myopia, hyperopia, or organic ocular pathology.</li>
-<li><strong>Uncalibrated Hardware:</strong> Display pixel pitch, brightness, and user viewing distance are not clinically calibrated.</li>
-<li><strong>Professional Exam Needed:</strong> If you suspect vision changes, schedule an in-person exam with a licensed optometrist or ophthalmologist.</li>
-</ul>
-</div>""", unsafe_allow_html=True)
-
-            st.caption("ℹ️ Experience A displays only this isolated demonstration result. Historical baseline context and trend lines are excluded.")
+            st.markdown("##### Question breakdown")
+            breakdown_df = pd.DataFrame(current_breakdown)
+            st.dataframe(breakdown_df, hide_index=True, **full_width())
 
         # ---------------------------------------------------------------------
         # EXPERIENCE B: TREND TRACKING VIEW
         # ---------------------------------------------------------------------
         else:
             st.markdown(
-                f"""<div class="info-card" style="border-left:6px solid #0284C7; padding:20px; margin-bottom:16px;">
-<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                f"""<div class="result-card">
 <div>
-<span class="badge-demo">Experience B: Trend Tracking</span>
-<h3 style="margin:4px 0 0 0; color:inherit;">Demonstration Score: {current_correct} / {total_q} Correct</h3>
-<p style="color:inherit; opacity:0.9; margin:4px 0 0 0; font-size:0.92rem;">
-Overall accuracy for this check: <strong>{current_accuracy}%</strong> • Recorded Date: <strong>{current_date}</strong>
-</p>
+    <span class="badge-demo">Trend Tracking</span>
+    <div class="result-score">{current_vision['acuity']}</div>
 </div>
-<div style="text-align:right; font-size:0.85rem; color:inherit; opacity:0.85; margin-top:6px;">
-Classification: <strong>{current_type}</strong>
+<div class="result-summary">
+    <strong>{current_vision['status']}</strong>
+    <p>{current_vision['message']}</p>
 </div>
-</div>
+<div class="result-meta">{current_date}<br><strong>{current_type}</strong></div>
 </div>""",
                 unsafe_allow_html=True
             )
@@ -1205,24 +1473,14 @@ Classification: <strong>{current_type}</strong>
             # Informational status banner for Experience B
             if has_completed_session:
                 st.markdown(
-                    f"""<div style="background-color:#F0FDF4; border:1px solid #86EFAC; border-left:6px solid #16A34A; border-radius:10px; padding:14px 18px; margin-bottom:18px;">
-<strong style="color:#166534;">✅ Completed Live Session Added:</strong> 
-<span style="color:#14532D; font-size:0.9rem;">
-Your completed check score (<strong>{current_correct}/{total_q} Correct — {current_accuracy}%</strong>) 
-is plotted below as a distinct comparison point against Riley's illustrative demo baseline.
-</span>
-</div>""",
+                    f"""<div class="result-note"><strong>Completed Live Session Added.</strong>
+Your {current_vision['acuity']} result is plotted below with the previous readings.</div>""",
                     unsafe_allow_html=True
                 )
             elif not is_partial:
                 st.markdown(
-                    """<div style="background-color:#EFF6FF; border:1px solid #BFDBFE; border-left:6px solid #0284C7; border-radius:10px; padding:14px 18px; margin-bottom:18px;">
-<strong style="color:#1E40AF;">ℹ️ Illustrative Demo Data Only:</strong> 
-<span style="color:#1E3A8A; font-size:0.9rem;">
-No completed live check is currently recorded. The chart below displays only fictional example records 
-('Illustrative Demo Data') for persona Riley.
-</span>
-</div>""",
+                    """<div class="result-note"><strong>Illustrative Demo Data Only.</strong>
+No completed check is recorded, so the chart contains fictional example records only.</div>""",
                     unsafe_allow_html=True
                 )
                 st.button("🚀 Start Vision Check (8 Questions)", type="primary", on_click=start_vision_check, key="btn_start_from_b", **full_width())
@@ -1230,13 +1488,18 @@ No completed live check is currently recorded. The chart below displays only fic
 
             # Data for Trend Chart
             df_fictional = pd.DataFrame(FICTIONAL_RECORDS)
+            df_fictional["Acuity"] = df_fictional.apply(
+                lambda row: get_demo_vision_result(int(row["Correct"]), int(row["Total"]))["acuity"],
+                axis=1
+            )
             if has_completed_session:
                 live_record = {
                     "Date": current_date,
-                    "Session": "Today (Demo Check)",
+                    "Session": "Today",
                     "Correct": current_correct,
                     "Total": total_q,
                     "Accuracy": current_accuracy,
+                    "Acuity": current_vision["acuity"],
                     "Type": "Your Completed Demo Check",
                     "Notes": current_notes
                 }
@@ -1245,106 +1508,130 @@ No completed live check is currently recorded. The chart below displays only fic
                 df_all = df_fictional
 
             st.markdown("##### Longitudinal Vision Trend")
-            st.caption("Tracking 8-question check results on a 0–8 scale. Fictional baseline and live user data are strictly distinguished.")
+            st.caption("See how the vision result changes across sessions.")
+            st.markdown(
+                """<div class="chart-legend">
+<span class="chart-legend-item"><span class="chart-legend-dot"></span>Previous results</span>
+<span class="chart-legend-item"><span class="chart-legend-diamond"></span>Current result</span>
+</div>""",
+                unsafe_allow_html=True
+            )
 
-            line_chart = alt.Chart(df_fictional).mark_line(
-                color="#94A3B8",
-                strokeDash=[4, 4],
-                strokeWidth=2
-            ).encode(
-                x=alt.X("Session:N", sort=None, title="Session / Timeline"),
-                y=alt.Y(
-                    "Correct:Q",
-                    scale=alt.Scale(domain=[-0.5, 8.5]),
-                    axis=alt.Axis(values=[0, 1, 2, 3, 4, 5, 6, 7, 8], title="Correct Responses (out of 8)")
+            x_axis = alt.X(
+                "Session:N",
+                sort=None,
+                title=None,
+                axis=alt.Axis(
+                    labelAngle=0,
+                    labelPadding=12,
+                    labelColor="#607487",
+                    labelFontSize=12,
+                    tickSize=0,
+                    domain=False
+                )
+            )
+            y_axis = alt.Y(
+                "Acuity:N",
+                sort=ACUITY_ORDER,
+                title=None,
+                axis=alt.Axis(
+                    labelPadding=12,
+                    labelColor="#607487",
+                    labelFontSize=12,
+                    tickSize=0,
+                    domain=False,
+                    grid=True,
+                    gridColor="#E3EDF2",
+                    gridDash=[3, 4],
+                    gridOpacity=1
                 )
             )
 
-            points_chart = alt.Chart(df_all).mark_point(
-                size=180,
-                filled=True
+            area_chart = alt.Chart(df_fictional).mark_area(
+                color="#3B82B8",
+                opacity=0.08,
+                interpolate="monotone"
             ).encode(
-                x=alt.X("Session:N", sort=None),
-                y=alt.Y(
-                    "Correct:Q",
-                    scale=alt.Scale(domain=[-0.5, 8.5]),
-                    axis=alt.Axis(values=[0, 1, 2, 3, 4, 5, 6, 7, 8])
-                ),
-                color=alt.Color(
-                    "Type:N",
-                    scale=alt.Scale(
-                        domain=["Illustrative Demo Data", "Your Completed Demo Check"],
-                        range=["#0284C7", "#EA580C"]
-                    ),
-                    legend=alt.Legend(
-                        title="Data Classification",
-                        orient="top",
-                        direction="vertical",
-                        columns=1,
-                        labelLimit=350,
-                        titleLimit=350
-                    )
-                ),
-                shape=alt.Shape(
-                    "Type:N",
-                    scale=alt.Scale(
-                        domain=["Illustrative Demo Data", "Your Completed Demo Check"],
-                        range=["circle", "diamond"]
-                    ),
-                    legend=alt.Legend(
-                        title="Data Classification",
-                        orient="top",
-                        direction="vertical",
-                        columns=1,
-                        labelLimit=350,
-                        titleLimit=350
-                    )
-                ),
+                x=x_axis,
+                y=y_axis
+            )
+
+            line_chart = alt.Chart(df_fictional).mark_line(
+                color="#3B82B8",
+                strokeWidth=3,
+                interpolate="monotone"
+            ).encode(
+                x=x_axis,
+                y=y_axis
+            )
+
+            history_points = alt.Chart(df_fictional).mark_circle(
+                size=120,
+                color="#3B82B8",
+                opacity=1,
+                stroke="#FFFFFF",
+                strokeWidth=2
+            ).encode(
+                x=x_axis,
+                y=y_axis,
                 tooltip=[
                     alt.Tooltip("Session:N", title="Session"),
                     alt.Tooltip("Date:N", title="Recorded Date"),
-                    alt.Tooltip("Correct:Q", title="Correct Answers"),
-                    alt.Tooltip("Total:Q", title="Total Questions"),
-                    alt.Tooltip("Accuracy:Q", title="Accuracy %"),
-                    alt.Tooltip("Type:N", title="Data Classification"),
+                    alt.Tooltip("Acuity:N", title="Vision Result"),
                     alt.Tooltip("Notes:N", title="Context Notes")
                 ]
             )
 
-            final_chart = (line_chart + points_chart).properties(
-                height=320,
+            chart_layers = area_chart + line_chart + history_points
+
+            if has_completed_session:
+                current_df = df_all[df_all["Type"] == "Your Completed Demo Check"]
+                current_point = alt.Chart(current_df).mark_point(
+                    size=260,
+                    shape="diamond",
+                    filled=True,
+                    color="#F07F5A",
+                    stroke="#FFFFFF",
+                    strokeWidth=3
+                ).encode(
+                    x=x_axis,
+                    y=y_axis,
+                    tooltip=[
+                        alt.Tooltip("Session:N", title="Session"),
+                        alt.Tooltip("Date:N", title="Recorded Date"),
+                        alt.Tooltip("Acuity:N", title="Vision Result"),
+                        alt.Tooltip("Notes:N", title="Context Notes")
+                    ]
+                )
+                current_label = alt.Chart(current_df).mark_text(
+                    dy=-22,
+                    color="#C85232",
+                    fontSize=13,
+                    fontWeight=700
+                ).encode(
+                    x=x_axis,
+                    y=y_axis,
+                    text=alt.Text("Acuity:N")
+                )
+                chart_layers = chart_layers + current_point + current_label
+
+            final_chart = chart_layers.properties(
+                height=270,
                 width="container"
-            ).configure_axis(
-                labelFontSize=11,
-                titleFontSize=12
+            ).configure_view(
+                strokeWidth=0
             )
 
             st.altair_chart(final_chart, **full_width())
 
-            st.markdown(
-                "<div style='font-size:0.8rem; color:inherit; opacity:0.85; margin-top:-8px; margin-bottom:16px;'>"
-                "ℹ️ <em>Illustrative Baseline Notice: Historical entries (Weeks 1–7) represent fictional example data created for "
-                "persona Riley and do not represent verified medical measurements. If completed, your live session score is displayed as "
-                "an isolated comparison point and is not connected to historical data.</em>"
-                "</div>",
-                unsafe_allow_html=True
-            )
-
-            with st.expander("📋 View Complete Tabular Records", expanded=False):
-                table_df = df_all[["Session", "Date", "Correct", "Total", "Accuracy", "Type", "Notes"]].copy()
-                table_df["Accuracy"] = table_df["Accuracy"].apply(lambda v: f"{v}%")
+            with st.expander("Data details & complete records", expanded=False):
+                st.markdown(
+                    "Historical entries (Weeks 1–7) are sample readings for Riley. "
+                    "Your completed check is added as today's result."
+                )
+                table_df = df_all[["Session", "Date", "Acuity", "Type", "Notes"]].copy()
+                table_df = table_df.rename(columns={"Acuity": "Vision Result"})
                 st.dataframe(table_df, hide_index=True, **full_width())
-
-            st.markdown("##### ⚠️ Essential Non-Clinical Limitations")
-            st.markdown("""<div class="info-card" style="border-left: 5px solid #0284C7; margin-top:8px;">
-<strong style="color:inherit; font-size:0.95rem;">Understanding Vision Check Results:</strong>
-<ul style="color:inherit; opacity:0.9; font-size:0.88rem; line-height:1.55; margin-top:8px; padding-left:18px;">
-<li><strong>Snapshot Accuracy Only:</strong> Represents demonstration accuracy for one interactive test. Does not estimate 20/20, LogMAR, or refractive acuity.</li>
-<li><strong>No Prescriptions or Medical Diagnosis:</strong> Cannot detect astigmatism, myopia, hyperopia, or organic ocular pathology.</li>
-<li><strong>Uncalibrated Hardware:</strong> Display pixel pitch, brightness, and user viewing distance are not clinically calibrated.</li>
-<li><strong>Professional Exam Needed:</strong> If you suspect vision changes, schedule an in-person exam with a licensed optometrist or ophthalmologist.</li>
-</ul>
-</div>""", unsafe_allow_html=True)
 
         st.markdown("---")
 
@@ -1405,7 +1692,7 @@ this study measures whether adult corrective-lens wearers (persona Riley) genuin
             st.markdown("#### Product Comparison & Evaluation Feedback")
             st.markdown(
                 "<span style='color:inherit; opacity:0.9; font-size:0.92rem;'>"
-                "Please provide your objective perspective on the two presentation experiences above. "
+                "Please provide your objective perspective on the two result views above. "
                 "Your feedback is anonymous and helps our product management team understand user preferences between "
                 "single test results and ongoing trend tracking."
                 "</span>",
@@ -1415,7 +1702,7 @@ this study measures whether adult corrective-lens wearers (persona Riley) genuin
             if not has_visited_both:
                 st.markdown(
                     "<div class='info-card' style='border-radius:6px; padding:10px 14px; margin-top:10px; margin-bottom:12px; font-size:0.86rem; color:inherit; opacity:0.9;'>"
-                    "ℹ️ <em>Please explore both Experience A and Experience B using the switcher above before submitting feedback.</em>"
+                    "ℹ️ <em>Please explore both Single Result and Trend Tracking before submitting feedback.</em>"
                     "</div>",
                     unsafe_allow_html=True
                 )
@@ -1424,8 +1711,8 @@ this study measures whether adult corrective-lens wearers (persona Riley) genuin
                 q1_response = st.radio(
                     "1. Which format did you find more useful for monitoring your vision? *",
                     options=[
-                        "Experience A (Single Result)",
-                        "Experience B (Trend Tracking)",
+                        "Single Result",
+                        "Trend Tracking",
                         "Both are equally useful",
                         "Neither is useful",
                         "Not sure"
@@ -1441,8 +1728,8 @@ this study measures whether adult corrective-lens wearers (persona Riley) genuin
                 q3_response = st.radio(
                     "3. Which format was easier to understand at a glance? *",
                     options=[
-                        "Experience A (Single Result)",
-                        "Experience B (Trend Tracking)",
+                        "Single Result",
+                        "Trend Tracking",
                         "Both are equally clear",
                         "Neither is clear",
                         "Not sure"
@@ -1466,7 +1753,7 @@ this study measures whether adult corrective-lens wearers (persona Riley) genuin
 
                 if submit_feedback:
                     if not has_visited_both:
-                        st.info("ℹ️ Please view both Experience A (Single Result) and Experience B (Trend Tracking) using the switcher above before submitting your comparative feedback.")
+                        st.info("ℹ️ Please view both Single Result and Trend Tracking before submitting your comparative feedback.")
                     elif q1_response is None or q3_response is None or q4_response is None:
                         st.error("⚠️ Please answer all required questions (Questions 1, 3, and 4) before submitting.")
                     else:
@@ -1479,7 +1766,7 @@ this study measures whether adult corrective-lens wearers (persona Riley) genuin
                             "assignment_source": st.session_state.assignment_source,
                             "both_views_visited": True,
                             "views_visited": list(st.session_state.views_visited),
-                            "evaluated_score": f"{current_correct}/{total_q}",
+                            "evaluated_score": current_vision["acuity"],
                             "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                         }
                         st.session_state.feedback_locked = True

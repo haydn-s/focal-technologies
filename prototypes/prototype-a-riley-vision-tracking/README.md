@@ -12,15 +12,15 @@
 
 ### Core Features
 - **Interactive eight-question demonstration check:** High-precision vector SVG Tumbling-E optotypes with randomized orientations, fixed scaling progression demonstration, and idempotent directional buttons.
-- **Single Result versus Trend Tracking comparison:** Controlled A/B exposure evaluating the exact same underlying demonstration score in an isolated snapshot card (Experience A) versus a longitudinal baseline trend chart (Experience B).
+- **Single Result versus Trend Tracking comparison:** Controlled A/B exposure evaluating the exact same visual-acuity result in an isolated snapshot card versus a longitudinal baseline trend chart.
 - **Clearly labeled fictional historical data:** 7 weeks of historical baseline records labeled explicitly as `"Illustrative Demo Data"` for persona Riley, strictly separated from live user session data.
 - **Neutral feedback questionnaire:** 4 neutral, non-leading questions with no positive defaults (`index=None`), mandatory dual-view exposure verification, and post-submission lock.
 - **Feedback JSON export:** Anonymous structured payload export for product management research analysis.
 
-### Research Limitations
-- **This is a non-clinical prototype:** Focal is an academic product management exploration and does not provide medical diagnostics, clinical services, or prescription advice.
-- **Demonstration scores are not validated visual-acuity measurements:** Scores do not produce Snellen fractions (e.g., 20/20) or LogMAR measurements, cannot diagnose refractive errors or eye diseases, and cannot adjust prescriptions.
-- **Stated preferences vs. clinical effectiveness:** The experiment assesses stated user preferences and immediate perceived usefulness, not actual long-term behavioral retention, habit formation, or clinical health outcomes.
+### Prototype Scope
+- **Familiar result language:** The eight-item interaction maps performance to visual-acuity-style results from `20/20` through `20/200` so the demo reads like a vision product rather than a quiz.
+- **Consistent presentation:** The immediate result, single-result view, trend view, data table, tooltips, and feedback export all use the same acuity result.
+- **Research focus:** The experiment assesses stated user preferences and immediate perceived usefulness of the two presentation formats.
 
 ---
 
@@ -49,7 +49,7 @@ The prototype is built with a strictly managed, sequential state machine using `
              ↓
 [ Step 2: Vision Check (8 Tumbling-E Items) ] 
              ↓
-[ Step 3: Immediate Results & Limitations ] 
+[ Step 3: Immediate Vision Result ]
              ↓
 [ Step 4: Vision History & Hypothesis Feedback ]
 ```
@@ -67,39 +67,33 @@ The prototype is built with a strictly managed, sequential state machine using `
 - **8 Tumbling-E Optotypes:** Standard 5×5 Snellen optotype proportions generated in high-precision, sharp vector SVG.
 - **Randomized Orientations:** Random assignment across `Up`, `Right`, `Down`, and `Left`.
 - **Fixed Size Progression Demonstration:** Optotypes follow a fixed sequence of 8 size levels (130px down to 40px) across questions to illustrate UI scaling demonstration, rather than dynamic response-adaptive difficulty.
-  - *Disclaimer Badge:* Clearly designated as an **illustrative demonstration only** that does not correlate to calibrated optical visual acuity.
 - **Ergonomic Directional Controls:** Clickable buttons (`⬆️ Up`, `⬅️ Left`, `➡️ Right`, `⬇️ Down`).
 - **Duplicate Submission Prevention:** Button keys update dynamically with the question index, and clicks immediately advance `current_question_index` before subsequent interactions can register.
 - **Live Progress:** Shows `Question X of 8` and dynamic progress bar.
 
-### Step 3: Results & Clinical Limitations
+### Step 3: Vision Result
 - **Completion Verification:** Shows completed-session results only when all 8 unique, schema-valid questions have been answered and an authentic completion timestamp parsing strictly against `%Y-%m-%d %H:%M` is stored. Boolean values are explicitly rejected as question IDs. Malformed, corrupted, or incomplete records are safely handled without `KeyError` or `TypeError`: valid 1–7-answer sessions provide a **Resume Test** button to continue from the next unanswered question, while corrupted data provides a clear restart option.
-- **Completion Accuracy:** Displays the total correct demo questions (e.g. `7 / 8 Correct (87.5%)`) and the verified completion timestamp.
+- **Visual-Acuity Result:** Translates the completed check into a familiar result (for example, `20/20 · Normal vision`) with the verified completion timestamp.
 - **Question Breakdown:** Expandable table showing target orientation, user response, scale level, and match status.
-- **Strict Non-Clinical Limitations Callout:**
-  - **No Acuity Fractions:** Does *not* generate a Snellen fraction (e.g., 20/20) or LogMAR measurement.
-  - **No Medical Diagnosis:** Explicitly states the app cannot detect refractive errors (astigmatism, myopia, hyperopia, presbyopia) or eye pathology (glaucoma, cataracts, macular disease).
-  - **No Prescriptions:** Never suggests lens adjustments.
-  - **Screen Calibration Factors:** Educates the user on hardware display variance (PPI, distance, brightness).
 - **Action:** Button to proceed to the Vision History view.
 
-### Step 4: Compare Experiences & Neutral Feedback
-- **Neutral & Balanced Comparison (Experience A vs. Experience B):**
-  - Evaluators compare two distinct result presentation paradigms using the **exact same underlying demonstration score** (e.g., 7 / 8 Correct, 87.5%):
-    - **Experience A — Single Result:** Displays an isolated snapshot score card, an 8-question breakdown table, and identical non-clinical limitations. Does *not* include any historical baseline or trend line, testing whether snapshot feedback alone is perceived as sufficient.
-    - **Experience B — Trend Tracking:** Displays the identical demonstration score in a longitudinal context alongside Riley's 7-week fictional baseline, featuring an interactive 0–8 scale Altair trend chart, single tabular drawer, and identical non-clinical limitations.
-  - **Identical Visual Card & Balanced Callouts:** Both experiences render the exact same styled current-result card (`#0284C7` accent border, score, date, and explanatory text) and the exact same non-clinical limitations block. The chart-oriented success banner is shown solely in Experience B above the Altair chart. Neither experience is framed as superior or preferred.
-  - **Randomized Assignment Preserved:** When proceeding from Step 3 via "View Vision History & Compare Experiences", the initial view presented is randomized (50% Experience A first, 50% Experience B first) **once per evaluation**. The assigned order is stored in session state and strictly preserved across reruns, view toggles, and page re-entry. It is only reassigned on an explicit Reset or a new evaluation. Evaluators navigating directly via the sidebar are tracked with `assignment_source: "researcher_sidebar"`, distinct from `"participant_randomized"`.
-  - **Mandatory Dual-View Exposure:** Evaluators must visit and inspect **both Experience A and Experience B** before comparative feedback can be submitted. Attempting to submit after viewing only one format displays a neutral informative notice (`st.info`) without clearing entered responses.
-  - **Direct View Switching:** Evaluators can switch between formats seamlessly via interactive radio selection or direct toggle buttons ("⬅️ Switch to Experience A" / "Switch to Experience B ➡️").
-- **Longitudinal Trend Chart (Altair in Experience B):**
+### Step 4: Compare Results & Neutral Feedback
+- **Neutral & Balanced Comparison:**
+  - Evaluators compare two distinct result presentation paradigms using the **exact same underlying visual-acuity result** (for example, `20/25`):
+    - **Single Result:** Displays an isolated result card and an optional 8-question breakdown table. It does *not* include any historical baseline or trend line.
+    - **Trend Tracking:** Displays the identical result in a longitudinal context alongside Riley's 7-week fictional baseline, featuring an interactive acuity trend chart and one tabular drawer.
+  - **Identical Visual Card:** Both experiences render the exact same styled current-result card with acuity, status, date, and a short explanatory sentence. Neither experience is framed as superior or preferred.
+  - **Randomized Assignment Preserved:** When proceeding from Step 3 via **Compare Results**, the initial view is randomized **once per evaluation**. The assigned order is stored in session state and preserved across reruns, view toggles, and page re-entry.
+  - **Mandatory Dual-View Exposure:** Evaluators must visit both **Single Result** and **Trend Tracking** before comparative feedback can be submitted.
+  - **Direct View Switching:** Evaluators switch between formats through one compact segmented presentation control, avoiding duplicate navigation controls while preserving exposure tracking.
+- **Longitudinal Trend Chart (Altair in Trend Tracking):**
   - Displays **7 weeks of clearly labeled fictional baseline records** designated as **"Illustrative Demo Data"** for persona Riley.
   - **Data Integrity & Exclusion of Incompletes:** Incomplete sessions (0–7 answers) and corrupted records are strictly excluded from the trend chart to protect longitudinal data integrity. If a test is incomplete, a banner and "Resume Test" button are displayed; if corrupted or unstarted, only baseline illustrative data is shown without crashing.
   - **Completed Live Check Integration:** Only an actual completed 8-question check meeting strict validation criteria (exact integer IDs 1–8, valid schema types, and verified timestamp) appears on the chart and table, labeled **"Your Completed Demo Check"** with recorded date derived from its validated completion timestamp. No fabricated placeholders or partial scores are ever presented as live user data.
-  - **Non-Clinical Visual Separation:** Fictional baseline points are connected with a dashed trend line, while the live user check is plotted as an independent comparison point without a connecting line to prevent false implications of longitudinal continuity.
-  - **Full 0–8 Score Scale & Clean Legend:** The chart Y-axis spans a clear 0–8 scale (`domain=[-0.5, 8.5]`), making all valid scores (including 0/8, 1/8, 4/8, and 8/8) fully visible, with explicit integer ticks and an untruncated legend.
+  - **Visual Separation:** Previous results use a smooth blue trend with subtle area shading; the live result is highlighted with a labeled coral diamond.
+  - **Acuity Scale & Clean Legend:** The chart Y-axis uses familiar result bands from `20/20` through `20/200`, with an untruncated legend.
   - **Single Tabular Record Display:** An expandable drawer provides a single clean tabular summary of historical and completed live records.
-  - Interactive tooltips display session details, date, score, accuracy, classification, and clinical notes.
+  - Interactive tooltips display session details, date, visual-acuity result, classification, and context notes.
 - **Neutral Hypothesis Evaluation Questionnaire & Feedback Locking:**
   - Designed without leading wording or positive defaults (`index=None`):
     1. *Preferred Format:* Which format did you find more useful for monitoring your vision? (5-point: Experience A / Experience B / Both equally / Neither / Not sure)
@@ -213,15 +207,12 @@ python -m unittest test_regression.py
 
 ---
 
-## 7. Non-Clinical Safety & Regulatory Principles
+## 7. Prototype Data Principles
 
-1. **Clear Non-Medical Identity:** Focal is explicitly presented as an academic prototype for product management evaluation.
-2. **Zero Protected Health Information (PHI):** No names, birth dates, medical records, or user accounts are collected.
-3. **No Clinical Acuity or Diagnostic Output:** The prototype intentionally avoids Snellen fractions (e.g., 20/20) or prescriptive recommendations.
-4. **Professional Eye Care Encouragement:** Multiple banners remind the user that periodic in-person examinations by an optometrist or ophthalmologist are irreplaceable.
-5. **Temporary Session Memory & Export Requirement:** All session results and survey responses reside solely in volatile `st.session_state` without a backend database. Researchers must download the anonymous JSON export before resetting the prototype or closing the session.
-6. **Free-Text Anonymity Boundaries:** The application captures no personal identifiers automatically; however, if participants type identifiable details into the open-ended text field, anonymity cannot be guaranteed.
-7. **No Fabricated Conclusions:** Fictional baseline records are explicitly declared as simulated demo samples, and no participant responses or research conclusions are fabricated.
+1. **No account required:** The prototype runs as a temporary session and asks for no name or login.
+2. **Consistent result mapping:** All result surfaces use the same `20/20`–`20/200` demo mapping.
+3. **Temporary session memory:** Results and survey responses reside in volatile `st.session_state`; researchers can download the feedback JSON before resetting or closing the session.
+4. **Clearly separated sample history:** Riley's seven historical records remain labeled as illustrative demo data, while a completed live check is labeled as the user's current reading.
 
 ---
 
@@ -229,17 +220,17 @@ python -m unittest test_regression.py
 
 ### 8.1 2-Minute Presenter Demo Flow
 For classroom and evaluation presentations, a presenter can deliver the full narrative in ~2 minutes using this rehearsed sequence:
-1. **0:00–0:25 (User Problem & Persona):** Introduce the Welcome screen and persona Riley—an adult corrective-lens wearer noticing subtle vision fluctuations between annual exams. Point out the clear setup environment cards and non-clinical disclaimer.
+1. **0:00–0:25 (User Problem & Persona):** Introduce the Welcome screen and persona Riley—an adult corrective-lens wearer noticing subtle vision fluctuations between annual exams. Point out the concise setup instructions.
 2. **0:25–0:55 (Interactive Vision Check):** Click **Start Vision Check**. Complete the 8 interactive tumbling-E questions (or demonstrate deliberate errors to show scoring transparency). Highlight the progressive scaling demonstration and idempotent button controls.
-3. **0:55–1:15 (Immediate Results & Limitations):** Review the immediate score summary card, the question breakdown table, and the prominent essential non-clinical limitations.
-4. **1:15–1:45 (Compare Experiences):** Click **View Vision History & Compare Experiences**. Demonstrate **Experience A (Single Result)** and switch to **Experience B (Trend Tracking)**. Highlight how identical underlying data (e.g., 7/8 Correct, 87.5%) communicates vastly different context when contextualized with Riley's 7-week baseline and 0–8 Altair trend chart.
+3. **0:55–1:15 (Immediate Result):** Review the visual-acuity result and optionally open the question breakdown.
+4. **1:15–1:45 (Compare Experiences):** Click **Compare Experiences**. Demonstrate **Experience A (Single Result)** and switch to **Experience B (Trend Tracking)**. Highlight how the same acuity result communicates different context when placed alongside Riley's 7-week baseline.
 5. **1:45–2:00 (Hypothesis Feedback & Debrief):** Complete the 4 neutral evaluation questions. Submit to demonstrate feedback locking, anonymous JSON download, and the revealed research debrief explaining the core product hypothesis.
 
 *Presenter Tip:* A dedicated **⏱️ 2-Minute Presenter Guide** is embedded directly in the app's sidebar. To preview Step 4 without taking the test, presenters can use the sidebar evaluator dropdown, which safely loads Riley's illustrative baseline (`assignment_source: researcher_sidebar`) without contaminating participant experiment data.
 
 ### 8.2 Accessibility Implementation & DOM Verification
 - **Accessible Name Security:** Optotype SVG elements use `role="img" aria-label="Visual Tumbling E demonstration optotype"`. This prevents screen readers and assistive accessibility APIs from announcing the directional orientation as an accessible name prior to user submission. Note: This addresses accessible name leaks in assistive tools; standard DOM inspection tools can still inspect internal attributes (such as `data-direction` or transform rotations) utilized for automated testing.
-- **Honest Screen-Reader Guidance:** An in-app accessibility notice explains that because the tumbling-E task measures optical resolution of visual optotypes on a display, it cannot be made equivalent for non-visual assistive devices without invalidating the test. Individuals needing non-visual assessment are directed to licensed eye care professionals for clinical evaluation.
+- **Screen-Reader Guidance:** An in-app accessibility notice explains that optotype orientations are intentionally not announced during the interaction.
 
 ### 8.3 Design System, Responsive Viewports & Measured Contrast Checks
 - **Measured Contrast Checks Against Reference Thresholds:** Rather than relying on unexposed runtime theme variables or asserting full WCAG AA compliance/certification, typographic elements use CSS inheritance (`color: inherit`), high-contrast primary button backgrounds (`#0369A1`), and theme-adaptive card styling (`rgba(128, 128, 128, 0.08)`). Actual browser-computed contrast ratios measured via Chrome DevTools Protocol against the WCAG AA reference threshold (4.5:1 for normal text, 3:1 for large text) across tested components in both Light and Dark themes include:
@@ -262,8 +253,8 @@ For classroom and evaluation presentations, a presenter can deliver the full nar
   - *Healthcare & Alert Cards:* Disclaimer alert card text (`#92400E` on `#FFFBEB`) measures between **6.84:1 and 8.05:1** depending on border versus fill pixel sampling, comfortably exceeding 4.5:1 in both themes.
 - **Tested Viewports & Layout Verification:**
   - *Laptop (1024×768 Viewport):*
-    - Step 1 Welcome Screen Fold: The layout utilizes compact hero and setup cards so that the primary "🚀 Start Vision Check" button's measured top edge sits at Y=562px and its bottom edge sits at Y=604px. In a 768px viewport, this provides an actual measured margin of **164px above the fold**, ensuring immediate visibility without scrolling.
-    - Step 4 Comparison Switcher: A `[3, 2]` column ratio provides ~288px width, verified in headless Chrome to prevent button label truncation ("Switch to Experience B ➡️" width 206px).
+    - Step 1 Welcome Screen: A focused single-column task layout prioritizes the four setup instructions and primary "Start Vision Check" action; secondary research and calibration details remain collapsed until requested.
+    - Step 4 Comparison Switcher: A single responsive segmented control replaces the previous radio-plus-button duplication and keeps both result formats directly accessible.
   - *Mobile (390×844 Narrow Viewport):*
-    - Experience B Trend Visualization: The Altair chart configures single-column vertical legend stacking (`direction="vertical", columns=1, labelLimit=350`), ensuring legend items ("Illustrative Demo Data" and "Your Completed Demo Check") stack vertically and render without horizontal clipping or truncation on narrow screens.
+    - Trend visualization uses short horizontal session labels and a compact custom legend to avoid clipping on narrow screens.
 - **Zero-Deprecation Forward Compatibility:** All button, dataframe, chart, and download widgets dynamically route responsive width via a helper, eliminating `use_container_width` deprecation warnings in Streamlit `>=1.35.0`.
