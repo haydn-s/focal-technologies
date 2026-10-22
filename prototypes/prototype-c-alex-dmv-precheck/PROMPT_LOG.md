@@ -67,12 +67,12 @@ out but idk if it should lead to any change. you tell me that.
 **Trying to learn:** Are A, B and C still genuinely different approaches, or are B and C drifting into the same product? Does anything in B change what C should be?
 
 **What came back:** C's concept stays. B (Focal Family) deliberately gives **no score and no pass/fail**: the parent judges. C gives a **verdict against an external rule**: the product judges. A sits in between, with the user reading a trend. Together the three span "how much should Focal judge for you?", which makes the class vote more informative. Small changes to C:
-- Switched to the official Focal mark (same geometry and colors as `fundamentals/Logo Considerations/focal-lockup.svg`), so all three demos share one brand.
+- Switched to the official Focal mark (same geometry and colors as [`assets/brand/focal-lockup.svg`](../../assets/brand/focal-lockup.svg)), so all three demos share one brand.
 - Pinned `streamlit==1.66.1` to match B; moved C to port 8503.
 - The "on track" result now says it does **not** mean your eyes are fine overall, in line with our Define-phase decision never to imply someone is "fine".
 - Added an A/B/C comparison table to the README.
 
-**Raised for the team, not changed:** visual consistency across the three demos, so styling doesn't sway the vote; one shared feedback question across all three; and two overlapping research folders (`fundamentals/` and `Focal Knowledge Base/`).
+**Raised for the team, not changed:** visual consistency across the three demos, so styling doesn't sway the vote; one shared feedback question across all three; and two overlapping research folders. Haydn's later reorganization resolved the folders by consolidating them into `docs/`.
 
 ---
 
@@ -89,7 +89,28 @@ out C myself and see if we want to PR
 
 ---
 
-## Prompts 6+ (add as we iterate)
+## Prompt 6: Compare deployment readiness across A, B and C
+
+```text
+ok so talking about everything on main and my PR. are all deployed to the same extent. like is
+proto A already on streamlit. are B and C. like is anything fundamentally different.
+```
+
+**Trying to learn:** Are the three demos equally ready for a shareable class link, and is anything fundamentally different between them?
+
+**What came back (no code changes):**
+- **None of the three is deployed yet.**
+- **All three deploy the same way:** one Streamlit Cloud app per folder.
+- **Recommendation:** merge first, then deploy all three from `main`, and open the links shortly before class because idle apps go to sleep.
+- **One real difference:** A's revised results now show acuity labels such as "20/20 · Normal vision", derived from fixed, uncalibrated letter sizes. These could contradict C's calibrated verdict during a live demo.
+
+A's prompt log records those labels as a deliberate PM decision, so this was raised as a team discussion rather than changed. The updated A suite passed 51/51.
+
+---
+
+Repository requests from this chat (opening PR #3, and adding C to the shared [`prompts.md`](../../prompts.md)) are logged there under shared repository work (R6–R7).
+
+## Prompts 7+ (add as we iterate)
 
 Log each new prompt here in the same format: the prompt, what we were trying to learn, and what changed. Likely next ones:
 - Rehearsal fixes after the first dry-run demo

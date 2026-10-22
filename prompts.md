@@ -2,7 +2,7 @@
 
 Use this shared file to record the prompts used to build Prototypes A, B, and C. Add the date, author, actual prompt text, intent, and resulting change or learning for each entry. Keep product-development prompts with the relevant prototype and shared repository work in its own section.
 
-The Demo B entries below come from Haydn's October 21, 2026 chat. The A and C sections are ready for their teammates' additions. Original per-prototype logs remain available as references.
+The Demo B entries below come from Haydn's October 21, 2026 chat and the Demo C entries from Burak's chat the same day. Teammates added the Demo A entries. Original per-prototype logs remain available as references.
 
 ## Prototype A Focal Monitor
 
@@ -131,13 +131,106 @@ The Demo B entries below come from Haydn's October 21, 2026 chat. The A and C se
 
 ## Prototype C Focal DMV Pre-Check
 
+**Author:** Burak
+
 **Persona:** Anxious Applicant Alex
 
-Teammate entries pending. Bring the actual prompts and outcomes into this section using the entry format below. The existing [Prototype C prompt log](prototypes/prototype-c-alex-dmv-precheck/PROMPT_LOG.md) is available as a reference.
+**Session date:** October 21, 2026
+
+These entries come from Burak's Claude Code chat. The [Prototype C prompt log](prototypes/prototype-c-alex-dmv-precheck/PROMPT_LOG.md) has the same entries in more detail.
+
+### C1 Ground the AI in the team's research
+
+**Actual user prompt:**
+
+> ok nice. we will work on this branch. we are basically building a prototype. the knowledge base folder has all the submissions we made so far for this class/project. its a business class so not that technical at all. look through the knowledge base to understand our product first please.
+
+**Intent:** Check that the AI could build an accurate picture of Focal from our own submissions (Lean Canvas, customer discovery, competitive analysis, business model deck, Define-phase workbook) before building anything, so the prototype would rest on our evidence rather than the AI's assumptions.
+
+**Result:** A summary of Focal as Test → Track → Guide → Share, the four personas and how strong each one's evidence is, the "convenient or thorough, never both" market gap, and our four Hills. It also pulled out key insights: trust and acting on a result matter more than accuracy, a result should come with a next step rather than a bare score, and a first check has no baseline to compare against.
+
+**Learning:** The summary matched the team's view and became the brief for everything after it.
+
+### C2 Map the assignment to the three personas
+
+**Actual user prompt:**
+
+> this is this assignments prompt: [pasted the full prototype assignment brief, now saved at [docs/assignments/prototype-assignment.md](docs/assignments/prototype-assignment.md)]
+
+**Intent:** Decide how to split three prototypes so the class vote answers a real strategy question, rather than comparing three versions of the same product.
+
+**Result:** A recommendation to give each prototype a different persona and a different approach. A (Riley) tests ongoing tracking, B (Pat) tests a child-friendly check, and C (Alex) tests a deadline-triggered "Will I pass my DMV eye test?" check, which is also the free channel on our Lean Canvas.
+
+**Learning:** Framed this way, the vote answers "which persona and approach should come first?" Burak took C because a teammate was already building B.
+
+### C3 Build Prototype C for Alex
+
+**Actual user prompt:**
+
+> yes someone else is doing pat. so lets do persona C and lets do Alex as per your suggestion.
+
+**Intent:** Test whether a check built around one specific, deadline-tied question ("Will I pass my state's DMV test?") resonates more than general vision monitoring.
+
+**Result:** Built the Focal DMV Pre-Check. Each feature traces back to a quote from Burak's Alex interview:
+- **State picker** using the real 20/40 rule for NC, CA, NY, TX and FL, researched from official DMV pages and administrative codes, each with a source link.
+- **Screen calibration** against any ID card, plus a distance step, so letters show at their true size on any screen.
+- **Six letters at the line that decides the result**, plus a "Can't tell" button, so pure guessing almost never earns "on track".
+- **One honest retake**, with both results shown side by side.
+- **A next-step plan**: find an eye exam, the state's eye-doctor form, a message to a parent, and a reminder.
+- **A neutral feedback form** with JSON export.
+
+**Deliberate cuts:** testing each eye separately, real reminders and booking, an agency view, and the other 45 states.
+
+**Verification:** 27 automated tests covering scoring, letter sizing, state data and every click path. Manual click-through at desktop and phone sizes, in light and dark themes. These checks verify behavior only; the hypothesis still needs testing with real applicants.
+
+**Learning:** The riskiest assumption is the trigger itself. Alex said the road test worried him more than the vision screening.
+
+### C4 Review C against Prototype B
+
+**Actual user prompt:**
+
+> good job. also one of my teammates pushed their branch. they were the one doing persona B. maybe check it out but idk if it should lead to any change. you tell me that.
+
+**Intent:** Confirm that B and C were still genuinely different approaches, and find out whether B changed what C should be.
+
+**Result:** C's concept stayed the same, with small changes:
+- Switched to the official Focal mark ([assets/brand/focal-lockup.svg](assets/brand/focal-lockup.svg)).
+- Pinned Streamlit 1.66.1 to match B.
+- Moved C to port 8503.
+- Added wording that "on track" does not mean someone's eyes are fine overall, following the Define-phase rule.
+- Added an A/B/C comparison to C's README.
+
+**Learning:** The three demos now span "how much should Focal judge for you?" A shows a trend, B leaves the judgment to the parent, and C gives a verdict against a rule. That makes the class vote more informative.
+
+### C5 Integrate C with the team repository
+
+**Actual user prompt:**
+
+> lets merge Haydn's branch into burak-dev and then push our work on top of it. Then I can check out C myself and see if we want to PR
+
+**Intent:** Fit C into the shared structure (one independent Streamlit app per folder) so all three demos run and deploy side by side.
+
+**Result:** Merged Haydn's B branch into `burak-dev` with no conflicts. Replaced the `prototype-c/` placeholder and added C to the root README, the `Makefile` and `requirements-dev.txt`.
+
+**Verification:** All three test suites passed before the push (A 50, B 7, C 27).
+
+### C6 Compare deployment readiness across A, B and C
+
+**Actual user prompt:**
+
+> ok so talking about everything on main and my PR. are all deployed to the same extent. like is proto A already on streamlit. are B and C. like is anything fundamentally different.
+
+**Intent:** Find out whether the three demos were equally ready for the class link, and whether anything made them fundamentally different.
+
+**Result:** No code changes. None of the three demos was deployed yet, and all three deploy the same way: one Streamlit Cloud app per folder. The recommendation was to merge first, then deploy all three from `main`, and to open the links shortly before class because idle apps go to sleep. The review also found that A's revised results show acuity labels such as "20/20 · Normal vision" from fixed, uncalibrated letter sizes. These could contradict C's calibrated verdict during a live demo. A's own log records the labels as a deliberate PM decision, so this was raised as a team discussion rather than changed.
+
+**Verification:** The updated A suite passed 51/51 on the `main` snapshot.
+
+**Prompt count:** Six prompts for C. C1–C4 and C6 shaped the product; C5 was integration work. The requests to open the pull request and to update this shared log are listed under shared repository work (R6–R7).
 
 ## Shared repository work
 
-These requests supported the demos and their collaboration workflow. They are recorded separately from the product experiments. All were made by Haydn on October 21, 2026.
+These requests supported the demos and their collaboration workflow. They are recorded separately from the product experiments. R1–R5 were made by Haydn and R6–R7 by Burak, all on October 21, 2026.
 
 ### R1 Push Demo B without a pull request
 
@@ -178,6 +271,26 @@ These requests supported the demos and their collaboration workflow. They are re
 > Once you're done, merge the branch directly into main. Then clean up the local repository and open a branch called "prompt-logs". Create a file called "prompts.md" and update prompts we've used to create the prototype B in this session. My teammates will update the file to include prompts they used for the other demos.
 
 **Intent and result:** Merged the scaffolding work directly into `main`, preserving the team's newer A prompt-log update. All 85 tests passed. Pushed `main`, removed the two fully merged local work branches, and created `prompt-logs` with this shared file and the two actual Demo B build prompts.
+
+### R6 Open the pull request for B and C
+
+**Actual user prompts:**
+
+> so he isn't PR ing anymore. since mine will include it right?
+
+> ok nice. can you do the PR.
+
+**Intent and result:** Confirmed that `burak-dev` already contained Haydn's B commit, so one pull request could bring both B and C into `main`. Opened [#3](https://github.com/haydn-s/focal-technologies/pull/3), which merged cleanly.
+
+### R7 Add Prototype C to this shared log
+
+**Actual user prompts:**
+
+> there is a new PR for prompts used. can you see it
+
+> do that please yes
+
+**Intent and result:** Reviewed this pull request, added the C entries above on `prompt-logs`, and updated two paths in C's own prompt log that had pointed to folders removed in the repository reorganization.
 
 ## Entry format for teammates
 
