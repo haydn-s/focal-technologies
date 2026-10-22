@@ -1,0 +1,66 @@
+# Focal Family Prototype B
+
+Focal Family is an initial concept for **Parent Pat**, a working parent of children aged 4–10. A parent and child explore six large matching pictures, the parent records observations, and the parent chooses a follow-up step and downloads a preparation summary. Haydn owns this workspace; Demo A stays in its existing sibling directory.
+
+## Hypothesis and evidence
+
+**Proposed hypothesis:** Parents will complete a short picture activity and use an observation summary to choose a concrete follow-up step.
+
+The [customer discovery workbook](../../fundamentals/Customer%20Discovery%20Interview%20Workbook%20-%20Team%205.docx) describes Parent Pat and records a real parent's concern that children memorize a fixed home chart. That parent already kept historical examination records, so another tracking dashboard alone would not address the observed gap. The [discovery presentation](../../fundamentals/Team%205%20Customer%20Discovery%20Slide%20Deck.pptx) identifies trust, result framing, and next-step guidance as questions for further testing.
+
+This concept explores engagement and preparation for follow-up. Randomizing pictures varies the interaction; it does not establish clinical validity or solve chart memorization in a validated screening. The persona choice and hypothesis are provisional and can change when new material is added to `fundamentals/`.
+
+**Difference from Demo A:** A explores whether a corrective-lens wearer values trends over a single result. B explores a parent-and-child workflow and whether parents can turn their own observations into a concrete next step.
+
+## Feature scope card
+
+| Feature | Value to test | Effort | Complexity | Proposed success signal |
+| --- | --- | --- | --- | --- |
+| Six randomized, fixed-size pictures with skip | Can a parent and child engage with a varied activity? | Low | Low | At least 4 of 5 parent evaluators complete the activity without facilitator help |
+| Observations and optional notes | Can a parent express what they have noticed? | Low | Low | Evaluators create a summary without needing to interpret a clinical score |
+| Parent-selected next step and checklist | Does preparation help parents decide what to do? | Low | Low | At least 3 of 5 parent evaluators choose appointment or school-contact preparation |
+| Downloadable summary | Is the output useful outside the app? | Low | Low | Observe whether evaluators request the summary and can explain its purpose |
+| Neutral feedback and session JSON | What helped, what was missing, and would they return? | Low | Low | Collect positive, negative, and uncertain responses without preselected answers |
+
+These are proposed small-sample decision rules, not findings. Aim for a two-minute unaided journey. Record observed completion time, help needed, chosen action, download requests, and comments. A download click indicates a request, not proof that a file was saved or an appointment made. Analyze fictional-example sessions separately from sessions in which evaluators completed the activity.
+
+**Deliberate cuts:** accounts, child names, camera access, clinical calibration, acuity measurement, diagnoses, prescriptions, provider search, real booking, messages, persistent records, and automatic feedback collection. All symbols stay the same large size. B does not reproduce A's trend chart.
+
+## Run and verify
+
+Run from the repository root:
+
+```bash
+python -m pip install -r prototypes/prototype-b-parent-guided-check/requirements.txt
+python -m streamlit run prototypes/prototype-b-parent-guided-check/app.py --server.port 8502
+```
+
+Open `http://localhost:8502`. For tests:
+
+```bash
+cd prototypes/prototype-b-parent-guided-check
+python -m unittest discover -p 'test_*.py'
+```
+
+`app.py` renders the interface. `demo.py` handles activity state, fictional examples, and text exports. Each user session has independent state; “Start over” clears the activity, observations, checklist, and feedback.
+
+For Streamlit Community Cloud, set the main file to `prototypes/prototype-b-parent-guided-check/app.py`. Its adjacent requirements file is independent of A's. [Repository setup and deployment](../../README.md) explains how to run both demos and publish separate links.
+
+## Demo rehearsal
+
+1. Open a fresh session. Select a child label and age group, then choose “Let's play.”
+2. Match several pictures and skip one to show that a child can take a break.
+3. Select an observation, add a short note, and choose appointment preparation.
+4. Create the summary, tick a preparation task, preview it, and download it.
+5. Edit observations or choose another next step to demonstrate that the parent controls the path.
+6. Save neutral feedback and download the session JSON. Start over to show that the previous session clears.
+
+“Explore a fictional example” is a clearly labeled alternative walkthrough. It loads made-up activity responses and observations and should not be presented as a completed participant activity.
+
+## Data and interpretation
+
+The matching activity is an interaction demonstration, not a vision screening or medical result. Its score reflects shape matching, attention, familiarity, and possible assistance. The app never uses answers or observations to infer a condition, issue a pass/fail result, or recommend a course of care. Preparation tasks follow the parent's selected action.
+
+Session data lives in Streamlit's server-side session memory. There is no database, account, analytics collector, or automatic submission. Refresh/reconnection behavior depends on Streamlit session lifetime. To retain a summary or feedback, download it. The session JSON includes activity choices, observations, chosen next step, checklist, download-request flag, feedback, and current-versus-fictional provenance. Avoid entering identifying information in free text.
+
+This is a working initial concept. Finish the prompt log, validate it with parents, rehearse twice, and publish an accessible shared URL.

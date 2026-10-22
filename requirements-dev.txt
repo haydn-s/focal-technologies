@@ -1,0 +1,5 @@
+# Convenience installation for working on all current demos locally.
+# Each deployed demo uses the requirements.txt beside its own app.py.
+-r prototypes/prototype-a-riley-vision-tracking/requirements.txt
+-r prototypes/prototype-b-parent-guided-check/requirements.txt
+-r prototypes/prototype-c-alex-dmv-precheck/requirements.txt
