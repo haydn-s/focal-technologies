@@ -8,7 +8,7 @@ Interactive product experiments for Duke MENG 570. Each prototype is an independ
 | --- | --- | --- | --- | --- |
 | A · Focal Monitor | Routine-Check Riley | Adults concerned about vision changes will find ongoing tracking more useful than an isolated demonstration result. | [Prototype A](prototypes/prototype-a-riley-vision-tracking/) | Existing demo |
 | B · Focal Family | Parent Pat | Parents will complete a short picture activity and use an observation summary to choose a concrete follow-up step. | [Prototype B](prototypes/prototype-b-parent-guided-check/) | Initial working concept · Haydn |
-| C | To be selected | A third distinct hypothesis is still needed. | [Prototype C](prototypes/prototype-c/) | Reserved |
+| C · Focal DMV Pre-Check | Anxious Applicant Alex | People with a DMV vision screening coming up will prefer, and act on, a free check that answers "Will I pass my state's test?" with a clear next step, over a general vision score. | [Prototype C](prototypes/prototype-c-alex-dmv-precheck/) | Working demo · Burak |
 
 Prototype A's internal “Experience A / Experience B” comparison belongs entirely to Prototype A. **Focal Family is the team's separate Prototype B.**
 
@@ -30,7 +30,13 @@ prototypes/
     README.md
     PROMPT_LOG.md
     test_demo.py
-  prototype-c/                            Reserved for the third demo
+  prototype-c-alex-dmv-precheck/           Burak's demo
+    app.py                                Streamlit interface and check logic
+    requirements.txt
+    README.md
+    PROMPT_LOG.md
+    test_app.py
+Focal Knowledge Base/                     All past class submissions (PDF, DOCX, PPTX)
 Makefile                                  Optional development shortcuts
 requirements-dev.txt                      Installs all current apps for local work
 ```
@@ -61,7 +67,12 @@ python -m streamlit run prototypes/prototype-a-riley-vision-tracking/app.py --se
 python -m streamlit run prototypes/prototype-b-parent-guided-check/app.py --server.port 8502
 ```
 
-On macOS/Linux, `make demo-a` and `make demo-b` are equivalent after activating the environment. Both apps can run simultaneously on these separate ports.
+```bash
+# Demo C → http://localhost:8503
+python -m streamlit run prototypes/prototype-c-alex-dmv-precheck/app.py --server.port 8503
+```
+
+On macOS/Linux, `make demo-a`, `make demo-b` and `make demo-c` are equivalent after activating the environment. All three apps can run simultaneously on these separate ports.
 
 For a smaller installation, install only `prototypes/<your-demo>/requirements.txt`. If dependency versions eventually conflict, create a separate virtual environment inside each prototype directory.
 
@@ -73,6 +84,7 @@ Streamlit Community Cloud supports multiple apps from one repository. Create one
 | --- | --- | --- |
 | Demo A | `prototypes/prototype-a-riley-vision-tracking/app.py` | `prototypes/prototype-a-riley-vision-tracking/requirements.txt` |
 | Demo B | `prototypes/prototype-b-parent-guided-check/app.py` | `prototypes/prototype-b-parent-guided-check/requirements.txt` |
+| Demo C | `prototypes/prototype-c-alex-dmv-precheck/app.py` | `prototypes/prototype-c-alex-dmv-precheck/requirements.txt` |
 
 Each deployment receives its own URL. Record the actual links below after publishing; local demos alone do not meet the assignment's shared-link requirement.
 
@@ -80,7 +92,7 @@ Each deployment receives its own URL. Record the actual links below after publis
 | --- | --- |
 | A | Not recorded |
 | B | Not deployed |
-| C | Not built |
+| C | Not deployed |
 
 Streamlit uses the requirements file beside each entry point for separate dependencies. The root `requirements-dev.txt` is a local convenience file. Community Cloud runs from the repository root, so the local launch commands above start there as well. If adding `.streamlit/config.toml`, place it at the root and coordinate changes because that configuration is shared by apps on the same branch. Keep secrets out of source control.
 
@@ -88,7 +100,7 @@ See Streamlit's official [file organization guide](https://docs.streamlit.io/dep
 
 ## Tests
 
-With the virtual environment active, use `make test` on macOS/Linux to run both suites. On any platform, run each suite independently inside its own prototype directory:
+With the virtual environment active, use `make test` on macOS/Linux to run all three suites. On any platform, run each suite independently inside its own prototype directory:
 
 ```bash
 cd prototypes/prototype-a-riley-vision-tracking
@@ -101,6 +113,12 @@ cd prototypes/prototype-b-parent-guided-check
 python -m unittest discover -p 'test_*.py'
 ```
 
+```bash
+# Starting from the repository root:
+cd prototypes/prototype-c-alex-dmv-precheck
+python -m unittest discover -p 'test_*.py'
+```
+
 The existing A tests use a local `app` import and relative entry-point paths. Separate test processes also avoid collisions between multiple `app.py` files.
 
 ## Assignment checklist
@@ -108,15 +126,11 @@ The existing A tests use a local `app` import and relative entry-point paths. Se
 - Three functional, clickable prototypes that people can use without a guided explanation.
 - Three distinct, explicit hypotheses grounded in the personas and research. Changing colors alone does not count.
 - A Feature Scope Card per prototype covering value, effort, complexity, success signal, and deliberate cuts.
-- At least five actual prompts per prototype, recorded with intent and learning in its `PROMPT_LOG.md`. B currently has two recorded user prompts; continue the log as the concept develops.
+- At least five actual prompts per prototype, recorded with intent and learning in its `PROMPT_LOG.md`. B currently has two recorded user prompts and C has five; continue the logs as the concepts develop.
 - A working, accessible shared link for each prototype, checked from a fresh browser session.
 - Presentation: problem and evolution (up to two minutes), versions and hypotheses (about two minutes each), live demos (about two minutes each), and prioritization and strategy justification.
 - Rehearse each demo twice. Submit the links and presentation material to Canvas before presentation day.
 - Record the class vote and the team's evidence-based response for the remaining semester work.
-
-## Adding Demo C
-
-Choose its persona and hypothesis, then add `app.py`, `requirements.txt`, `README.md`, and `PROMPT_LOG.md` inside `prototypes/prototype-c/`. Add its requirements to `requirements-dev.txt` for the combined local setup, launch it on port 8503, and give it a separate Cloud deployment. Avoid importing either other demo's `app.py`; extract reusable functions only when there is a concrete shared need.
 
 ## License
 

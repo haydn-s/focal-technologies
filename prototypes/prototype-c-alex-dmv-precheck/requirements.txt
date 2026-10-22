@@ -1,0 +1,2 @@
+# Pin the version verified for the classroom demo and its AppTest flow tests (same as Prototype B).
+streamlit==1.66.1
