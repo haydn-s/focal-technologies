@@ -6,8 +6,9 @@ from pathlib import Path
 import streamlit as st
 
 from demo import (
-    NEXT_STEPS, OBSERVATIONS, activity_counts, build_summary, fictional_example,
-    follow_up_tasks, new_session, record_answer,
+    NEXT_STEPS, OBSERVATIONS, QUESTION_OPTIONS, activity_counts, begin_activity, build_summary,
+    fictional_example, follow_up_tasks, new_session, record_answer, record_practice_answer,
+    refresh_parent_note, set_activity_paused,
 )
 
 SESSION_KEY = "focal_family"
@@ -39,6 +40,18 @@ def answer(index, choice):
     record_answer(st.session_state[SESSION_KEY], index, choice)
 
 
+def practice_answer(choice):
+    record_practice_answer(st.session_state[SESSION_KEY], choice)
+
+
+def start_picture_game():
+    begin_activity(st.session_state[SESSION_KEY])
+
+
+def pause_picture_game(paused):
+    set_activity_paused(st.session_state[SESSION_KEY], paused)
+
+
 def load_example():
     reset()
     st.session_state[SESSION_KEY] = fictional_example()
@@ -46,6 +59,13 @@ def load_example():
 
 def download_requested():
     st.session_state[SESSION_KEY]["summary_download_requested"] = True
+
+
+def save_message_draft():
+    session = st.session_state[SESSION_KEY]
+    session["message_draft"] = st.session_state.family_message_draft
+    session["summary_revision"] = session.get("summary_revision", 0) + 1
+    session["summary_download_requested"] = False
 
 
 def render_setup(session):
@@ -79,9 +99,48 @@ def render_setup(session):
         st.button("Explore a fictional example", on_click=load_example, key="family_example")
 
 
+def render_practice(session):
+    st.caption("PLAY TOGETHER · PRACTICE")
+    st.title("Try one picture together")
+    st.write("This picture is a circle. Ask your child to point to it or say its name, then tap Circle below.")
+    st.markdown(
+        '<div class="picture-stage"><svg viewBox="0 0 120 120" width="150" height="150" '
+        'role="img" aria-label="Practice circle"><g fill="#183c43">'
+        + SHAPES["Circle"] + '</g></svg></div>', unsafe_allow_html=True,
+    )
+    for col, choice in zip(st.columns(4), CHOICE_GLYPHS):
+        col.button(
+            f"{CHOICE_GLYPHS[choice]} {choice}", key=f"family_practice_{choice}",
+            on_click=practice_answer, args=(choice,), use_container_width=True,
+        )
+    if session.get("practice_complete"):
+        st.success("That's it. You can help with the buttons, and skip a picture whenever your child wants.")
+    elif session.get("practice_answer"):
+        st.info("Try Circle for this practice picture. Practice is just for learning how the buttons work.")
+    st.button(
+        "Start the picture game", type="primary", key="family_begin_activity",
+        disabled=not session.get("practice_complete"), on_click=start_picture_game,
+        use_container_width=True,
+    )
+    st.caption("Practice is separate from the six-picture activity.")
+
+
 def render_game(session):
+    if not session.get("practice_dismissed"):
+        render_practice(session)
+        return
     index = len(session["answers"])
     total = len(session["questions"])
+    if session.get("paused"):
+        st.caption("TAKE A BREAK")
+        st.title("Take the time you need")
+        st.write("Your picture choices are saved for this visit. Resume whenever you're ready.")
+        st.progress(index / total, text=f"{index} of {total} pictures explored")
+        st.button(
+            "Resume the picture game", type="primary", key="family_resume_activity",
+            on_click=pause_picture_game, args=(False,), use_container_width=True,
+        )
+        return
     if index >= total:
         set_step("observations")
         st.rerun()
@@ -102,6 +161,7 @@ def render_game(session):
             args=(index, choice), use_container_width=True,
         )
     st.button("Skip this picture", key=f"family_skip_{index}", on_click=answer, args=(index, None))
+    st.button("Take a break", key="family_pause_activity", on_click=pause_picture_game, args=(True,))
     st.caption("Every picture stays large. There is no timer, pass mark, or clinical result.")
 
 
@@ -141,6 +201,8 @@ def render_observations(session):
                 st.info("Choose a next step, including 'I'm not sure yet', to shape your summary.")
             else:
                 session["next_step"] = next_step
+                refresh_parent_note(session)
+                st.session_state.pop("family_message_draft", None)
                 session["step"] = "summary"
                 st.rerun()
 
@@ -151,6 +213,7 @@ def render_feedback(session):
         st.success("Your feedback is recorded in this session. Download a copy below to share with the team.")
         st.write(f"Usefulness: {session['feedback']['usefulness']}")
         st.write(f"Would use again: {session['feedback']['reuse']}")
+        st.write(f"Next-step clarity: {session['feedback'].get('next_step_clarity', 'Not asked in this earlier session')}")
         st.json(session["feedback"], expanded=False)
     else:
         with st.form("family_feedback"):
@@ -163,12 +226,36 @@ def render_feedback(session):
                 "Would you use an experience like this again?",
                 ["Yes", "No", "Not sure"], index=None, horizontal=True, key="family_reuse",
             )
+            clarity = st.radio(
+                "How clear is the next step you would take?",
+                ["Very unclear", "Somewhat unclear", "Neither clear nor unclear", "Somewhat clear", "Very clear", "Not sure"],
+                index=None, key="family_clarity",
+            )
+            barriers = st.text_area(
+                "What, if anything, could make it difficult to follow through?",
+                max_chars=800, key="family_barriers",
+            )
             comment = st.text_area("What helped, or what was missing?", max_chars=800, key="family_comment")
             if st.form_submit_button("Save feedback", key="family_save_feedback"):
-                if usefulness is None or reuse is None:
-                    st.info("Please answer both choice questions. Any answer is welcome.")
+                if usefulness is None or reuse is None or clarity is None:
+                    st.info("Please answer all three choice questions. Any answer is welcome.")
                 else:
-                    session["feedback"] = {"usefulness": usefulness, "reuse": reuse, "comment": comment.strip()}
+                    session["feedback"] = {
+                        "usefulness": usefulness, "reuse": reuse, "comment": comment.strip(),
+                        "next_step_clarity": clarity, "follow_through_barrier": barriers.strip(),
+                        "evaluated_context": {
+                            "source": session["source"],
+                            "next_step": session["next_step"],
+                            "observations": list(session["observations"]),
+                            "notes": session["notes"],
+                            "questions_to_ask": list(session.get("questions_to_ask", [])),
+                            "custom_question": session.get("custom_question", ""),
+                            "message_draft": session.get("message_draft", ""),
+                            "activity": activity_counts(session),
+                            "summary_revision": session.get("summary_revision", 0),
+                            "summary_download_requested": session["summary_download_requested"],
+                        },
+                    }
                     st.rerun()
     st.download_button(
         "Download session and feedback", data=json.dumps(session, indent=2),
@@ -205,12 +292,44 @@ def render_summary(session):
             # Include the chosen route in the key so another route cannot inherit ticks.
             key = f"family_task_{NEXT_STEPS.index(session['next_step'])}_{index}"
             session["tasks"][task] = st.checkbox(task, value=session["tasks"].get(task, False), key=key)
+    with st.expander("Add questions and prepare a message", expanded=False):
+        st.write("Choose what you want to ask, then edit a note you can take to your next conversation.")
+        with st.form("family_questions"):
+            selected = st.multiselect(
+                "Questions I'd like to ask", QUESTION_OPTIONS,
+                default=session.get("questions_to_ask", []), key="family_question_selection",
+            )
+            custom = st.text_area(
+                "A question of my own (optional)", value=session.get("custom_question", ""),
+                max_chars=400, key="family_custom_question",
+            )
+            if st.form_submit_button("Update questions and regenerate draft"):
+                session["questions_to_ask"] = selected
+                session["custom_question"] = custom.strip()
+                refresh_parent_note(session)
+                st.session_state.pop("family_message_draft", None)
+                st.rerun()
+        if "family_message_draft" not in st.session_state:
+            st.session_state.family_message_draft = session.get("message_draft", "")
+        st.text_area(
+            "My message draft", key="family_message_draft", height=230,
+            on_change=save_message_draft, max_chars=3000,
+        )
+        st.caption("This is your draft. You decide what to share and whom to contact. Nothing is sent by the app.")
+    download_col, note_col = st.columns(2)
+    with download_col:
         st.download_button(
             "Download my summary", data=build_summary(session), file_name="focal-family-summary.txt",
             mime="text/plain", type="primary", use_container_width=True,
             on_click=download_requested, key="family_summary_export",
         )
-        st.caption("Nothing is booked or sent. This checklist and download help you prepare.")
+    with note_col:
+        st.download_button(
+            "Download message draft", data=session.get("message_draft", ""),
+            file_name="focal-family-parent-note.txt", mime="text/plain",
+            key="family_note_export", use_container_width=True,
+        )
+    st.caption("Nothing is booked or sent. These downloads help you prepare.")
     with st.expander("Preview the take-home summary"):
         st.text(build_summary(session))
     st.divider()

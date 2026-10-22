@@ -35,6 +35,7 @@ This is the shared reference library for the three product experiments. It combi
 
 ## Development and artwork
 
+- [Assignment readiness and remaining team steps](assignment-readiness.md)
 - [Development and contribution guide](../CONTRIBUTING.md)
 - [Streamlit deployment guide](deployment.md)
 - [Original Focal brand assets](../assets/brand/README.md)

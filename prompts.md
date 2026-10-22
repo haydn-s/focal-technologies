@@ -127,7 +127,49 @@ The Demo B entries below come from Haydn's October 21, 2026 chat and the Demo C 
 
 **Learning:** The implementation makes a parent-and-child preparation workflow concrete and distinct from A's trend-tracking experience. Seven automated checks cover the activity and main journeys, including skipped pictures, editing, input preservation, neutral feedback, and reset. These checks verify behavior; the hypothesis still needs testing with parents.
 
-**Prompt count:** This chat contains two product-development prompts for B. The shared repository requests below document additional work but are not counted as extra B build prompts. Continue recording actual prompts as B develops toward the assignment's minimum of five per prototype.
+### B3 Strengthen the parent follow-up experience
+
+**Actual user request:**
+
+> I thought the requirement was 5 prompts total for all the prototypes. If it needs 5 individually, then we can work more to beef up prototype B.
+
+**Context:** Haydn clarified this during the assignment review. The assignment says at least five prompts per prototype; the request authorized further B development rather than counting repository maintenance as extra build prompts.
+
+**Intent:** Make the parent workflow more useful beyond the matching activity.
+
+**Result:** Added parent-selected questions, a custom question, an editable contact-note draft, and separate summary and message downloads. The draft follows the parent's selected next step and observations; it does not derive advice from matching performance. Feedback now preserves the context that was evaluated even when the parent later edits the summary.
+
+**Verification and learning:** Added checks that questions and edits reach the export, regenerated notes invalidate prior download requests, and submitted feedback keeps the original evaluated context. This makes the take-home output concrete; it does not establish whether parents will actually contact a provider.
+
+### B4 Add practice and breaks for children
+
+**Actual user instruction:**
+
+> Add practice and pause/resume
+
+**Context:** This answered: “For Prototype B's child activity, should I add a guided practice picture and pause/resume controls so children can learn the interaction and take a break without losing progress?”
+
+**Intent:** Help a parent and child learn the controls before the activity and pause without losing progress.
+
+**Result:** Added a guided practice circle, a separate start action for the six-picture activity, and pause/resume controls. Practice is not counted in the activity result. Pausing hides the response controls and rejects stale answer events; resuming returns to the next unanswered picture.
+
+**Verification and learning:** Added model and full-flow checks for practice gating, separate counts, pause preservation, and resume. Accommodating a child's pace improves the interaction model without adding a claim about clinical measurement.
+
+### B5 Measure next-step clarity and barriers
+
+**Actual user instruction:**
+
+> Add clarity and follow-through questions
+
+**Context:** This answered: “For Prototype B's evaluation, should I add neutral questions about how clear the parent's next step is and what could prevent follow-through?”
+
+**Intent:** Measure the proposed guidance benefit directly and learn what could keep a parent from following through.
+
+**Result:** Added a required next-step clarity question with negative, neutral, positive, and uncertain choices and no preselected answer. Added an optional open question about barriers to follow-through. Both are recorded with the original evaluated context in the feedback export.
+
+**Verification and learning:** Checked that negative and uncertain answers are accepted, no clarity answer is selected initially, and barrier text is preserved. Clarity and stated barriers provide more specific research signals than usefulness alone; they still do not prove that an appointment was booked.
+
+**Prompt count:** Five distinct B development requests are now recorded (B1–B5). B3–B5 were actual requests in this session and were implemented separately. The shared repository requests below are not counted toward this total.
 
 ## Prototype C Focal DMV Pre-Check
 

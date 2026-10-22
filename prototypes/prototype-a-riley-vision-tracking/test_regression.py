@@ -814,7 +814,7 @@ class TestFocalMonitorRegression(unittest.TestCase):
         # Sidebar Presenter Guide
         self.assertTrue(any("2-Minute Presenter Guide" in exp.label for exp in at.sidebar.expander))
         sidebar_text = " ".join([m.value for m in at.sidebar.markdown])
-        self.assertIn("Rehearsed Classroom Flow", sidebar_text)
+        self.assertIn("Suggested Classroom Flow", sidebar_text)
 
         # Welcome setup cards and calibration expander
         self.assertTrue(any("Testing Setup & Distance Calibration Guidance" in exp.label for exp in at.expander))

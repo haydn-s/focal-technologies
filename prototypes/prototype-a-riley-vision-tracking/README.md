@@ -148,9 +148,23 @@ In consumer digital health, product development teams frequently take for grante
 
 ---
 
+## Feature Scope Card
+
+These effort and complexity estimates describe the prototype. The success signals are proposed pilot checks, not observed customer findings.
+
+| Feature | Value | Effort | Complexity | Proposed success signal |
+| --- | --- | --- | --- | --- |
+| Eight-question interactive check and reset | High | Medium | Medium | Evaluators complete the journey without facilitator help and can repeat it |
+| Single Result and Trend Tracking using the same result | High | Medium | Medium | At least 3 of 5 Riley-like pilot participants state a format preference and explain why |
+| Fictional history with a separate completed-session point | High | Medium | Medium | Participants can distinguish illustrative history from their current session |
+| Neutral, locked feedback and JSON export | High | Medium | Medium | Responses are collected after both views and remain consistent in the downloaded record |
+| Compact instructions and optional details | High | Low | Low | The proposed two-minute demo can be rehearsed without coaching each click |
+
+**Deliberate cuts:** clinical calibration, diagnosis, prescription changes, accounts, persistent history, booking, and real notifications. The Snellen-style labels are an illustrative mapping for the product interface, not calibrated measurements; the app labels that boundary at setup and in both result formats. The format-comparison experiment tests stated usefulness rather than clinical performance or sustained use.
+
 ## 5. Technical Requirements & Architecture
 
-- **Language:** Python 3.10+ (tested on Python 3.13)
+- **Language:** Python 3.11 or newer; the repository's automated checks use Python 3.12.
 - **Frameworks:** Streamlit (`>=1.35.0`), Pandas (`>=2.0.0`), Altair (`>=5.0.0`)
 - **State Management:** Fully driven by `st.session_state` (no external databases, local storage cookies, or paid APIs).
 - **Design System:** Healthcare dashboard theme inspired by modern clinical software (soothing Slate/Cyan palette, Inter typography, accessible contrast, alert containers).
@@ -161,7 +175,7 @@ In consumer digital health, product development teams frequently take for grante
 ## 6. Local Execution Instructions
 
 ### Prerequisites
-- Python 3.10 or later installed on your machine.
+- Python 3.11 or later installed on your machine.
 
 ### Step-by-Step Setup
 

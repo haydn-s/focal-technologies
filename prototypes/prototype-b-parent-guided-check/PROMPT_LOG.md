@@ -1,6 +1,6 @@
 # Prototype B prompt log
 
-This is the initial Demo B build record from October 21, 2026. The ongoing [team prompt log](../../prompts.md#prototype-b-focal-family) contains these entries and is the place to record future prompts. Implementation steps are outcomes of the prompts, not additional prompts from the user.
+This is the initial Demo B build record from October 21, 2026. The ongoing [team prompt log](../../prompts.md#prototype-b-focal-family) now contains five actual B development requests (B1–B5), including these first two entries and the later parent-follow-up, practice/break, and evaluation iterations. Implementation steps are outcomes of the prompts, not additional prompts from the user.
 
 ## Prompt 1
 
