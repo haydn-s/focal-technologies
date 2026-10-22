@@ -1,0 +1,40 @@
+name: Prototype checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Demo ${{ matrix.demo }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - demo: A
+            directory: prototypes/prototype-a-riley-vision-tracking
+          - demo: B
+            directory: prototypes/prototype-b-parent-guided-check
+          - demo: C
+            directory: prototypes/prototype-c-alex-dmv-precheck
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: ${{ matrix.directory }}/requirements.txt
+      - name: Install this demo's dependencies
+        working-directory: ${{ matrix.directory }}
+        run: python -m pip install -r requirements.txt
+      - name: Run this demo's tests
+        working-directory: ${{ matrix.directory }}
+        run: python -m unittest discover -p 'test_*.py'

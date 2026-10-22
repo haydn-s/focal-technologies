@@ -240,7 +240,7 @@ def main():
         border-radius: 22px; margin: 1.1rem 0 1.5rem; }
     </style>""", unsafe_allow_html=True)
     with st.sidebar:
-        logo = ROOT / "fundamentals" / "Logo Considerations" / "focal-lockup.svg"
+        logo = ROOT / "assets" / "brand" / "focal-lockup.svg"
         if logo.exists():
             st.image(str(logo), width=170)
         st.subheader("Focal Family")

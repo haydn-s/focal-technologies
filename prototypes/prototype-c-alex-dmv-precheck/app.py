@@ -315,7 +315,7 @@ def html(markup: str):
 
 
 def focal_logo_svg(size: int = 34) -> str:
-    """The Focal mark, same geometry and colors as fundamentals/Logo Considerations/focal-lockup.svg."""
+    """The Focal mark, same geometry and colors as assets/brand/focal-lockup.svg."""
     return f"""<svg width="{size}" height="{size}" viewBox="8 14 64 64" aria-hidden="true">
 <circle cx="40" cy="46" r="28" fill="none" stroke="#10265F" stroke-width="4.4" stroke-dasharray="23.2 6.12" transform="rotate(15 40 46)"/>
 <circle cx="40" cy="46" r="21.2" fill="#FFFFFF"/>
