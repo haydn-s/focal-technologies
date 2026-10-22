@@ -33,6 +33,11 @@ This is the shared reference library for the three product experiments. It combi
 | Prototype assignment brief | [Supplied assignment text](assignments/prototype-assignment.md) |
 | Define phase workbook | [PDF](assignments/define-phase-workbook.pdf) |
 
+## Prototype presentation
+
+- [Focal Prototype Presentation](<presentations/Focal Prototype Presentation.pptx>)
+- [Presenter timing and team handoff](presentations/README.md)
+
 ## Development and artwork
 
 - [Assignment readiness and remaining team steps](assignment-readiness.md)
