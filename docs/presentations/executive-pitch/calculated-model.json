@@ -1,0 +1,168 @@
+{
+  "periods": [
+    {
+      "period": "Y1 H1",
+      "months": 6,
+      "startSites": 0,
+      "endSites": 10,
+      "product": 70000,
+      "sales": 25000,
+      "privacy": 20000,
+      "admin": 20000,
+      "averageSites": 5,
+      "revenue": 6000,
+      "cogs": 1500,
+      "opex": 135000,
+      "result": -130500
+    },
+    {
+      "period": "Y1 H2",
+      "months": 6,
+      "startSites": 10,
+      "endSites": 50,
+      "product": 90000,
+      "sales": 35000,
+      "privacy": 20000,
+      "admin": 20000,
+      "averageSites": 30,
+      "revenue": 36000,
+      "cogs": 9000,
+      "opex": 165000,
+      "result": -138000
+    },
+    {
+      "period": "Y2 H1",
+      "months": 6,
+      "startSites": 50,
+      "endSites": 120,
+      "product": 100000,
+      "sales": 50000,
+      "privacy": 20000,
+      "admin": 40000,
+      "averageSites": 85,
+      "revenue": 102000,
+      "cogs": 25500,
+      "opex": 210000,
+      "result": -133500
+    },
+    {
+      "period": "Y2 H2",
+      "months": 6,
+      "startSites": 120,
+      "endSites": 250,
+      "product": 110000,
+      "sales": 65000,
+      "privacy": 20000,
+      "admin": 45000,
+      "averageSites": 185,
+      "revenue": 222000,
+      "cogs": 55500,
+      "opex": 240000,
+      "result": -73500
+    },
+    {
+      "period": "Y3 H1",
+      "months": 6,
+      "startSites": 250,
+      "endSites": 400,
+      "product": 150000,
+      "sales": 85000,
+      "privacy": 25000,
+      "admin": 50000,
+      "averageSites": 325,
+      "revenue": 390000,
+      "cogs": 97500,
+      "opex": 310000,
+      "result": -17500
+    },
+    {
+      "period": "Y3 H2",
+      "months": 6,
+      "startSites": 400,
+      "endSites": 550,
+      "product": 150000,
+      "sales": 100000,
+      "privacy": 35000,
+      "admin": 65000,
+      "averageSites": 475,
+      "revenue": 570000,
+      "cogs": 142500,
+      "opex": 350000,
+      "result": 77500
+    }
+  ],
+  "years": [
+    {
+      "year": 1,
+      "averageSites": 17.5,
+      "endSites": 50,
+      "revenue": 42000,
+      "cogs": 10500,
+      "opex": 300000,
+      "result": -268500,
+      "arr": 120000
+    },
+    {
+      "year": 2,
+      "averageSites": 135,
+      "endSites": 250,
+      "revenue": 324000,
+      "cogs": 81000,
+      "opex": 450000,
+      "result": -207000,
+      "arr": 600000
+    },
+    {
+      "year": 3,
+      "averageSites": 400,
+      "endSites": 550,
+      "revenue": 960000,
+      "cogs": 240000,
+      "opex": 660000,
+      "result": 60000,
+      "arr": 1320000
+    }
+  ],
+  "unitCogs": 600,
+  "grossMargin": 0.75,
+  "funding": [
+    [
+      "Product and research",
+      260000
+    ],
+    [
+      "Pilots and sales",
+      110000
+    ],
+    [
+      "Privacy, security and review",
+      60000
+    ],
+    [
+      "Administration and insurance",
+      80000
+    ],
+    [
+      "Service delivery (COGS)",
+      36000
+    ],
+    [
+      "Reserve",
+      54000
+    ]
+  ],
+  "eighteenMonths": {
+    "grossSpend": 546000,
+    "revenue": 144000,
+    "netBurn": 402000,
+    "endingCash": 198000
+  },
+  "market": {
+    "nationalAnnual": 125880000,
+    "serviceableAnnual": 12588000
+  },
+  "valuation": {
+    "postMoney": 4000000,
+    "preMoney": 3400000
+  }
+}

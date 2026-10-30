@@ -368,6 +368,28 @@ These requests supported the demos and their collaboration workflow. They are re
 
 **Intent and result:** Drafted a separate 15-slide deck that follows the assignment's four presentation parts. It was pushed as a PDF, an HTML version and speaker notes to `docs/presentations/burak-draft/`, without being combined with Haydn's PPTX. Also wrote a two-minute live-demo script for Prototype C. The README's demo section now includes the Georgia state switch from C7.
 
+### R9 Prepare the executive investor pitch
+
+**Date and author:** October 30, 2026, Haydn Stucker.
+
+**Actual user prompt excerpts:**
+
+> Update the local repo so it matches GitHub. Then open a new branch called "executive-pitch".
+
+> We need to create an executive presentation for our pitch.
+
+> We need to allow 3 minutes for our product demo.
+
+> Also, we are using our Family Prototype for our final presentation.
+
+> Make it a 14-minute presentation. He updated the requirements in class.
+
+Haydn also selected the Focal Prototype Presentation as the visual reference and authorized a proposed school or pediatric-practice licensing model with a free parent experience and an 18-month funding plan. The supplied assignment requirements are summarized in [the pitch brief](docs/assignments/executive-pitch-assignment.md).
+
+**Intent and result:** Fast-forwarded local `main` to GitHub and created `executive-pitch`. Added a Family-focused investor PPTX with 14 main slides, five backups, a three-minute demo, timed scripts for all five speakers, an explicitly proposed $600K raise and a reproducible financial model. The initial market and revenue model focuses on schools; pediatric practices remain an expansion possibility outside the forecast. Original decks and prototype code remain intact.
+
+**Learning and verification:** The research contains only one real parent interview and no documented Family sales or pilot outcomes. The new pitch distinguishes that evidence from simulations, targets and financial assumptions. Financial totals, PPTX structure, editable chart data, fonts and layouts were checked, and each rendered slide was reviewed. The timed script is a rehearsal plan, not a measured live performance or customer-validation result.
+
 ## Entry format for teammates
 
 For each actual prompt, add:
