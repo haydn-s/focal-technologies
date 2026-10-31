@@ -390,6 +390,20 @@ Haydn also selected the Focal Prototype Presentation as the visual reference and
 
 **Learning and verification:** The research contains only one real parent interview and no documented Family sales or pilot outcomes. The new pitch distinguishes that evidence from simulations, targets and financial assumptions. Financial totals, PPTX structure, editable chart data, fonts and layouts were checked, and each rendered slide was reviewed. The timed script is a rehearsal plan, not a measured live performance or customer-validation result.
 
+### R10 Upgrade Family and revise investor coverage
+
+**Date and author:** October 30, 2026, Haydn Stucker.
+
+**Actual prompt:**
+
+> Revise the slides. Are we sure that we're hitting all the major sections?
+>
+> We probably need to update the demo as well, and add new functionality. Create a new branch called "focal-family-updates" and start upgrading the demo. We will still use Streamlit, but we need to add functionality, live testing, and vision performance over time windows to demonstrate the capabilities of the app.
+
+**Intent and result:** Created `focal-family-updates` from the current investor-pitch branch. Added a parent-assisted experimental direction task, controlled screen/distance setup, completed-check save, history export/restore, same-setup comparisons and 7/30/90-day windows. Retained the parent activity and editable note. Revised product/demo slides, competitive gaps, milestone timing and assignment coverage.
+
+**Learning and verification:** Automated logic and Streamlit journey tests cover task sizing, completion guards, history isolation, windows and validated file restore. A local browser walkthrough exercised setup, practice, pause/resume, all 12 responses, save and history. Software-test responses and fictional timeline examples are not customer evidence or clinical validation. Public deployment remains a separate step.
+
 ## Entry format for teammates
 
 For each actual prompt, add:
