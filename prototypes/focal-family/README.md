@@ -13,7 +13,7 @@ Prototype C won the class vote. The team's view is that C's **delivery and polis
 
 | From | What the master keeps |
 |---|---|
-| **C · DMV Pre-Check** | The look: centered layout, navy cards, step bar. Also: card-based screen calibration and set distance, a setup checklist that locks the Start button, "Can't tell" counting as a miss, one clear headline result, a numbered next-step plan, simulated reminders, and plain "what this is not" limits |
+| **C · DMV Pre-Check** | The look: centered layout, navy cards, step bar. Also: card-based screen calibration and set distance, a setup checklist that locks the Start button, "Can't tell" counting as a miss, one clear headline result, a numbered next-step plan, simulated reminders, and plain "what this is not" limits. **The DMV pre-check itself is kept as a secondary option** (`dmv.py`, copied from C, with all seven states including Georgia's 20/60 and New Jersey's 20/50) |
 | **B · Focal Family** | The persona and story: parent and child together, child labels instead of names, and the reason for checking (school letter, concern). Also: the parent's observations, next steps, prepared questions, an editable message and a take-home note. **B's check-and-history engine (`vision.py`) is copied unchanged**, so a history saved in B restores here |
 | **A · Focal Monitor** | Results over time: 7, 30 and 90-day windows, change against the previous window, a trend chart, and a clearly labeled fictional history |
 
@@ -27,13 +27,15 @@ Prototype C won the class vote. The team's view is that C's **delivery and polis
 6. **History:** saved checks or the fictional example; time windows, change against the previous window, a chart, a dated table, and JSON export/restore.
 7. **Note:** observations, the next step (suggested from the reason for checking, never from the score), a plan with ticks, reminders, the recipient (school nurse, eye doctor or my records), questions, and a draft that **updates as you answer until you edit it**. Downloads a take-home note.
 
+**Also from Focal: the DMV pre-check.** A dashed card below the family actions on the welcome page offers "Getting a driver's license in the family?" for a teen's learner's permit or a parent's renewal. It runs Prototype C's flow (state rule and source, 6 letters at the state's line, on track / right at the line / not yet, one honest retake, a next-step plan with the state's form), in the same design. It shares the calibration and distance settings with the family check, and keeps its results out of the family history. It sits below the family path on purpose: the pitch is about families with young children, so the DMV check shows the same engine can serve another family moment, without competing for the demo.
+
 ## Product decisions
 
 - **The next step comes from the parent, not the score.** This keeps the boundary from B and the pitch. A good result never says "you're fine". A school letter always leads to "keep the follow-up".
 - **One clear headline, no verdict.** C's clarity, without C's pass/fail. Children have no single DMV-style line, and the pitch's top risk is that "parents mistake play for screening".
 - **Cut on purpose:**
   - **B's picture-matching game:** the pitch demo uses the direction task, and practice covers "play together".
-  - **C's state rules:** they don't apply to children.
+  - **C's verdict in the family flow:** children have no DMV-style line. The verdict lives only in the secondary DMV option.
   - **A's separate single-vs-trend screen:** the history page covers it.
   - **B's feedback form:** the next evidence is a pilot, not a class poll.
   - **A school or nurse view:** the pitch lists partner reporting as future work, so only a labeled "proposed pilot" expander is included.
@@ -51,7 +53,7 @@ python -m pip install -r prototypes/focal-family/requirements.txt
 python -m streamlit run prototypes/focal-family/app.py --server.port 8504
 ```
 
-Tests (24: next-step logic, message and take-home note, history compatibility with B, and every click path using Streamlit's AppTest):
+Tests (30: next-step logic, message and take-home note, history compatibility with B, DMV scoring and state lines, and every click path, family and DMV, using Streamlit's AppTest):
 
 ```bash
 cd prototypes/focal-family

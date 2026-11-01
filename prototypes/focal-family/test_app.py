@@ -14,6 +14,7 @@ from datetime import timedelta
 
 from streamlit.testing.v1 import AppTest
 
+import dmv
 import family as fam
 import vision
 
@@ -125,6 +126,32 @@ class TestHistoryCompatibility(unittest.TestCase):
             vision.import_history(payload, [])
 
 
+class TestDmvLogic(unittest.TestCase):
+    def test_state_lines(self):
+        self.assertEqual([l["denominator"] for l in dmv.build_test_lines(40)], [70, 50, 40, 30])
+        self.assertEqual([l["denominator"] for l in dmv.build_test_lines(60)], [100, 70, 60, 50])
+        self.assertEqual(dmv.STATES["Georgia"]["line"], 60)
+        self.assertEqual(dmv.STATES["New Jersey"]["line"], 50)
+
+    def test_scoring_thresholds_and_honest_retake(self):
+        items = dmv.generate_items(dmv.build_test_lines(40), random.Random(3))
+
+        def answers(correct_at_line):
+            out, seen = {}, 0
+            for i, item in enumerate(items):
+                if item["role"] == "state line":
+                    out[i] = item["direction"] if seen < correct_at_line else dmv.CANT_TELL
+                    seen += 1
+                elif item["role"] != "margin":
+                    out[i] = item["direction"]
+            return out
+
+        self.assertEqual(dmv.score_attempt(items, answers(5))["verdict"], "on_track")
+        self.assertEqual(dmv.score_attempt(items, answers(4))["verdict"], "close")
+        self.assertEqual(dmv.score_attempt(items, answers(3))["verdict"], "not_yet")
+        self.assertEqual(dmv.overall_result([{"verdict": "not_yet"}, {"verdict": "on_track"}])["verdict"], "mixed")
+
+
 # -----------------------------------------------------------------------------
 # Clickable flows
 # -----------------------------------------------------------------------------
@@ -145,6 +172,30 @@ def answer_all(at, correct=12):
         check = at.session_state["check"]
         trial = check["trials"][len(check["responses"])]
         at.button(key=f"ans_{trial['target']}" if i < correct else "ans_cant_tell").click().run()
+
+
+def go_to_dmv_check(at, state=None):
+    at.button(key="btn_dmv").click().run()
+    if state:
+        at.selectbox(key="d_state").select(state).run()
+    for i in range(3):
+        at.checkbox(key=f"dchk_{i}").check().run()
+    at.button(key="btn_dmv_begin").click().run()
+
+
+def dmv_answer_all(at, correct_at_line=6):
+    seen = 0
+    for _ in range(20):
+        if at.session_state["page"] != "dmv_check":
+            return
+        item = at.session_state["dmv_items"][at.session_state["dmv_idx"]]
+        key = f"dmv_ans_{item['direction']}"
+        if item["role"] == "state line":
+            if seen >= correct_at_line:
+                key = "dmv_ans_cant_tell"
+            seen += 1
+        at.button(key=key).click().run()
+    raise AssertionError("DMV check never finished")
 
 
 class TestClickableFlow(unittest.TestCase):
@@ -271,6 +322,52 @@ class TestClickableFlow(unittest.TestCase):
         at.button(key="btn_remind_In 3 days").click().run()
         self.assertEqual(at.session_state["reminder"], "In 3 days")
         self.assertTrue(any("no reminder is actually sent" in s.value for s in at.success))
+
+    def test_dmv_is_a_secondary_option_on_the_welcome_page(self):
+        at = self.new_app()
+        text = all_markdown(at)
+        self.assertIn("Also from Focal", text)
+        self.assertLess(text.index("Got a school vision letter?"), text.index("Also from Focal"))
+
+    def test_dmv_georgia_uses_its_own_line_and_can_pass(self):
+        at = self.new_app()
+        at.button(key="btn_dmv").click().run()
+        at.selectbox(key="d_state").select("Georgia").run()
+        self.assertIn("20/60", all_markdown(at))
+        for i in range(3):
+            at.checkbox(key=f"dchk_{i}").check().run()
+        at.button(key="btn_dmv_begin").click().run()
+        dmv_answer_all(at, 6)
+        self.assertFalse(at.exception)
+        text = all_markdown(at)
+        self.assertIn("On track for Georgia's vision screening", text)
+        self.assertIn("20/60 · Georgia's line", text)
+
+    def test_dmv_miss_gives_a_plan_and_one_honest_retake(self):
+        at = self.new_app()
+        go_to_dmv_check(at, "New Jersey")
+        dmv_answer_all(at, 2)
+        text = all_markdown(at)
+        self.assertIn("Might not pass New Jersey's screening yet", text)
+        self.assertIn("ST-14", text)
+        at.button(key="btn_dmv_retake").click().run()
+        for i in range(3):
+            at.checkbox(key=f"dchk_{i}").check().run()
+        at.button(key="btn_dmv_begin").click().run()
+        dmv_answer_all(at, 6)
+        self.assertIn("The two checks didn't agree", all_markdown(at))
+        self.assertEqual(len([b for b in at.button if b.key == "btn_dmv_retake"]), 0)
+
+    def test_dmv_does_not_touch_family_history(self):
+        at = self.new_app()
+        go_to_dmv_check(at)
+        dmv_answer_all(at, 6)
+        at.button(key="btn_dmv_result_home").click().run()
+        self.assertEqual(at.session_state["page"], "welcome")
+        self.assertEqual(at.session_state["records"], [])
+        # Starting the DMV check again from home starts fresh, not as a retake
+        at.button(key="btn_dmv").click().run()
+        self.assertEqual(at.session_state["dmv_attempts"], [])
 
     def test_start_over_resets_everything(self):
         at = self.new_app()

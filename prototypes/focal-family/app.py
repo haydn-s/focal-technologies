@@ -12,6 +12,9 @@ Combines the three class prototypes:
 Boundary kept from B and the pitch: the task never diagnoses, scores acuity or clears a child.
 The suggested next step comes from the parent's reason for checking, never from the task.
 
+Secondary option: Prototype C's DMV pre-check (dmv.py), for a teen's learner's permit or a
+parent's renewal. It sits behind an "Also from Focal" card so the family flow stays the focus.
+
 Technology: Streamlit, pandas and Altair. No accounts, database or external services.
 """
 
@@ -25,6 +28,7 @@ import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
 
+import dmv
 import family as fam
 from vision import (
     DIRECTIONS, EYES, GLASSES, LEVELS, PROFILES, SCREENS, comparison_key, export_history,
@@ -65,7 +69,7 @@ SETUP_CHECKLIST = (
 
 # Widget keys that keep their values when the person moves between pages. Streamlit drops
 # a widget's state on any run where the widget isn't drawn; re-assigning keeps it.
-KEEP_PREFIXES = ("w_", "n_", "h_")
+KEEP_PREFIXES = ("w_", "n_", "h_", "d_")
 WIDGET_DEFAULTS = {
     "w_child": PROFILES[0],
     "w_age": fam.AGE_GROUPS[1],
@@ -82,7 +86,15 @@ WIDGET_DEFAULTS = {
     "n_include_check": True,
     "h_dataset": DATASETS[0],
     "h_window": WINDOWS[1],
+    "d_state": list(dmv.STATES)[0],
+    "d_glasses": dmv.GLASSES_OPTIONS[0],
 }
+
+DMV_CHECKLIST = (
+    "The room is well lit and there's no glare on the screen.",
+    "We can be at the distance we picked (a helper can tap the arrows).",
+    "If a letter is unclear, we'll tap \"Can't tell\" instead of guessing.",
+)
 
 
 # -----------------------------------------------------------------------------
@@ -164,6 +176,20 @@ button[kind="primary"]:disabled, [data-testid="stBaseButton-primary"]:disabled {
 .fc-metric {{ background: #FFFFFF; border: 1px solid #DCE4F0; border-radius: 14px; padding: 12px 14px; }}
 .fc-metric .v {{ font-family: 'Source Serif 4', Georgia, serif; font-size: 1.5rem; font-weight: 700; color: {NAVY}; line-height: 1.2; }}
 .fc-metric .l {{ font-size: 0.78rem; color: {MUTED}; }}
+.fc-v-on_track {{ background: #E7F4EE; border: 1px solid #B9DFCB; }}
+.fc-v-on_track h2, .fc-v-on_track p {{ color: #134D38; }}
+.fc-v-close, .fc-v-mixed {{ background: #FFF5E3; border: 1px solid #F2D49B; }}
+.fc-v-close h2, .fc-v-close p, .fc-v-mixed h2, .fc-v-mixed p {{ color: #5C3B00; }}
+.fc-rule {{ border-left: 5px solid {BLUE}; }}
+.fc-rule .line {{ font-family: 'Source Serif 4', Georgia, serif; font-size: 1.5rem; font-weight: 700; color: {NAVY}; }}
+.fc-also {{ border-style: dashed; }}
+.fc-also .eyebrow {{ font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #1F5FB0; }}
+.fc-badge {{ display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 0.76rem; font-weight: 600; }}
+.fc-b-read {{ background: #DDF1E6; color: #134D38; }}
+.fc-b-close {{ background: #FCEBC8; color: #5C3B00; }}
+.fc-b-missed {{ background: #E3E9F3; color: {NAVY}; }}
+.fc-b-skipped {{ background: #F1F3F6; color: #8A93A5; }}
+.fc-ladder tr.state td {{ background: #EEF4FC; font-weight: 600; }}
 .fc-plan ol {{ padding-left: 1.2rem; margin: 6px 0 0 0; }}
 .fc-plan li {{ margin-bottom: 8px; }}
 .fc-footer {{ font-size: 0.75rem; opacity: 0.7; text-align: center; margin-top: 28px; }}
@@ -171,25 +197,31 @@ button[kind="primary"]:disabled, [data-testid="stBaseButton-primary"]:disabled {
 /* Keep button rows side by side on phones */
 div[data-testid="stHorizontalBlock"] {{ flex-wrap: nowrap !important; gap: 0.5rem !important; }}
 div[data-testid="column"], div[data-testid="stColumn"] {{ min-width: 0 !important; }}
-[class*="st-key-ans_"]:not(.st-key-ans_cant_tell) button p, [class*="st-key-prac_"] button p {{ font-size: 1.5rem; font-weight: 700; }}
+[class*="st-key-ans_"]:not(.st-key-ans_cant_tell) button p, [class*="st-key-prac_"] button p,
+[class*="st-key-dmv_ans_"]:not(.st-key-dmv_ans_cant_tell) button p {{ font-size: 1.5rem; font-weight: 700; }}
 </style>""")
 
 
 STEPS = [("setup", "1 · Set up"), ("check", "2 · Check"), ("history", "3 · History"), ("note", "4 · Note")]
 PAGE_STEP = {"setup": "setup", "practice": "check", "check": "check", "result": "check",
              "history": "history", "note": "note"}
+DMV_STEPS = [("dmv_setup", "1 · Set up"), ("dmv_check", "2 · Check"), ("dmv_result", "3 · Result")]
 
 
 def render_brand_and_steps(page: str):
+    tag = "Focal · DMV vision pre-check" if page.startswith("dmv_") else "Focal Family · a prepared next step for parents"
     html(f"""<div class="fc-brand"><div class="fc-logo">{focal_logo_svg()}</div><div><div class="fc-brand-name">FOCAL</div>
-<div class="fc-brand-tag">Focal Family · a prepared next step for parents</div></div></div>""")
-    active = PAGE_STEP.get(page)
+<div class="fc-brand-tag">{tag}</div></div></div>""")
+    if page.startswith("dmv_"):
+        steps, active = DMV_STEPS, page
+    else:
+        steps, active = STEPS, PAGE_STEP.get(page)
     if active is None:
         return
-    pos = [k for k, _ in STEPS].index(active)
+    pos = [k for k, _ in steps].index(active)
     pills = "".join(
         f'<div class="fc-step {"on" if i == pos else ("done" if i < pos else "")}">{label}</div>'
-        for i, (_, label) in enumerate(STEPS)
+        for i, (_, label) in enumerate(steps)
     )
     html(f'<div class="fc-steps">{pills}</div>')
 
@@ -210,6 +242,10 @@ def initialize_session_state():
     ss.setdefault("reminder", None)
     ss.setdefault("practice_miss", False)
     ss.setdefault("note_fictional", False)
+    ss.setdefault("dmv_items", [])
+    ss.setdefault("dmv_idx", 0)
+    ss.setdefault("dmv_answers", {})
+    ss.setdefault("dmv_attempts", [])
     if "examples" not in ss:
         ss.examples = fictional_history()
     for key, value in WIDGET_DEFAULTS.items():
@@ -361,6 +397,37 @@ def set_reminder(choice: str):
     st.session_state.reminder = choice
 
 
+def start_dmv_check():
+    state = dmv.STATES[st.session_state.d_state]
+    st.session_state.dmv_items = dmv.generate_items(dmv.build_test_lines(state["line"]))
+    st.session_state.dmv_idx = 0
+    st.session_state.dmv_answers = {}
+    st.session_state.page = "dmv_check"
+
+
+def dmv_answer(answer_value: str, expected_idx: int):
+    """Records one DMV answer. Ignores stale clicks so a double tap can't answer twice."""
+    ss = st.session_state
+    if ss.page != "dmv_check" or ss.dmv_idx != expected_idx:
+        return
+    answers = dict(ss.dmv_answers)
+    answers[expected_idx] = answer_value
+    ss.dmv_answers = answers
+    nxt = dmv.next_item_index(ss.dmv_items, answers, expected_idx)
+    if nxt is None:
+        attempt = dmv.score_attempt(ss.dmv_items, answers)
+        ss.dmv_attempts = ss.dmv_attempts + [attempt]
+        ss.page = "dmv_result"
+    else:
+        ss.dmv_idx = nxt
+
+
+def start_dmv_over():
+    st.session_state.dmv_attempts = []
+    st.session_state.dmv_items = []
+    st.session_state.page = "dmv_setup"
+
+
 def reset_demo():
     for key in list(st.session_state.keys()):
         del st.session_state[key]
@@ -398,6 +465,12 @@ ready for the school nurse or eye doctor.</p>
     with right:
         st.button("Prepare a parent note", key="btn_welcome_note", on_click=go, args=("note",), **full_width())
 
+    html("""<div class="fc-card fc-also" style="margin-top:14px;"><div class="eyebrow">Also from Focal</div>
+<h4>Getting a driver's license in the family?</h4>
+<p>A teen's learner's permit or your own renewal: check against your state's real DMV vision line
+before you wait in line.</p></div>""")
+    st.button("Try the DMV pre-check", key="btn_dmv", on_click=start_dmv_over)
+
     with st.expander("Why should I trust this?"):
         st.markdown(
             "- **Letters are sized for your screen.** You match a box to any bank card or ID, and each E is drawn at the size an eye chart uses for your distance.\n"
@@ -421,6 +494,15 @@ ready for the school nurse or eye doctor.</p>
     render_footer()
 
 
+def render_calibration(number: int):
+    """Card calibration shared by the family check and the DMV pre-check (same setting)."""
+    st.markdown(f"**{number}. Size the letters to your screen**")
+    st.caption("Hold any bank card or ID flat against the screen. Slide until the blue box is exactly as wide as the card.")
+    card_px = st.session_state.w_card
+    html(f"""<div class="fc-calib"><div class="fc-idcard" style="width:{card_px}px; height:{card_px * 53.98 / 85.6:.0f}px;">Match your card here</div></div>""")
+    st.slider("Card width", min_value=160, max_value=600, key="w_card", label_visibility="collapsed")
+
+
 def page_setup():
     render_brand_and_steps("setup")
     st.markdown("### Set up your check")
@@ -440,11 +522,7 @@ def page_setup():
     st.radio("Eyes for this check", EYES, key="w_eye", horizontal=True)
     st.radio("Glasses or contacts", GLASSES, key="w_glasses", horizontal=True)
 
-    st.markdown("**3. Size the letters to your screen**")
-    st.caption("Hold any bank card or ID flat against the screen. Slide until the blue box is exactly as wide as the card.")
-    card_px = st.session_state.w_card
-    html(f"""<div class="fc-calib"><div class="fc-idcard" style="width:{card_px}px; height:{card_px * 53.98 / 85.6:.0f}px;">Match your card here</div></div>""")
-    st.slider("Card width", min_value=160, max_value=600, key="w_card", label_visibility="collapsed")
+    render_calibration(3)
     st.selectbox("Which screen is this?", SCREENS, key="w_screen")
     st.caption("Keep the same screen and browser zoom next time, so checks can be compared.")
 
@@ -752,6 +830,157 @@ Nothing here replaces it.</p></div>""")
 
 
 # -----------------------------------------------------------------------------
+# DMV pre-check (secondary option, from Prototype C)
+# -----------------------------------------------------------------------------
+def page_dmv_setup():
+    render_brand_and_steps("dmv_setup")
+    ss = st.session_state
+    st.markdown("### Will you pass the DMV eye test?")
+    st.caption("For a teen getting a learner's permit, or a parent renewing a license. "
+               "This is a practice check against your state's real line, not an official result.")
+
+    st.markdown("**1. Which state is the license from?**")
+    st.selectbox("State", list(dmv.STATES), key="d_state", label_visibility="collapsed")
+    state = dmv.STATES[ss.d_state]
+    source = (
+        f'<p class="muted">Source: <a href="{state["source_url"]}" target="_blank">{state["source_name"]}</a> · '
+        f'checked {dmv.RULES_CHECKED}. Rules can change; the DMV has the final word.</p>'
+        if state["source_url"] else '<p class="muted">We only have exact rules for a few states in this prototype.</p>'
+    )
+    html(f"""<div class="fc-card fc-rule"><div class="muted">The line to read</div>
+<div class="line">20/{state['line']}</div><p>{state['rule']} {state['glasses']}</p>{source}</div>""")
+
+    st.markdown("**2. Glasses or contacts for driving?**")
+    st.radio("Glasses", dmv.GLASSES_OPTIONS, key="d_glasses", label_visibility="collapsed")
+
+    render_calibration(3)
+
+    st.markdown("**4. How far from the screen?**")
+    st.radio("DMV distance", list(DISTANCES), key="w_distance", label_visibility="collapsed")
+
+    st.markdown("**5. Before you start**")
+    ready = all([st.checkbox(label, key=f"dchk_{i}") for i, label in enumerate(DMV_CHECKLIST)])
+    st.button("Start the DMV check  →", type="primary", key="btn_dmv_begin", on_click=start_dmv_check,
+              disabled=not ready, **full_width())
+    st.button("← Back to Focal Family", key="btn_dmv_home", on_click=go, args=("welcome",))
+    render_footer()
+
+
+def page_dmv_check():
+    render_brand_and_steps("dmv_check")
+    ss = st.session_state
+    items, idx, answers = ss.dmv_items, ss.dmv_idx, ss.dmv_answers
+    item = items[idx]
+    distance_mm = DISTANCES[ss.w_distance]
+    size = dmv.letter_height_px(item["denominator"], distance_mm, ss.w_card)
+    biggest = max(dmv.letter_height_px(it["denominator"], distance_mm, ss.w_card) for it in items)
+
+    state_idx = [i for i, it in enumerate(items) if it["role"] == "state line"]
+    state_done = all(i in answers for i in state_idx)
+    total = sum(1 for i, it in enumerate(items)
+                if it["role"] != "margin" or not state_done or dmv.should_show_item(items, answers, i))
+    html(f"""<div class="fc-progress"><span>Letter {len(answers) + 1} of {total}</span>
+<span>Letters get smaller as you go</span></div>
+<div class="fc-bar"><div style="width:{100 * len(answers) / max(total, 1):.0f}%;"></div></div>""")
+    html(f'<div class="fc-chart" style="height:{max(200, biggest + 60):.0f}px;">{tumbling_e_svg(item["direction"], size)}</div>')
+    st.markdown("<p style='text-align:center; font-weight:600; margin:0 0 8px 0;'>Which way do the arms of the E point?</p>",
+                unsafe_allow_html=True)
+    cols = st.columns(4)
+    for col, direction in zip(cols, ARROW_ORDER):
+        with col:
+            st.button(ARROWS[direction], key=f"dmv_ans_{direction}", help=direction.capitalize(),
+                      on_click=dmv_answer, args=(direction, idx), **full_width())
+    st.button("Can't tell", key="dmv_ans_cant_tell", on_click=dmv_answer, args=(dmv.CANT_TELL, idx), **full_width())
+    st.caption("Not sure? Tap \"Can't tell\". A guess that happens to be right only fools you.")
+    st.button("Stop and start over", key="btn_dmv_stop", on_click=start_dmv_over)
+    render_footer()
+
+
+def dmv_ladder_html(attempt, possessive):
+    labels = {"read": "Read", "close": "Too close to call", "missed": "Not read", "skipped": "Not needed"}
+    rows = ""
+    for line in attempt["lines"]:
+        is_state = line["role"] == "state line"
+        note = f" · {possessive} line" if is_state else ""
+        score = f"{line['correct']} of {line['shown']}" if line["shown"] else "-"
+        rows += (f'<tr class="{"state" if is_state else ""}"><td>20/{line["denominator"]}{note}</td><td>{score}</td>'
+                 f'<td style="text-align:right;"><span class="fc-badge fc-b-{line["status"]}">{labels[line["status"]]}</span></td></tr>')
+    return f'<table class="fc-ladder">{rows}</table>'
+
+
+def page_dmv_result():
+    render_brand_and_steps("dmv_result")
+    ss = st.session_state
+    attempts = ss.dmv_attempts
+    latest = attempts[-1]
+    overall = dmv.overall_result(attempts)
+    verdict = overall["verdict"]
+    state = dmv.STATES[ss.d_state]
+    possessive, line = state["possessive"], f"20/{state['line']}"
+    score = f"{latest['state_correct']} of {latest['state_total']} letters"
+
+    if verdict == "on_track":
+        title = f"On track for {possessive} vision screening"
+        body = f"You read the {line} line, {possessive} line: {score}."
+        body += (" You also read the smaller line below it." if latest["margin_read"]
+                 else " You're just over the line, so there isn't much room to spare.")
+    elif verdict == "close":
+        title = "Right at the line"
+        body = f"{score} at the {line} line. That's too close to call: lighting, distance or a tired day could tip it."
+    elif verdict == "not_yet":
+        title = f"Might not pass {possessive} screening yet"
+        body = f"{score} at the {line} line. Better to find out here than at the counter. Often it just means glasses."
+    else:
+        title = "The two checks didn't agree"
+        body = "One cleared the line and one didn't. We won't keep the better one: let an eye doctor settle it."
+    if overall["consistency"] == "consistent":
+        body += " Both checks agreed."
+    html(f'<div class="fc-verdict fc-v-{verdict}"><h2>{title}</h2><p>{body}</p></div>')
+    html(f"""<div class="fc-card"><h4>What you read</h4>{dmv_ladder_html(latest, possessive)}
+<p class="muted" style="margin-top:8px;">Both eyes together · {ss.w_distance.split(' (')[0]} ·
+{'with' if ss.d_glasses == dmv.GLASSES_OPTIONS[1] else 'without'} glasses or contacts</p></div>""")
+
+    if verdict == "on_track":
+        html("""<div class="fc-card fc-plan"><h4>Next step: go to the DMV as planned</h4><ol>
+<li><b>Expect a quick screening.</b> The DMV still tests you at the counter.</li>
+<li><b>Night driving feels blurry?</b> This doesn't test glare or night vision. An eye exam is still worth it.</li>
+</ol><p class="muted">On track for the DMV line doesn't mean eyes are fine overall. It doesn't replace an eye exam.</p></div>""")
+    else:
+        html(f"""<div class="fc-card fc-plan"><h4>Next step: see an eye doctor before the DMV</h4><ol>
+<li><b>Find an eye exam.</b> <a href="https://www.google.com/maps/search/optometrist+near+me" target="_blank">Open a map of optometrists near you</a>.</li>
+<li><b>Know the cost before you book.</b> Ask for the price, and check the family insurance card or app for vision coverage.</li>
+<li><b>What the DMV needs.</b> {state['if_missed']} {state['bring']}</li>
+</ol></div>""")
+        st.markdown("**Remind me to book an eye exam**")
+        rcols = st.columns(len(fam.REMINDERS))
+        for col, choice in zip(rcols, fam.REMINDERS):
+            with col:
+                st.button(choice, key=f"btn_dmv_remind_{choice}", on_click=set_reminder, args=(choice,), **full_width())
+        if ss.reminder:
+            st.success(f"Reminder set for {ss.reminder.lower()}. (Prototype: no reminder is actually sent.)")
+
+    with st.expander("Copy a summary for the family or an eye doctor"):
+        st.code(dmv.build_summary_text(ss.d_state, attempts, overall, ss.d_glasses, ss.w_distance,
+                                       datetime.now().strftime("%b %d, %Y")), language=None)
+    with st.expander("Limits of this check"):
+        st.markdown(
+            "- A practice check, not an eye exam or an official DMV result.\n"
+            "- Tests both eyes together. Many DMV machines also test each eye.\n"
+            "- Doesn't test side vision, color, glare or night vision.\n"
+            f"- State rules summarize official sources, checked {dmv.RULES_CHECKED}."
+        )
+    if verdict != "on_track" and len(attempts) < 2:
+        st.caption("Not sure the setup was right? Take it once more. Both results are shown; we don't keep the better one.")
+        st.button("Retake the check", key="btn_dmv_retake", on_click=go, args=("dmv_setup",), **full_width())
+    left, right = st.columns(2)
+    with left:
+        st.button("← Focal Family home", key="btn_dmv_result_home", on_click=go, args=("welcome",), **full_width())
+    with right:
+        st.button("New DMV check", key="btn_dmv_new", on_click=start_dmv_over, **full_width())
+    render_footer()
+
+
+# -----------------------------------------------------------------------------
 # Main
 # -----------------------------------------------------------------------------
 def main():
@@ -775,6 +1004,10 @@ def main():
         page = "result"
     elif page == "result" and not check["completed_at"]:
         page = "check"
+    if page == "dmv_check" and not st.session_state.dmv_items:
+        page = "dmv_setup"
+    if page == "dmv_result" and not st.session_state.dmv_attempts:
+        page = "dmv_setup"
 
     scroll_to_top_on_page_change(page)
     {
@@ -785,6 +1018,9 @@ def main():
         "result": page_result,
         "history": page_history,
         "note": page_note,
+        "dmv_setup": page_dmv_setup,
+        "dmv_check": page_dmv_check,
+        "dmv_result": page_dmv_result,
     }[page]()
 
 

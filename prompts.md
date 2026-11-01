@@ -315,6 +315,20 @@ The full entry, with the decisions made, is in the [master prototype's prompt lo
 
 **Verification:** 24 automated tests pass. Clicked through at desktop and phone sizes. Fixed three demo-friction issues found that way: scroll position between pages, a message draft that didn't update, and a checklist that drew only its first box.
 
+### M2 Keep the DMV check as an option
+
+**Actual user prompt:**
+
+> is it still like C in fashion, maybe lets have the DMV element somewhere. like an option. but given where the presentation focuses the protoype should focus there too.
+
+**Intent:** Keep C's DMV check in the product, but secondary to the family story the pitch tells.
+
+**Result:**
+- **Placement:** an "Also from Focal" card below the family actions on the welcome page opens Prototype C's DMV pre-check, framed for a teen's permit or a parent's renewal.
+- **Logic:** copied from C in `dmv.py`, with all seven states. Calibration and distance are shared with the family check, and DMV results stay out of the family history.
+
+**Verification:** 30 automated tests pass (6 new). Checked the welcome card and a DMV result in the running app.
+
 ## Shared repository work
 
 These requests supported the demos and their collaboration workflow. They are recorded separately from the product experiments. R1–R5 were made by Haydn and R6–R8 by Burak, on October 21–22, 2026.

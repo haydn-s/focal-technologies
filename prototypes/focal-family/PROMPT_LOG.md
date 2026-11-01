@@ -35,6 +35,24 @@ of the presentation etc. I think proto B was focused on the family aspect.
 
 ---
 
-## Prompts 2+ (add as we iterate)
+## Prompt 2: Keep the DMV check as an option, without losing focus
+
+```text
+is it still like C in fashion, maybe lets have the DMV element somewhere. like an option. but given
+where the presentation focuses the protoype should focus there too.
+```
+
+**Trying to learn:** Can C's DMV check stay in the product without pulling attention from the family story that the pitch is built on?
+
+**What changed:**
+- **Kept the look:** the design system already came from C, unchanged.
+- **Added the DMV pre-check as a secondary option.** An "Also from Focal: getting a driver's license in the family?" card sits below the family actions on the welcome page. It's framed for a teen's learner's permit or a parent's renewal, so it stays a family moment.
+- **Copied C's tested logic (`dmv.py`):** all seven states, the 6-letter state line, the verdicts and the honest retake. The calibration and distance settings are shared with the family check.
+- **Kept DMV results separate:** they never enter the family history. Starting from the welcome page always begins fresh.
+- **6 new tests (30 total):** for example, that the family hero comes before the DMV card, that Georgia tests its 20/60 line, that a New Jersey miss names Form ST-14, that a retake is never combined into a better result, and that family history is untouched.
+
+---
+
+## Prompts 3+ (add as we iterate)
 
 Log each new prompt in the same format. Likely next ones: team review against the pitch, deployment, and rehearsing the 3-minute demo.
