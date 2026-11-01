@@ -23,6 +23,8 @@ jobs:
             directory: prototypes/prototype-b-parent-guided-check
           - demo: C
             directory: prototypes/prototype-c-alex-dmv-precheck
+          - demo: Family master
+            directory: prototypes/focal-family
     steps:
       - uses: actions/checkout@v6
         with:
