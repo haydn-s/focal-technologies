@@ -290,6 +290,45 @@ These entries come from Burak's Claude Code chat. The [Prototype C prompt log](p
 
 **Prompt count:** Seven prompts for C. C1–C4, C6 and C7 shaped the product; C5 was integration work. Repository and presentation requests are listed under shared repository work (R6–R8).
 
+## Focal Family master prototype
+
+**Author:** Burak
+
+**Persona:** Parent Pat
+
+**Session date:** November 1, 2026
+
+The full entry, with the decisions made, is in the [master prototype's prompt log](prototypes/focal-family/PROMPT_LOG.md).
+
+### M1 Combine the prototypes around the investor story
+
+**Actual user prompt:**
+
+> look through the current repo. especially the investor presentation branch. when we did our prototype presentations my prototype C won but I think it was because of the delivery of the presentation. And as you will see the investor presentation focuses on the family aspect. so lets build a master prototype that combines the previous ones. Has the style of C but also has the focus of the presentation etc. I think proto B was focused on the family aspect.
+
+**Intent:** One product that carries C's clarity and polish, B's family story (the investor pitch's focus) and A's comparison over time, without implying the task is a screening.
+
+**Result:** Built `prototypes/focal-family/` in C's design.
+- **Engine:** B's check-and-history engine is copied unchanged, so histories stay compatible.
+- **Journey:** setup with the reason for checking → practice → 12-letter check → result → history (live and fictional; 7, 30 and 90 days; export and restore) → a parent note that suggests the next step from the parent's reason, never the score.
+- **Cut on purpose:** B's picture game, C's state rules and a school-facing view.
+
+**Verification:** 24 automated tests pass. Clicked through at desktop and phone sizes. Fixed three demo-friction issues found that way: scroll position between pages, a message draft that didn't update, and a checklist that drew only its first box.
+
+### M2 Keep the DMV check as an option
+
+**Actual user prompt:**
+
+> is it still like C in fashion, maybe lets have the DMV element somewhere. like an option. but given where the presentation focuses the protoype should focus there too.
+
+**Intent:** Keep C's DMV check in the product, but secondary to the family story the pitch tells.
+
+**Result:**
+- **Placement:** an "Also from Focal" card below the family actions on the welcome page opens Prototype C's DMV pre-check, framed for a teen's permit or a parent's renewal.
+- **Logic:** copied from C in `dmv.py`, with all seven states. Calibration and distance are shared with the family check, and DMV results stay out of the family history.
+
+**Verification:** 30 automated tests pass (6 new). Checked the welcome card and a DMV result in the running app.
+
 ## Shared repository work
 
 These requests supported the demos and their collaboration workflow. They are recorded separately from the product experiments. R1–R5 were made by Haydn and R6–R8 by Burak, on October 21–22, 2026.
