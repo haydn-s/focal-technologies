@@ -55,6 +55,8 @@ requirements-dev.txt        Combined installation for local development
 
 ## Project guides
 
+- [Executive investor pitch](docs/presentations/executive-pitch/README.md): Focal Family deck, 14-minute run of show, three-minute demo and proposed financial model.
+
 - [Document library](docs/README.md): research, Lean Canvas, business model, and phase workbooks. This consolidates the former `fundamentals` and `Focal Knowledge Base` directories.
 - [Brand assets](assets/brand/README.md): the team's original logo files.
 - [Development guide](CONTRIBUTING.md): setup, testing, and adding another demo.

@@ -1,0 +1,32 @@
+{
+  "status": "Illustrative planning assumptions, not sales, commitments, or validated willingness to pay",
+  "currency": "USD",
+  "annualPricePerSite": 2400,
+  "annualCogsPerSite": { "hostingAndMessages": 240, "onboardingAndSupport": 300, "billingAndDeliveryTools": 60 },
+  "raise": 600000,
+  "equityPercent": 15,
+  "market": {
+    "usPublicElementarySchools": 52450,
+    "schoolYear": "2021-22",
+    "source": "https://nces.ed.gov/programs/digest/d22/tables/dt22_216.10.asp",
+    "serviceableShareAssumption": 0.10,
+    "note": "Historical national site-count benchmark. The 10% subset is a planning assumption for buyer fit and access, not an observed market. Excludes private schools and pediatric practices. Schools are billable sites; districts may buy multiple sites."
+  },
+  "halfYears": [
+    {"period":"Y1 H1","months":6,"startSites":0,"endSites":10,"product":70000,"sales":25000,"privacy":20000,"admin":20000},
+    {"period":"Y1 H2","months":6,"startSites":10,"endSites":50,"product":90000,"sales":35000,"privacy":20000,"admin":20000},
+    {"period":"Y2 H1","months":6,"startSites":50,"endSites":120,"product":100000,"sales":50000,"privacy":20000,"admin":40000},
+    {"period":"Y2 H2","months":6,"startSites":120,"endSites":250,"product":110000,"sales":65000,"privacy":20000,"admin":45000},
+    {"period":"Y3 H1","months":6,"startSites":250,"endSites":400,"product":150000,"sales":85000,"privacy":25000,"admin":50000},
+    {"period":"Y3 H2","months":6,"startSites":400,"endSites":550,"product":150000,"sales":100000,"privacy":35000,"admin":65000}
+  ],
+  "modelNotes": [
+    "Year 1 begins when funded. No calendar-year revenue or existing traction is implied.",
+    "Average active paid sites in each half-year = (start sites + end sites) / 2. Growth is linear within each half-year and net of cancellations. Free feasibility-pilot sites are excluded from paid sites.",
+    "Revenue = average paid sites * annual site price * months / 12. ARR = year-end paid sites * annual site price, not recognized revenue.",
+    "COGS scales with average paid sites. Support is direct delivery cost; product development, sales, privacy review and administration are OPEX. Team labor is included in product and sales, with lean founder compensation, not five executive-market salaries.",
+    "Operating result = revenue - COGS - OPEX. Simplified cash assumes receipts and expenses in the same period. No tax, interest, depreciation, capex, deferred revenue, or working-capital timing. Actual procurement and collection delays could increase funding needs.",
+    "The first 18 months cost $546,000 before revenue. The $600,000 raise includes $54,000 reserve. Assumed receipts of $144,000 yield $198,000 cash at month 18.",
+    "Illustrative 90% annual site retention and $2,400 maximum acquisition cost are validation targets, not model-derived results. New sales must replace churn as well as reach net site targets."
+  ]
+}

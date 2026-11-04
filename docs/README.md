@@ -33,7 +33,13 @@ This is the shared reference library for the three product experiments. It combi
 | Prototype assignment brief | [Supplied assignment text](assignments/prototype-assignment.md) |
 | Define phase workbook | [PDF](assignments/define-phase-workbook.pdf) |
 
-## Prototype presentation
+## Executive investor pitch
+
+- [Focal Family executive pitch](<presentations/executive-pitch/Focal Family Executive Pitch.pptx>): 14 main slides plus 5 backups, with timed speaker notes.
+- [Fourteen-minute run of show and three-minute Family demo](presentations/executive-pitch/README.md)
+- [Assignment requirements and updated timing](assignments/executive-pitch-assignment.md)
+
+## Prototype presentation archive
 
 - [Focal Prototype Presentation](<presentations/Focal Prototype Presentation.pptx>)
 - [Presenter timing and team handoff](presentations/README.md)
