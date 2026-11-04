@@ -116,36 +116,41 @@ txt(slides[2],'District student services\nSchool nurse champion',875,295,635,150
 txt(slides[2],'Reason to pay: less follow-up work and clearer family next steps.',875,490,620,150,34,C.muted);
 foot(slides[2],'Discovery: 5 real interviews, including 1 parent, plus 5 AI simulations. Buyer demand and willingness to pay remain untested.');
 
-// 4: preserve the reference Family screenshot and its layout.
-replace(slides[3],'B   Focal Family',notes[3].title);
-replace(slides[3],'05','04');
-replace(slides[3],'Parent Pat','Focal Family today');
-replace(slides[3],'Can a shared activity help Pat prepare a next step?','A shared activity.\nA parent-owned note.');
-replace(slides[3],'The test','The parent decides');
-replace(slides[3],'Practice, play six pictures, capture observations and prepare a note.','Record observations, choose a next step and edit the message.');
-replace(slides[3],'Proposed signal: 4 of 5 finish unaided and 3 of 5 choose appointment or school preparation.','Our promise: help parents prepare a useful conversation about their child.');
-replace(slides[3],'Picture matching supports interaction only. The parent chooses the next step.','Activity, not vision screening. Screenshot shows the labeled fictional example.');
-
-// 5: retain the source's dark demo layout, real practice screenshot and URL.
-replace(slides[4],'Live demo B',notes[4].title);
-replace(slides[4],'08','05');
-replace(slides[4],'Focal Family','3 minutes');
-replace(slides[4],'Practice and picture activity\nParent observations\nEditable note and next step','0:00  Practice and play\n1:30  Add observations\n2:00  Prepare and export');
-replace(slides[4],'Can Pat explain what to do after the activity?','The output is a parent note,\nnot a medical result');
+// 4 and 5: actual upgraded app screenshots, preserving the source layout and branding.
+async function appScreenshot(slide, filename) {
+  const img = slide.images.items[0];
+  img.replace({blob:await fs.readFile(path.join(here,'assets',filename)),contentType:'image/png',fit:'contain',alt:filename.includes('history')?'Fictional history in upgraded Focal Family':'Software test of the upgraded direction task'});
+  img.position={left:740,top:220,width:780,height:548};
+  img.crop={left:0,top:0,right:0,bottom:0};
+}
+base(slides[3],3);
+await appScreenshot(slides[3],'family-history-example.png');
+txt(slides[3],'Live direction task',80,225,610,55,34,C.teal,true);
+txt(slides[3],'12 responses across three sizes, with screen and distance setup',80,300,600,110,32,C.navy);
+txt(slides[3],'History across visits',80,450,610,55,34,C.teal,true);
+txt(slides[3],'Saved checks, 7 / 30 / 90-day windows and a portable history file',80,525,600,120,32,C.navy);
+foot(slides[3],'Also includes parent observations and an editable note. Screenshot: fictional history. Task performance does not establish clinical acuity.');
+base(slides[4],4,true);
+await appScreenshot(slides[4],'family-live-check.png');
+txt(slides[4],'3 minutes',80,210,580,75,43,C.white,true);
+const demoLink=txt(slides[4],'Local upgraded Streamlit app',80,310,600,65,30,C.lightTeal,true);
+demoLink.text=[[{run:'Local upgraded Streamlit app',link:{uri:'http://127.0.0.1:8502',isExternal:true}}]];
+txt(slides[4],'0:00  Set up and practice\n0:35  Complete a live check\n1:30  Save and compare history\n2:40  Show the parent note',80,425,630,220,31,C.white);
+foot(slides[4],'Live task and example history stay separate. Use this branch locally until the deployed app includes the upgrade.',true);
 
 base(slides[5],5);
 table(slides[5],[['Working today','What the investment adds'],
-  ['Shared activity and parent observations','10-site, 200-family feasibility pilot'],
-  ['Parent-selected next step and editable note','Measure completed actions and staff time'],
-  ['Session-only data and file export','Permissions, follow-up status and reporting']],80,220,1440,410,[670,770],31);
+  ['12-response direction task','Usability and repeatability study design'],
+  ['Saved checks and 7 / 30 / 90-day history','10-site pilot of family action and staff effort'],
+  ['Parent observations and editable note','Paid partner workflow and reporting']],80,220,1440,410,[670,770],31);
 txt(slides[5],'Pilot gate: +15 percentage points in completed next steps',80,685,1430,60,34,C.teal,true);
 foot(slides[5],'Proposed target versus usual information at 30 days. No completed pilot, paying customer or clinical validation is claimed.');
 
 base(slides[6],6);
 table(slides[6],[['Alternative','What it does well','Where Focal would compete'],
-  ['Letters and staff calls','Familiar and personal','Guided preparation with less repeated staff work'],
-  ['GoCheck Kids','Professional screening and EHR integration','Parent preparation outside the clinical visit'],
-  ['Peek Vision','Screening, referral tracking and reminders','A focused parent-and-child experience at home']],80,220,1440,470,[290,520,630],29);
+  ['Letters and staff calls','Familiar, personal contact','Manual outreach creates work. Focal organizes parent preparation.'],
+  ['GoCheck Kids','Professional screening and EHR integration','Configured clinical device. Focal supports preparation at home.'],
+  ['Peek Vision','Screening, referral tracking and reminders','Broad program platform. Focal tests focused family usability.']],80,220,1440,470,[290,520,630],29);
 foot(slides[6],'Proposed differentiation, not proven superiority. A future advantage depends on outcomes, distribution and renewals. Sources in notes.');
 
 base(slides[7],7);
@@ -190,9 +195,9 @@ foot(slides[10],'ARR is a year-end run rate, not annual revenue. Y3 break-even: 
 
 base(slides[11],11);
 table(slides[11],[['Use of funds','18 months'],...funding.map(([name,value])=>[name,k(value)]),['Total',k(model.raise)]],80,220,800,510,[590,210],27);
-txt(slides[11],'120 paid sites',960,240,560,90,58,C.teal,true);
-txt(slides[11],'Target at month 18',960,345,555,55,31,C.navy,true);
-txt(slides[11],'Pilot outcome evidence\nEarly renewal decisions',960,440,545,135,34,C.navy);
+txt(slides[11],'18-month milestones',960,235,560,75,45,C.teal,true);
+txt(slides[11],'0–3: usability and study design\n4–9: pilot and first contracts\n10–18: paid rollout and renewals',960,350,560,185,31,C.navy);
+txt(slides[11],'120 paid sites at month 18',960,545,560,55,30,C.teal,true);
 txt(slides[11],'$546K planned cost before revenue\n$54K reserve inside the raise',960,610,560,100,28,C.muted);
 foot(slides[11],'Proposed budget. Base-case 18-month revenue: $144K. Ending cash: $198K. Labor included with lean founder compensation.');
 
@@ -227,7 +232,7 @@ foot(slides[15],'Feasibility pilot, not a powered clinical efficacy claim. Prese
 
 base(slides[16],16);
 table(slides[16],[['Evidence we have','What it does not establish'],['5 real interviews, including 1 parent','Market demand, clinical accuracy or willingness to pay'],
-  ['5 AI-simulated interviews','Independent customer evidence'],['Working Family activity and note','Completed care, retention or staff time savings'],
+  ['5 AI-simulated interviews','Independent customer evidence'],['Working task, history and parent note','Clinical accuracy, completed care or retention'],
   ['Named alternatives already serve this area','Unique follow-up technology or a defensible moat']],80,220,1440,470,[660,780],30);
 foot(slides[16],'Peek already offers referral tracking and reminders. Focal must demonstrate better fit for the proposed parent workflow.');
 
@@ -236,14 +241,14 @@ table(slides[17],[['Risk','How the funded plan addresses it'],['Parents mistake 
   ['Sensitive family or school information','Minimum data, permissions, access controls and adviser review'],
   ['Slow purchasing or weak renewal','Pilot with a budget owner. Stage hiring against paid demand.'],
   ['Incumbents copy the workflow','Build outcome evidence and distribution. Integrate where useful.']],80,220,1440,470,[560,880],29);
-foot(slides[17],'Current prototype: session memory and manual export only. No diagnosis, booking, sent messages, partner portal or compliance certification.');
+foot(slides[17],'Current prototype: experimental task, session history and file restore. Clinical validation, accounts and partner reporting remain future work.');
 
 base(slides[18],18);
 const links=[['NCES: school count (2021–22)','https://nces.ed.gov/programs/digest/d22/tables/dt22_216.10.asp'],
  ['Head Start: referral follow-up','https://headstart.gov/publication/vision-screening-referrals'],['GoCheck Kids: professional screening','https://www.gocheckkids.com/'],
  ['Peek: screening and referral workflows','https://peekvision.org/'],['Focal Family: live demo','https://focal-demo-b.streamlit.app/']];
 links.forEach(([label,url],i)=>{const q=txt(slides[18],label,80,220+i*75,1380,55,31,C.blue,true);q.text=[[{run:label,link:{uri:url,isExternal:true}}]];});
-txt(slides[18],'Demo recovery: preloaded fictional example, then screenshots on slides 5 and 4.',80,650,1420,85,31,C.teal,true);
+txt(slides[18],'Demo recovery: task screenshot on slide 5, fictional history on slide 4.',80,650,1420,85,31,C.teal,true);
 foot(slides[18],'External sources checked October 30, 2026. Local evidence and full URLs in notes. All pricing, projections and funding terms are proposals.');
 
 let elapsed=0;

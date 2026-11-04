@@ -7,7 +7,7 @@ Three independent Streamlit product experiments for Duke MENG 570. Each demo has
 | Demo | Persona | Product question | Workspace | Local preview |
 | --- | --- | --- | --- | --- |
 | A · Focal Monitor | Routine-Check Riley | Is ongoing vision tracking more useful than an isolated result? | [Demo A](prototypes/prototype-a-riley-vision-tracking/README.md) | [Port 8501](http://localhost:8501) |
-| B · Focal Family | Parent Pat | Will a picture activity and observation summary help parents choose a follow-up step? | [Demo B](prototypes/prototype-b-parent-guided-check/README.md) | [Port 8502](http://localhost:8502) |
+| B · Focal Family | Parent Pat | Can guided tasks, performance history and an observation note help parents prepare follow-up? | [Demo B](prototypes/prototype-b-parent-guided-check/README.md) | [Port 8502](http://localhost:8502) |
 | C · Focal DMV Pre-Check | Anxious Applicant Alex | Is a state-specific pre-check with next steps more useful before a DMV visit than a general score? | [Demo C](prototypes/prototype-c-alex-dmv-precheck/README.md) | [Port 8503](http://localhost:8503) |
 
 A's internal result-format comparison is part of Demo A. Focal Family is the separate team Demo B.

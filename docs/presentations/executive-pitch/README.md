@@ -4,7 +4,7 @@
 
 This investor presentation contains **14 main slides and 5 hidden backup slides**. The full presentation is **14 minutes, including a 3-minute Focal Family demo**. The user confirmed the revised in-class time limit on October 30, 2026. Use Family only; the other prototypes are background research.
 
-The deck reuses the Focal Prototype Presentation's visual style, master, dimensions, font, logo and Family screenshots. Each slide includes a suggested script, presenter, time window, sources and assumptions in its speaker notes. The screenshots show the existing prototype, including a clearly labeled fictional summary. Backup slides remain accessible through the slide navigator for Q&A.
+The deck reuses the Focal Prototype Presentation's visual style, master, dimensions, font, logo and Family screenshots. Each slide includes a suggested script, presenter, time window, sources and assumptions in its speaker notes. The screenshots show the existing prototype, including a clearly labeled fictional history. Backup slides remain accessible through the slide navigator for Q&A.
 
 ## Run of show
 
@@ -29,18 +29,34 @@ Total allocation: Haydn 2:55, Fan 2:40, Qingyi 2:40, Burak 2:45, Hadley 3:00. De
 
 ## Three-minute demo
 
-Open [Focal Family](https://focal-demo-b.streamlit.app/) before presenting. Keep one fresh tab and a second tab on **Explore a fictional example**. The fallback must remain clearly identified as made up.
+Use the upgraded Streamlit app on `focal-family-updates`, locally at [127.0.0.1:8502](http://127.0.0.1:8502). The public app can still be running the earlier version until this branch is deployed or merged. Keep a second tab prepared with the parent-summary fictional example.
 
-1. **0:00–0:20, Qingyi:** select an anonymous child label and age group. Introduce the example.
-2. **0:20–0:40, Qingyi:** show the practice circle and start the activity.
-3. **0:40–1:20, Qingyi:** complete six pictures, skipping one. Show pause/resume only if ahead of time.
-4. **1:20–1:30:** reach observations and hand off to Burak.
-5. **1:30–2:00, Burak:** choose an observation, add a short fictional note and select appointment preparation. Create the summary.
-6. **2:00–2:35, Burak:** add a question, regenerate the draft and edit a sentence.
-7. **2:35–2:50, Burak:** request the summary download and point out the checklist.
-8. **2:50–3:00, Burak:** distinguish today's parent preparation from the proposed school workflow. Return to slide 6 at the three-minute mark.
+1. **0:00–0:35, Qingyi:** show the prechecked screen/distance setup and complete direction practice.
+2. **0:35–1:20, Qingyi:** complete 12 direction responses across three sizes, using “Can't tell” once. Pause/resume is optional if ahead of time.
+3. **1:20–1:30:** show the per-size breakdown, save once and hand off to Burak.
+4. **1:30–1:55, Burak:** open My saved checks and point to the new result. Explain that a previous-window comparison needs earlier data.
+5. **1:55–2:25, Burak:** explicitly choose Fictional example history and compare 7-, 30- and 90-day windows. Identify the series as made up.
+6. **2:25–2:40, Burak:** return to My saved checks and show history export/restore.
+7. **2:40–3:00, Burak:** show the prepared parent note and return to slide 6.
 
-After ten seconds of a technical failure, use the prepared fictional-example tab. If both tabs fail, use the existing practice screenshot on slide 5 and the summary screenshot on slide 4, then return to slide 6. The activity does not measure vision. A download is not an appointment, and an editable draft is not a sent message. A professional referral should never wait for the activity.
+After ten seconds of a technical failure, use slide 5's live-task screenshot and slide 4's fictional-history screenshot. The screenshots come from the upgraded local app. The task screenshot uses software-test inputs, and the historical example is entirely fictional. Task accuracy and changes in it are not measurements of clinical acuity or eyesight progression. Retain normal professional referrals.
+
+## Assignment coverage and open evidence
+
+| Required section | Main slides | What the revised deck makes explicit |
+| --- | --- | --- |
+| Story, problem and why we chose it | 1–3 | Parent scenario, scheduling friction, one real parent interview and limits of the evidence |
+| Customer and willingness to pay | 3, 10 | Parent user, district buyer, nurse champion and a staff-time pricing test |
+| Segment size | 8 | Historical school count, proposed price and explicitly assumed reachable subset |
+| Unique value and solution | 4–6 | Live task, history and parent note, with experimental results clearly bounded |
+| Existing alternatives and how to compete | 7 | Letters/calls, GoCheck Kids and Peek: strengths, workflow gaps and Focal's proposed response |
+| Revenue model and channels | 9–10 | Annual school licenses, free parent access and pilot-to-district expansion |
+| Revenue and expenses over time | 11 | Three-year forecast, COGS, OPEX, operating result and year-end ARR |
+| COGS/OPEX detail and use of funds | 10–12 | Per-school delivery costs, budget categories and an 18-month milestone sequence |
+| Team and funding terms | 13–14 | Named owners and a proposed $600K raise for 15% equity |
+| All speakers, demo and Q&A | Notes, slide 5, backups | Five presenters, exactly 3 minutes allocated to the demo, 14 minutes total |
+
+Every major deck section is present. The remaining gaps are evidence: parent repeatability/usability, clinical validation, a qualified buyer pipeline, measured staff savings, paid demand and renewals. The deck treats these as milestones and assumptions rather than inventing traction. The separate executive summary still requires the instructor's outline.
 
 ## Proposed commercial model
 
@@ -52,7 +68,7 @@ The user authorized a proposed model because pricing and funding were not establ
 - First 18 months: **$546,000** gross expenses plus **$54,000** reserve. Modeled revenue of $144,000 would leave $198,000 cash.
 - Revenue: **$42K / $324K / $960K** over years 1–3. Year-three exit ARR: **$1.32M**, based on 550 paid sites.
 - Operating result: **−$268.5K / −$207K / +$60K**. No tax, interest, capex or collection-delay assumptions.
-- Existing prototype: parent activity, observations, chosen next step and exports. Partner reporting, persistent records, real reminders, permissions and integrations require funding and validation.
+- Existing prototype: parent activity and note, experimental direction task, saved session checks, time-window comparisons and history export/restore. Accounts, shared persistent storage, clinical validation, real reminders and partner reporting require further work.
 
 The market calculation uses the **2021–22 NCES historical count of 52,450 public elementary schools**, multiplied by the proposed price. The 10% serviceable subset is explicitly illustrative. This is not an independently measured current addressable market. The source is linked in the deck and in [model.json](model.json).
 

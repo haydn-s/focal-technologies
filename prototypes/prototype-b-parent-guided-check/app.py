@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import streamlit as st
+from vision_ui import render_check, render_history
 
 from demo import (
     NEXT_STEPS, OBSERVATIONS, QUESTION_OPTIONS, activity_counts, begin_activity, build_summary,
@@ -363,14 +364,22 @@ def main():
         if logo.exists():
             st.image(str(logo), width=170)
         st.subheader("Focal Family")
-        st.caption("Prototype B · Parent Pat")
-        current = STEPS.index(session["step"])
-        for index, label in enumerate(STEP_LABELS):
-            st.write(f"{'●' if index == current else '✓' if index < current else '○'} {index + 1}. {label}")
+        st.caption("Parent activity and experimental vision tasks")
+        workspace = st.radio("Workspace", ("Parent activity", "Live vision check", "Performance history"), key="family_workspace")
+        if workspace == "Parent activity":
+            current = STEPS.index(session["step"])
+            for index, label in enumerate(STEP_LABELS):
+                st.write(f"{'●' if index == current else '✓' if index < current else '○'} {index + 1}. {label}")
         st.divider()
         st.write("A parent and child experience for capturing observations and preparing a next step.")
-        st.caption("No account or camera. Session data clears when you start over or the app session ends.")
+        st.caption("No account or camera. Export saved checks to keep history between visits. Start over resets the parent activity.")
         st.button("Start over", on_click=reset, key="family_reset", use_container_width=True)
+    if workspace == "Live vision check":
+        render_check()
+        return
+    if workspace == "Performance history":
+        render_history()
+        return
     if session["source"] == "fictional_example":
         st.warning("Fictional example: the child, activity responses, and observations below are made up. Start over to try your own session.")
     {
