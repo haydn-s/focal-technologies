@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #F7F5F0;
+    color: #20304D;
+  }
+
+  h1, .font-editorial {
+    font-family: 'Fraunces', Georgia, serif;
+  }
+
+  .font-tabular {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Smooth GPU-composited flowing gradient behind the right hero card (Welcome screen only) */
+@keyframes ambientTealDrift {
+  0% {
+    transform: translate3d(0px, 0px, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-22px, 16px, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(14px, -12px, 0) scale(0.98);
+  }
+}
+
+@keyframes ambientApricotDrift {
+  0% {
+    transform: translate3d(0px, 0px, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(18px, -18px, 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(-14px, 12px, 0) scale(0.97);
+  }
+}
+
+.ambient-teal-flow {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(210, 230, 222, 0.85) 0%,
+    rgba(40, 109, 101, 0.12) 42%,
+    rgba(247, 245, 240, 0) 74%
+  );
+  filter: blur(28px);
+  will-change: transform;
+  animation: ambientTealDrift 14s ease-in-out infinite alternate;
+}
+
+.ambient-apricot-flow {
+  background: radial-gradient(
+    circle at 55% 55%,
+    rgba(242, 205, 174, 0.58) 0%,
+    rgba(242, 205, 174, 0.24) 48%,
+    rgba(247, 245, 240, 0) 75%
+  );
+  filter: blur(30px);
+  will-change: transform;
+  animation: ambientApricotDrift 17s ease-in-out infinite alternate;
+}
+
+/* Subtle card surface & 180ms hover lift (max 2px) */
+.refined-card {
+  border: 1px solid rgba(32, 48, 77, 0.11);
+  box-shadow:
+    0 1px 3px rgba(32, 48, 77, 0.03),
+    0 14px 32px -10px rgba(32, 48, 77, 0.07);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.refined-card-hover:hover {
+  transform: translateY(-2px);
+  border-color: rgba(62, 155, 224, 0.38);
+  box-shadow:
+    0 3px 8px rgba(16, 38, 95, 0.05),
+    0 18px 36px -10px rgba(16, 38, 95, 0.09);
+}
+
+/* Cohesive 220-280ms Fade + Vertical Lift Transition System */
+@keyframes focalRevealUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-reveal-up {
+  animation: focalRevealUp 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-reveal-delay-1 {
+  animation-delay: 70ms;
+}
+
+.animate-reveal-delay-2 {
+  animation-delay: 140ms;
+}
+
+.animate-reveal-delay-3 {
+  animation-delay: 200ms;
+}
+
+/* Crisp 220ms Directional E Trial Switch (Scoped strictly to Optotype Stage) */
+@keyframes focalTrialSwitch {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-trial-switch {
+  animation: focalTrialSwitch 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Live Parent Note Update Pulse (280ms) */
+@keyframes focalNoteFlash {
+  0% {
+    border-color: rgba(62, 155, 224, 0.55);
+    background-color: rgba(229, 238, 232, 0.38);
+    transform: translate3d(0, 2px, 0);
+  }
+  100% {
+    border-color: rgba(32, 48, 77, 0.15);
+    background-color: #FFFFFF;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-note-flash {
+  animation: focalNoteFlash 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Readiness Checkbox Confirmation Settle (220ms) */
+@keyframes focalCheckPop {
+  0% {
+    transform: translate3d(0, 2px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-check-pop {
+  animation: focalCheckPop 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Smooth SVG Actor Transitions (Setup screen room diagram) */
+.svg-actor-glide {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes focalBarGrow {
+  0% {
+    transform: scaleY(0.08);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.animate-bar-grow {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: focalBarGrow 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Modern Interactive Range Slider — Bright Blue #3E9BE0 track accent & Deep Blue #10265F thumb */
+input[type="range"].focal-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(62, 155, 224, 0.22);
+  height: 6px;
+  border-radius: 9999px;
+}
+
+input[type="range"].focal-slider:focus-visible {
+  outline: 2px solid #3E9BE0;
+  outline-offset: 2px;
+}
+
+input[type="range"].focal-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #10265F;
+  border: 2px solid #FFFFFF;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(16, 38, 95, 0.35);
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+}
+
+input[type="range"].focal-slider::-webkit-slider-thumb:hover {
+  background: #3E9BE0;
+  box-shadow: 0 2px 8px rgba(62, 155, 224, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-teal-flow,
+  .ambient-apricot-flow,
+  .refined-card,
+  .refined-card-hover:hover,
+  .animate-reveal-up,
+  .animate-trial-switch,
+  .animate-note-flash,
+  .animate-check-pop,
+  .svg-actor-glide,
+  .animate-bar-grow {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
