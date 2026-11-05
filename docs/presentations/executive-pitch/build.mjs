@@ -1,289 +1,148 @@
-// Build with @oai/artifact-tool. See README.md for runtime arguments.
+// Update the current 12-minute deck in place with @oai/artifact-tool.
+// The archived 14-minute deck is intentionally not a build target.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import { createRequire } from 'node:module';
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
-
-const here = path.dirname(fileURLToPath(import.meta.url));
-const root = path.resolve(here, '../../..');
-const [runtimeModules, python, skillDir] = process.argv.slice(2);
-if (!runtimeModules || !python || !skillDir) throw new Error('Usage: node build.mjs <runtime node_modules> <python> <presentations skill directory>');
-process.env.RUNTIME_NODE_MODULES=runtimeModules;
-const require = createRequire(path.join(runtimeModules, 'focal-loader.cjs'));
-const { FileBlob, PresentationFile } = await import(pathToFileURL(require.resolve('@oai/artifact-tool')).href);
-const { finalizePresentation, applyPresentationChartFont } = await import(pathToFileURL(path.join(skillDir, 'container_tools/artifact_tool_utils.mjs')).href);
-const model = JSON.parse(await fs.readFile(path.join(here, 'model.json'), 'utf8'));
-const notes = JSON.parse(await fs.readFile(path.join(here, 'notes.json'), 'utf8'));
-const temp = path.join(root, 'build/executive-pitch');
-await fs.mkdir(path.join(temp, 'renders'), { recursive: true });
-await fs.mkdir(path.join(temp, 'final'), { recursive: true });
-try { await fs.symlink(runtimeModules, path.join(temp,'node_modules')); } catch(e) { if(e.code!=='EEXIST') throw e; }
-process.chdir(temp);
-
-const unitCogs = Object.values(model.annualCogsPerSite).reduce((a,b) => a+b, 0);
-const periods = model.halfYears.map(h => {
-  const averageSites = (h.startSites+h.endSites)/2;
-  const revenue = averageSites*model.annualPricePerSite*h.months/12;
-  const cogs = averageSites*unitCogs*h.months/12;
-  const opex = h.product+h.sales+h.privacy+h.admin;
-  return {...h, averageSites, revenue, cogs, opex, result:revenue-cogs-opex};
-});
-const years = [0,2,4].map((i) => {
-  const hs=periods.slice(i,i+2); const sum=k=>hs.reduce((a,h)=>a+h[k],0);
-  return {year:i/2+1, averageSites:sum('averageSites')/2, endSites:hs[1].endSites,
-    revenue:sum('revenue'), cogs:sum('cogs'), opex:sum('opex'), result:sum('result'), arr:hs[1].endSites*model.annualPricePerSite};
-});
-const first18=periods.slice(0,3);const total18=k=>first18.reduce((a,h)=>a+h[k],0);
-const spend18=total18('cogs')+total18('opex');
-const funding=[['Product and research',total18('product')],['Pilots and sales',total18('sales')],['Privacy, security and review',total18('privacy')],['Administration and insurance',total18('admin')],['Service delivery (COGS)',total18('cogs')],['Reserve',model.raise-spend18]];
-assert.equal(notes.slice(0,14).reduce((a,n)=>a+n.seconds,0),840);
-assert.equal(notes[4].seconds,180);
-assert.equal(funding.reduce((a,r)=>a+r[1],0),model.raise);
-assert.equal(spend18,546000);
-assert.equal(total18('revenue'),144000);
-assert.equal(years[2].arr,1320000);
-assert.equal(years[2].result,60000);
-const calculations={periods,years,unitCogs,grossMargin:1-unitCogs/model.annualPricePerSite,funding,
-  eighteenMonths:{grossSpend:spend18,revenue:total18('revenue'),netBurn:spend18-total18('revenue'),endingCash:model.raise-spend18+total18('revenue')},
-  market:{nationalAnnual:model.market.usPublicElementarySchools*model.annualPricePerSite,serviceableAnnual:model.market.usPublicElementarySchools*model.market.serviceableShareAssumption*model.annualPricePerSite},
-  valuation:{postMoney:model.raise/(model.equityPercent/100),preMoney:model.raise/(model.equityPercent/100)-model.raise}};
-await fs.writeFile(path.join(here,'calculated-model.json'),JSON.stringify(calculations,null,2)+'\n');
-
-const reference = path.join(root,'docs/presentations/Focal Prototype Presentation.pptx');
-const presentation=await PresentationFile.importPptx(await FileBlob.load(reference));
-const originals=[...presentation.slides.items];
-for(const n of notes) {const s=originals[n.template].duplicate();s.moveTo(presentation.slides.items.length-1);}
-presentation.slides.keep(Array.from({length:notes.length},(_,i)=>originals.length+i));
-const slides=presentation.slides.items;
-const C={navy:'#16234B',blue:'#1475AA',teal:'#286B70',lightTeal:'#79B5B4',muted:'#53627A',pale:'#EAF1F6',bg:'#F6F9FC',white:'#FFFFFF'};
+import { createRequire } from 'node:module';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const root=path.resolve(here,'../../..');
+const [modules,python,skillDir,sourceArg]=process.argv.slice(2);
+if(!modules||!python||!skillDir) throw new Error('Usage: node build.mjs <runtime node_modules> <python> <presentations skill directory> [source.pptx]');
+process.env.RUNTIME_NODE_MODULES=modules;
+const require=createRequire(path.join(modules,'focal-loader.cjs'));
+const {FileBlob,PresentationFile}=await import(pathToFileURL(require.resolve('@oai/artifact-tool')).href);
+const {finalizePresentation}=await import(pathToFileURL(path.join(skillDir,'container_tools/artifact_tool_utils.mjs')).href);
+const canonical=path.join(here,'Focal Family Executive Pitch - Final 12min.pptx');
+const source=sourceArg?path.resolve(sourceArg):canonical;
+const work=path.join(root,'build/final-presentation-updates');
+await fs.mkdir(path.join(work,'final'),{recursive:true});
+await fs.mkdir(path.join(work,'renders'),{recursive:true});
+const sourceBytes=await fs.readFile(source);
+const sourceHash=crypto.createHash('sha256').update(sourceBytes).digest('hex');
+const stamp=Date.now();
+const reference=path.join(work,`reference-${stamp}.pptx`);
+await fs.writeFile(reference,sourceBytes); // Preserve manual edits before every update.
+const p=await PresentationFile.importPptx(await FileBlob.load(reference));
+const notes=JSON.parse(await fs.readFile(path.join(here,'notes.json'),'utf8'));
+const model=JSON.parse(await fs.readFile(path.join(here,'model.json'),'utf8'));
+assert.equal(p.slides.items.length,19);assert.equal(notes.length,19);
+assert.equal(notes.slice(0,14).reduce((a,n)=>a+n.seconds,0),690);assert.equal(notes[4].seconds,180);
+const snapshot=await p.inspect({select:'$.slides[*]',include:['id','index','layout','elements.id','elements.kind','elements.text','elements.position','notes.text']});
+await fs.writeFile(path.join(work,'before.ndjson'),snapshot.ndjson);
+await fs.writeFile(path.join(work,'masters.json'),JSON.stringify({masters:p.masters.items.map(m=>({id:m.id,name:m.name})),placeholders:p.slides.items.map(s=>s.placeholders.summary())},null,2));
+const S=n=>p.slides.items[n-1];
+const C={navy:'#16234B',teal:'#286B70',muted:'#53627A',light:'#79B5B4',white:'#FFFFFF'};
 const font='Helvetica Neue';
-const k=v=>'$'+(v/1000).toLocaleString('en-US',{maximumFractionDigits:1})+'K';
-
-function txt(s,text,x,y,w,h,size=32,color=C.navy,bold=false){
-  const q=s.shapes.add({geometry:'textbox',name:text.slice(0,55),position:{left:x,top:y,width:w,height:h},fill:'none',line:{fill:'none',width:0}});
-  q.text=text;q.text.style={typeface:font,fontSize:size,bold,color,insets:0,verticalAlignment:'top',wrap:'square',autoFit:'none'};return q;
+function style(q,size=32,color=C.navy,bold=false){q.text.style={typeface:font,fontSize:size,color,bold,insets:0,verticalAlignment:'top',wrap:'square',autoFit:'none'};}
+function edit(n,oldText,text,size,color,bold,pos){
+ const hits=S(n).shapes.items.filter(q=>String(q.text)===oldText||String(q.text)===text);
+ assert.equal(hits.length,1,`Slide ${n}: expected one anchor for ${oldText}`);
+ const q=hits[0];q.text=text;if(size)style(q,size,color,bold);if(pos)q.position={...q.position,...pos};return q;
 }
-function replace(s,old,text){const q=s.shapes.items.find(x=>String(x.text)===old);if(!q)throw new Error('Missing template text: '+old);q.text=text;return q;}
-function base(s,i,dark=false){
-  const keep=s.shapes.items.filter(q=>q.position.top<170 || q.position.top>=830);
-  for(const q of [...s.shapes.items])if(!keep.includes(q))q.delete();
-  const title=keep.find(q=>q.position.top<170);title.text=notes[i].title;
-  title.text.style={typeface:font,fontSize:56,bold:true,color:dark?C.white:C.navy,insets:0,wrap:'square',autoFit:'none'};
-  const num=keep.find(q=>q.position.top>=830);if(num)num.text=String(i+1).padStart(2,'0');
+function add(n,name,text,position,size=32,color=C.navy,bold=false){
+ let q=S(n).shapes.items.find(q=>q.name===name);
+ if(!q)q=S(n).shapes.add({geometry:'textbox',name,position,fill:'none',line:{fill:'none',width:0}});
+ q.position=position;q.text=text;style(q,size,color,bold);return q;
 }
-function foot(s,text,dark=false){txt(s,text,80,786,1360,62,22,dark?'#C0D0E3':C.muted);}
-function table(s,values,x=80,y=220,w=1440,h=500,widths=null,size=28){
-  const t=s.tables.add({rows:values.length,columns:values[0].length,left:x,top:y,width:w,height:h,values,...(widths?{columnWidths:widths}:{})});
-  t.borders.assign({fill:'#D7E3EC',width:1,style:'solid'});
-  t.cells.block({row:0,column:0,rowCount:values.length,columnCount:values[0].length}).assign({
-    textStyle:{typeface:font,fontSize:size,color:C.navy},margins:{left:18,right:18,top:16,bottom:12},anchor:'top'});
-  for(let r=0;r<values.length;r++){
-    t.rows[r].height=h/values.length;
-    for(let c=0;c<values[0].length;c++){
-      const a=t.getCell(r,c);a.fill=r===0?C.navy:r%2===0?C.pale:C.white;
-      a.text.style={typeface:font,fontSize:size,color:r===0?C.white:C.navy,bold:r===0};
-    }
-  }
-  return t;
+function title(n,old){edit(n,old,notes[n-1].title,56,C.navy,true);}
+function cell(n,r,c,text){const t=S(n).tables.items[0];assert.ok(t,`Missing table on ${n}`);t.getCell(r,c).value=text;t.getCell(r,c).text.style={typeface:font,fontSize:n===6?31:29,color:r===0?C.white:C.navy,bold:r===0};}
+
+// Problem and decision: retain the published study; make the Family choice explicit.
+title(2,'The gap after a school vision letter');
+edit(2,'A parent still has to act','Why we chose Family',30,C.teal,true);
+edit(2,'Pat receives a letter.\nFinding care and preparing\nthe next conversation\nstill take work.','A school letter creates\na clear moment to act.',48,C.navy,true,{height:170});
+add(2,'family-choice-rationale','Interviews: long waits, extra visits\nand uncertainty between exams.\nWe chose to test parent preparation.',{left:80,top:535,width:670,height:155},32,C.muted);
+edit(2,'Musch et al., 2020; study conducted in 2017.','Five real interviews, one with a parent. The school-letter use case is our proposal. Trial: Musch et al., 2020; conducted in 2017.',22,C.muted);
+
+edit(3,'The proposed buyer','The budget owner and champion',30,C.teal,true);
+edit(3,'District student services\nSchool nurse champion','District student-services buyer\nSchool nurse user and champion',40,C.navy,true);
+edit(3,'Proposed license: parent preparation, permitted follow-up status and staff reporting.','Proposed license: parent preparation, permitted status and staff reporting.',34,C.muted);
+add(3,'buyer-evidence-limit','School reporting remains to build. District budgets, demand and willingness to pay are unvalidated.',{left:80,top:786,width:1360,height:62},22,C.muted);
+
+title(4,'A prepared next step after a school letter');
+edit(4,'At home, parent assisted','The parent chooses the next step',34,C.teal,true);
+edit(4,'Match screen size to a card.\nMeasure the viewing distance.\nThe child points; the parent taps.','Record observations, choose an action\nand edit a note for the school nurse\nor eye doctor.',32,C.navy);
+edit(4,'A note ready for the next conversation','Optional task and history',34,C.teal,true,{top:500,height:55});
+edit(4,'Capture observations, choose a next step and download an editable note.','Supporting activities, not a decision\nabout whether a child needs care.',32,C.navy,false,{top:575,height:120});
+add(4,'parent-action-boundary','Screenshot: fictional example. Nothing is booked or sent. An existing professional referral still stands.',{left:80,top:786,width:1360,height:62},22,C.muted);
+
+edit(5,'0:00  Set up and practice\n0:35  Complete a check\n1:30  Save and compare\n2:15  Prepare the next step','0:00  Choose a next step\n0:40  Prepare the parent note\n1:30  Optional task and history\n2:30  Return to the action',31,C.white);
+edit(5,'Live check: software demonstration. Example history and parent note: clearly labelled fictional data.','Parent action first. Task inputs are a software demonstration; example history and parent note are fictional.',22,'#C0D0E3');
+
+cell(6,1,0,'Parent observations and editable note');cell(6,1,1,'Permitted school status and staff reporting');
+cell(6,2,0,'Optional 12-response direction task');cell(6,2,1,'Independent use and understanding');
+cell(6,3,0,'Saved checks and 7 / 30 / 90-day history');cell(6,3,1,'10-site pilot: family action and net staff effort');
+
+title(7,'Our focus is the parent action after referral');
+cell(7,0,2,'Why a school might add Focal');
+cell(7,1,1,'Familiar, personal contact');cell(7,1,2,'Test fewer repeat explanations with a reusable parent note and checklist.');
+cell(7,2,1,'Professional screening and EHR integration');cell(7,2,2,'Complement screening with parent preparation at home.');
+cell(7,3,1,'Referral tracking, reminders and reporting');cell(7,3,2,'Test a focused parent workflow; a fit advantage is unproven.');
+edit(7,'Differentiation to test: parent completion and less staff effort. Peek already has referral tracking and reminders. Sources in notes.','To justify adding Focal: higher parent completion, lower net staff effort. No unique technology claimed. Sources in notes.',22,C.muted);
+
+edit(8,'Illustrative reachable subset','Illustrative eligible subset',32,C.navy,true);
+edit(8,'10% of sites assumed to fit the workflow and buying conditions','Pilot fit: referral workflow, nurse champion and district budget owner.\n10% is a planning allowance.',30,C.muted);
+edit(8,'NCES 2021–22 site-count benchmark. Price, 10% filter and adoption are assumptions. Private schools and practices excluded.','North Carolina first; eligible sites not yet counted. NCES 2021–22 benchmark. Price, 10% and adoption are assumptions.',22,C.muted);
+
+title(9,'One school pilot can open a district');
+edit(9,'Buyer conversations','District-buyer conversations',32,C.navy,true);
+edit(9,'Founder outreach to North Carolina school nurses and district leaders','Founder outreach in North Carolina. Confirm a budget owner and procurement path.',30,C.muted);
+edit(9,'Pilot sites','Districts piloting a school',32,C.navy,true);
+edit(9,'Agree family and staff outcomes with the budget owner','Agree family outcomes and staff-time measures before enrollment.',30,C.muted);
+edit(9,'Expand successful pilots through district contracts','5 district contracts × 10 paid schools on average = 50 sites',30,C.muted);
+edit(9,'Proposed funnel, not a committed pipeline. Districts may buy multiple schools. Procurement timing and budget fit require validation.','Assumed: 25% enter a pilot; 50% of pilot districts buy. No committed pipeline. Timing, scope and conversion need validation.',22,C.muted);
+
+edit(10,'School follow-up','Free for families',44,C.teal,true);
+edit(10,'Parent preparation materials\nPermitted follow-up status\nStaff reporting','School license:\nParent preparation materials\nPermitted status and reporting',32,C.navy,true);
+edit(10,'75% modeled gross margin\n$1,800 gross profit per site\n16-month target CAC payback','Buyer break-even: 60 net staff hours/year\nat an assumed $40/hour.\nValue must exceed the license fee.',30,C.muted,false,{top:555,height:155});
+edit(10,'Free for families. School status/reporting require funding. Price and costs are assumptions; staff-time savings remain unmeasured.','75% modeled gross margin; $1,800 gross profit/site. School reporting remains to build. Price, costs and staff savings are unvalidated.',22,C.muted);
+
+edit(12,'0–3: usability and study design\n4–9: pilot and first contracts\n10–18: paid rollout and renewals','0–3: usability and buyer discovery\n4–9: pilots and district contracts\n10–18: paid expansion and renewals',31,C.navy);
+edit(14,'18 months to prove the business','18 months to prove buyer value',54,C.white,true);
+edit(14,'Families take the next step','Parents complete follow-up actions',42,C.light,true);
+edit(14,'Schools see value and renew','Schools save time and renew',42,C.light,true);
+cell(16,4,1,'Net staff-time value above $2,400/year; test an actual paid renewal.');
+edit(19,'Demo recovery: task screenshot on slide 5; fictional parent note on slide 4.','Demo recovery: lead with the fictional parent note on slide 4; use slide 5 for optional task context.',30,C.teal,true);
+edit(19,'Research and procurement evidence checked November 4, 2026. Full sources in notes. Pricing, forecasts and funding terms are proposals.','Reviewed November 5, 2026. Full sources in notes. Pricing, market filters, district conversions, forecasts and terms remain proposals.',22,C.muted);
+
+// Recalculate from inputs; avoid separate, drifting financial numbers.
+const unitCogs=Object.values(model.annualCogsPerSite).reduce((a,b)=>a+b,0);
+const periods=model.halfYears.map(h=>{const averageSites=(h.startSites+h.endSites)/2;const revenue=averageSites*model.annualPricePerSite*h.months/12;const cogs=averageSites*unitCogs*h.months/12;const opex=h.product+h.sales+h.privacy+h.admin;return {...h,averageSites,revenue,cogs,opex,result:revenue-cogs-opex};});
+const years=[0,2,4].map(i=>{const hs=periods.slice(i,i+2),sum=k=>hs.reduce((a,h)=>a+h[k],0);return {year:i/2+1,averageSites:sum('averageSites')/2,endSites:hs[1].endSites,revenue:sum('revenue'),cogs:sum('cogs'),opex:sum('opex'),result:sum('result'),arr:hs[1].endSites*model.annualPricePerSite};});
+const sum18=k=>periods.slice(0,3).reduce((a,h)=>a+h[k],0),spend18=sum18('cogs')+sum18('opex');
+const funding=[['Product and research',sum18('product')],['Pilots and sales',sum18('sales')],['Privacy, security and review',sum18('privacy')],['Administration and insurance',sum18('admin')],['Service delivery (COGS)',sum18('cogs')],['Reserve',model.raise-spend18]];
+assert.equal(model.annualPricePerSite,2400);assert.equal(unitCogs,600);assert.equal(model.raise,600000);assert.equal(model.equityPercent,15);
+assert.deepEqual(years.map(y=>y.revenue),[42000,324000,960000]);assert.equal(spend18,546000);assert.equal(sum18('revenue'),144000);
+assert.equal(model.goToMarket.paidDistrictContracts*model.goToMarket.averagePaidSitesPerDistrict,years[0].endSites);
+assert.equal(model.buyerValue.annualBreakEvenNetStaffHours*model.buyerValue.assumedStaffCostPerHour,model.annualPricePerSite);
+const calculated={periods,years,unitCogs,grossMargin:1-unitCogs/model.annualPricePerSite,funding,eighteenMonths:{grossSpend:spend18,revenue:sum18('revenue'),netBurn:spend18-sum18('revenue'),endingCash:model.raise-spend18+sum18('revenue')},market:{nationalAnnual:model.market.usPublicElementarySchools*model.annualPricePerSite,serviceableAnnual:model.market.usPublicElementarySchools*model.market.serviceableShareAssumption*model.annualPricePerSite},valuation:{postMoney:model.raise/(model.equityPercent/100),preMoney:model.raise/(model.equityPercent/100)-model.raise}};
+await fs.writeFile(path.join(here,'calculated-model.json'),JSON.stringify(calculated,null,2)+'\n');
+const clock=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;let elapsed=0;
+for(let i=0;i<notes.length;i++){const n=notes[i],timing=i<14?`${clock(elapsed)}–${clock(elapsed+n.seconds)} (${n.seconds} seconds)`:'Backup, outside the 12-minute presentation limit';S(i+1).speakerNotes.text=`${n.title}\nPresenter: ${n.speaker}\nTiming: ${timing}\n\n${n.script}\n\nSources and assumptions\n${n.sources.join('\n')}`;S(i+1).hidden=i>=14;elapsed+=n.seconds;}
+const candidate=path.join(work,`candidate-${stamp}.pptx`),final=path.join(work,'final',`Focal Family Executive Pitch - review-${stamp}.pptx`);
+await (await PresentationFile.exportPptx(p)).save(candidate);
+// The slide 11 chart references a 'Chart Data' sheet that was never embedded (true of the
+// committed deck too), so its cached values are the only data. Convert those references to
+// literal series after checking them against the model; the finalizer then embeds a new,
+// explicitly labelled workbook snapshot. No original formulas or workbook lineage are claimed.
+{
+ const JSZip=require('jszip');const zip=await JSZip.loadAsync(await fs.readFile(candidate));
+ const parts=Object.keys(zip.files).filter(n=>/charts\/chart\d+\.xml$/.test(n));assert.equal(parts.length,1,'Expected one chart');
+ let x=await zip.file(parts[0]).async('string');assert.ok(!/externalData/.test(x),'Chart unexpectedly has a workbook');
+ x=x.replace(/<c:numRef>\s*<c:f>[^<]*<\/c:f>\s*<c:numCache>([\s\S]*?)<\/c:numCache>\s*<\/c:numRef>/g,'<c:numLit>$1</c:numLit>')
+  .replace(/<c:strRef>\s*<c:f>[^<]*<\/c:f>\s*<c:strCache>([\s\S]*?)<\/c:strCache>\s*<\/c:strRef>/g,'<c:strLit>$1</c:strLit>');
+ assert.ok(!/<c:(numRef|strRef|f)>/.test(x),'Chart still has worksheet references');
+ const lit=tag=>[...x.matchAll(new RegExp(`<c:${tag}>[\\s\\S]*?</c:${tag}>`,'g'))].map(m=>[...m[0].matchAll(/<c:v>([^<]*)<\/c:v>/g)].map(v=>v[1]));
+ assert.deepEqual(lit('numLit').map(s=>s.map(Number)),[years.map(y=>y.revenue/1000),years.map(y=>(y.cogs+y.opex)/1000)]);
+ assert.deepEqual(lit('strLit'),[['Year 1','Year 2','Year 3'],['Year 1','Year 2','Year 3']]);
+ zip.file(parts[0],x);await fs.writeFile(candidate,await zip.generateAsync({type:'nodebuffer',compression:'DEFLATE'}));
 }
-function columns(s,items,y=230){
-  items.forEach((a,i)=>{const x=80+i*500;txt(s,a[0],x,y,440,95,76,C.teal,true);txt(s,a[1],x,y+110,440,90,32,C.navy,true);txt(s,a[2],x,y+220,420,210,30,C.muted);});
-}
-
-// 1: preserve source cover, logo, typography and alignment.
-replace(slides[0],'Focal Prototype\nPresentation','Focal Family\nInvestor pitch');
-replace(slides[0],'Three approaches to the next vision-care decision','A prepared next step for parents');
-replace(slides[0],'MENG 570   Team 5','Focal Technologies   Team 5');
-replace(slides[0],'Fan, Hadley, Haydn, Burak and Qingyi','Haydn, Fan, Qingyi, Burak and Hadley');
-
-base(slides[1],1);
-txt(slides[1],'Pat has a concern',80,220,640,55,30,C.teal,true);
-txt(slides[1],'A school letter.\nAn observation at home.\nA conversation to prepare.',80,315,670,300,48,C.navy,true);
-txt(slides[1],'The unfinished work',875,220,600,55,30,C.teal,true);
-txt(slides[1],'Parents need to organize what they noticed and ask for help.',875,315,610,180,42,C.navy,true);
-txt(slides[1],'Staff still have to support and follow up with families.',875,550,610,130,32,C.muted);
-foot(slides[1],'Pat is an illustrative parent. Head Start guidance describes support and follow-up after a referral.');
-
-base(slides[2],2);
-txt(slides[2],'The user',80,220,630,55,30,C.teal,true);
-txt(slides[2],'Parents of children\naged 4–10',80,295,650,150,50,C.navy,true);
-txt(slides[2],'Trigger: a school letter or a concern raised by a parent or teacher.',80,490,630,150,34,C.muted);
-txt(slides[2],'The proposed buyer',875,220,630,55,30,C.teal,true);
-txt(slides[2],'District student services\nSchool nurse champion',875,295,635,150,44,C.navy,true);
-txt(slides[2],'Reason to pay: less follow-up work and clearer family next steps.',875,490,620,150,34,C.muted);
-foot(slides[2],'Discovery: 5 real interviews, including 1 parent, plus 5 AI simulations. Buyer demand and willingness to pay remain untested.');
-
-// 4 and 5: actual upgraded app screenshots, preserving the source layout and branding.
-async function appScreenshot(slide, filename) {
-  const img = slide.images.items[0];
-  img.replace({blob:await fs.readFile(path.join(here,'assets',filename)),contentType:'image/png',fit:'contain',alt:filename.includes('history')?'Fictional history in upgraded Focal Family':'Software test of the upgraded direction task'});
-  img.position={left:740,top:220,width:780,height:548};
-  img.crop={left:0,top:0,right:0,bottom:0};
-}
-base(slides[3],3);
-await appScreenshot(slides[3],'family-history-example.png');
-txt(slides[3],'Live direction task',80,225,610,55,34,C.teal,true);
-txt(slides[3],'12 responses across three sizes, with screen and distance setup',80,300,600,110,32,C.navy);
-txt(slides[3],'History across visits',80,450,610,55,34,C.teal,true);
-txt(slides[3],'Saved checks, 7 / 30 / 90-day windows and a portable history file',80,525,600,120,32,C.navy);
-foot(slides[3],'Also includes parent observations and an editable note. Screenshot: fictional history. Task performance does not establish clinical acuity.');
-base(slides[4],4,true);
-await appScreenshot(slides[4],'family-live-check.png');
-txt(slides[4],'3 minutes',80,210,580,75,43,C.white,true);
-const demoLink=txt(slides[4],'Local upgraded Streamlit app',80,310,600,65,30,C.lightTeal,true);
-demoLink.text=[[{run:'Local upgraded Streamlit app',link:{uri:'http://127.0.0.1:8502',isExternal:true}}]];
-txt(slides[4],'0:00  Set up and practice\n0:35  Complete a live check\n1:30  Save and compare history\n2:40  Show the parent note',80,425,630,220,31,C.white);
-foot(slides[4],'Live task and example history stay separate. Use this branch locally until the deployed app includes the upgrade.',true);
-
-base(slides[5],5);
-table(slides[5],[['Working today','What the investment adds'],
-  ['12-response direction task','Usability and repeatability study design'],
-  ['Saved checks and 7 / 30 / 90-day history','10-site pilot of family action and staff effort'],
-  ['Parent observations and editable note','Paid partner workflow and reporting']],80,220,1440,410,[670,770],31);
-txt(slides[5],'Pilot gate: +15 percentage points in completed next steps',80,685,1430,60,34,C.teal,true);
-foot(slides[5],'Proposed target versus usual information at 30 days. No completed pilot, paying customer or clinical validation is claimed.');
-
-base(slides[6],6);
-table(slides[6],[['Alternative','What it does well','Where Focal would compete'],
-  ['Letters and staff calls','Familiar, personal contact','Manual outreach creates work. Focal organizes parent preparation.'],
-  ['GoCheck Kids','Professional screening and EHR integration','Configured clinical device. Focal supports preparation at home.'],
-  ['Peek Vision','Screening, referral tracking and reminders','Broad program platform. Focal tests focused family usability.']],80,220,1440,470,[290,520,630],29);
-foot(slides[6],'Proposed differentiation, not proven superiority. A future advantage depends on outcomes, distribution and renewals. Sources in notes.');
-
-base(slides[7],7);
-columns(slides[7],[
-  ['$125.9M','National school opportunity','52,450 public elementary schools × $2,400 per year'],
-  ['$12.6M','Illustrative reachable subset','10% of sites assumed to fit the workflow and buying conditions'],
-  ['$1.32M','Year-three exit ARR target','550 paid schools × $2,400 per year']]);
-foot(slides[7],'NCES 2021–22 site-count benchmark. Price, 10% filter and adoption are assumptions. Private schools and practices excluded.');
-
-base(slides[8],8);
-columns(slides[8],[
-  ['40','Buyer conversations','Founder outreach to North Carolina school nurses and district leaders'],
-  ['10','Pilot sites','Agree family and staff outcomes with the budget owner'],
-  ['50','Paid sites by year-one end','Expand successful pilots through district contracts']]);
-foot(slides[8],'Proposed funnel, not a committed pipeline. Districts may buy multiple schools. Procurement timing and budget fit require validation.');
-
-base(slides[9],9);
-txt(slides[9],'75%',80,230,570,125,100,C.teal,true);
-txt(slides[9],'Modeled gross margin',80,380,610,55,34,C.navy,true);
-txt(slides[9],'$1,800 gross profit per site\n16-month target CAC payback',80,470,630,150,34,C.muted);
-table(slides[9],[['Annual unit economics','Per school'],['License revenue','$2,400'],['Hosting and messages','$240'],['Onboarding and support','$300'],['Billing and delivery tools','$60'],['Total COGS','$600']],775,220,745,475,[500,245],29);
-foot(slides[9],'Proposed pricing and costs. Payback assumes $2,400 acquisition cost. Buyer test: 60 hours saved × assumed $40/hour = annual fee.');
-
-base(slides[10],10);
-txt(slides[10],'Illustrative forecast, starting when funded',80,175,1440,50,28,C.muted);
-const chart=slides[10].charts.add('bar',{
-  name:'Revenue and total expense forecast',position:{left:80,top:260,width:710,height:445},
-  categories:['Year 1','Year 2','Year 3'],
-  series:[{name:'Revenue',values:years.map(y=>y.revenue/1000),fill:C.teal},{name:'COGS + OPEX',values:years.map(y=>(y.cogs+y.opex)/1000),fill:C.navy}],
-  barOptions:{direction:'column',grouping:'clustered',gapWidth:100},hasLegend:true,
-  legend:{position:'bottom',overlay:false,textStyle:{fontSize:23,fill:C.navy}},
-  xAxis:{textStyle:{fontSize:24,fill:C.navy},majorGridlines:null},
-  yAxis:{min:0,max:1000,majorUnit:250,numberFormatCode:'$0"K"',textStyle:{fontSize:22,fill:C.muted},majorGridlines:{fill:'#D7E3EC',width:1}},
-  dataLabels:{showValue:false},chartFill:C.bg,plotAreaFill:C.bg,
-});
-applyPresentationChartFont(chart,{fontFamily:font});
-table(slides[10],[['USD thousands','Y1','Y2','Y3'],
-  ['Revenue',...years.map(y=>String(y.revenue/1000))],['COGS',...years.map(y=>String(y.cogs/1000))],
-  ['OPEX',...years.map(y=>String(y.opex/1000))],['Operating result',...years.map(y=>String(y.result/1000))],
-  ['Year-end paid sites',...years.map(y=>String(y.endSites))]],840,245,680,465,[260,140,140,140],25);
-foot(slides[10],'ARR is a year-end run rate, not annual revenue. Y3 break-even: 367 average sites. Assumes timely collections. Full model in backup.');
-
-base(slides[11],11);
-table(slides[11],[['Use of funds','18 months'],...funding.map(([name,value])=>[name,k(value)]),['Total',k(model.raise)]],80,220,800,510,[590,210],27);
-txt(slides[11],'18-month milestones',960,235,560,75,45,C.teal,true);
-txt(slides[11],'0–3: usability and study design\n4–9: pilot and first contracts\n10–18: paid rollout and renewals',960,350,560,185,31,C.navy);
-txt(slides[11],'120 paid sites at month 18',960,545,560,55,30,C.teal,true);
-txt(slides[11],'$546K planned cost before revenue\n$54K reserve inside the raise',960,610,560,100,28,C.muted);
-foot(slides[11],'Proposed budget. Base-case 18-month revenue: $144K. Ending cash: $198K. Labor included with lean founder compensation.');
-
-base(slides[12],12);
-table(slides[12],[['Team member','Role','Milestone owner'],
-  ['Haydn Stucker','CEO','School access and fundraising'],['Fan Zhang','CCO','Customer evidence and messaging'],
-  ['Qingyi Hu','CPO','Parent experience and usability'],['Burak Donbekci','CTO','Delivery, security and integration'],
-  ['Hadley McCormack','CFO','Pricing, unit economics and runway']],80,220,1440,480,[425,190,825],30);
-foot(slides[12],'Next capability to recruit: pediatric eye-care and school-health advisers. Working prototypes demonstrate execution, not clinical expertise.');
-
-base(slides[13],13,true);
-txt(slides[13],'18 months to prove the business',80,235,1410,85,54,C.white,true);
-txt(slides[13],'Families take the next step',80,365,1400,65,42,C.lightTeal,true);
-txt(slides[13],'Schools see value and renew',80,470,1400,65,42,C.lightTeal,true);
-txt(slides[13],'Delivery supports sustainable economics',80,575,1400,65,42,C.lightTeal,true);
-foot(slides[13],'Proposed terms: $3.4M pre-money / $4.0M post-money valuation. A working Family prototype, with outcomes and buyer demand still to prove.',true);
-
-base(slides[14],14);
-table(slides[14],[['Six-month period',...periods.map(p=>p.period)],
-  ['Average paid sites',...periods.map(p=>String(p.averageSites))],
-  ['Revenue ($K)',...periods.map(p=>String(p.revenue/1000))],['COGS ($K)',...periods.map(p=>String(p.cogs/1000))],
-  ['OPEX ($K)',...periods.map(p=>String(p.opex/1000))],['Operating result ($K)',...periods.map(p=>String(p.result/1000))]],80,215,1440,390,[330,185,185,185,185,185,185],24);
-txt(slides[14],'Y3 sensitivity: price −20% gives −$132K operating result. Unit COGS +25% gives $0.',80,645,1420,85,29,C.teal,true);
-foot(slides[14],'Revenue uses average sites. Cash assumes same-period collection. Net site targets require replacement of churn. No taxes, interest or capex.');
-
-base(slides[15],15);
-table(slides[15],[['Proposed pilot','Decision rule'],['10 sites, about 200 families','Usual information compared with usual information plus Focal'],
-  ['Usability and understanding','80% finish unaided. 90% understand this is not screening.'],
-  ['30-day next-step completion','Target +15 percentage points. Separate reported and verified action.'],
-  ['School buyer value','Measure staff effort and test willingness to renew at $2,400/site.']],80,220,1440,470,[540,900],29);
-foot(slides[15],'Feasibility pilot, not a powered clinical efficacy claim. Preserve usual care. Predefine endpoints, missing-data treatment and consent.');
-
-base(slides[16],16);
-table(slides[16],[['Evidence we have','What it does not establish'],['5 real interviews, including 1 parent','Market demand, clinical accuracy or willingness to pay'],
-  ['5 AI-simulated interviews','Independent customer evidence'],['Working task, history and parent note','Clinical accuracy, completed care or retention'],
-  ['Named alternatives already serve this area','Unique follow-up technology or a defensible moat']],80,220,1440,470,[660,780],30);
-foot(slides[16],'Peek already offers referral tracking and reminders. Focal must demonstrate better fit for the proposed parent workflow.');
-
-base(slides[17],17);
-table(slides[17],[['Risk','How the funded plan addresses it'],['Parents mistake play for screening','Test comprehension. Keep clear limits and professional referrals.'],
-  ['Sensitive family or school information','Minimum data, permissions, access controls and adviser review'],
-  ['Slow purchasing or weak renewal','Pilot with a budget owner. Stage hiring against paid demand.'],
-  ['Incumbents copy the workflow','Build outcome evidence and distribution. Integrate where useful.']],80,220,1440,470,[560,880],29);
-foot(slides[17],'Current prototype: experimental task, session history and file restore. Clinical validation, accounts and partner reporting remain future work.');
-
-base(slides[18],18);
-const links=[['NCES: school count (2021–22)','https://nces.ed.gov/programs/digest/d22/tables/dt22_216.10.asp'],
- ['Head Start: referral follow-up','https://headstart.gov/publication/vision-screening-referrals'],['GoCheck Kids: professional screening','https://www.gocheckkids.com/'],
- ['Peek: screening and referral workflows','https://peekvision.org/'],['Focal Family: live demo','https://focal-demo-b.streamlit.app/']];
-links.forEach(([label,url],i)=>{const q=txt(slides[18],label,80,220+i*75,1380,55,31,C.blue,true);q.text=[[{run:label,link:{uri:url,isExternal:true}}]];});
-txt(slides[18],'Demo recovery: task screenshot on slide 5, fictional history on slide 4.',80,650,1420,85,31,C.teal,true);
-foot(slides[18],'External sources checked October 30, 2026. Local evidence and full URLs in notes. All pricing, projections and funding terms are proposals.');
-
-let elapsed=0;
-for(let i=0;i<slides.length;i++){
-  const n=notes[i];const mm=v=>Math.floor(v/60)+':'+String(v%60).padStart(2,'0');
-  const timing=i<14?`${mm(elapsed)}–${mm(elapsed+n.seconds)} (${n.seconds} seconds)`:'Backup, outside the 14-minute talk';
-  slides[i].speakerNotes.text=`${n.title}\nPresenter: ${n.speaker}\nTiming: ${timing}\n\n${n.script}\n\nSources and assumptions\n${n.sources.join('\n')}`;
-  slides[i].hidden=i>=14;elapsed+=n.seconds;
-}
-const candidate=path.join(temp,'candidate.pptx');
-await (await PresentationFile.exportPptx(presentation)).save(candidate);
-const final=path.join(temp,'final',`Focal Family Executive Pitch-${Date.now()}.pptx`);
-const receipt=path.join(temp,path.basename(final)+'.validation.json');
 const tableOwners=[6,7,10,11,12,13,15,16,17,18];
-const existingChartDirs=new Set((await fs.readdir(root)).filter(n=>n.startsWith('.chart-data-')));
-await finalizePresentation({workspaceDir:root,candidatePath:candidate,finalPath:final,pythonExecutable:python,
-  integrityValidatorPath:path.join(skillDir,'container_tools/inspect_presentation_package_integrity.py'),
-  layoutValidatorPath:path.join(skillDir,'container_tools/inspect_presentation_layout_geometry.py'),
-  explicitTotalSlideCount:19,requiredNativeTableOwnerSlides:tableOwners,requiredNativeChartOwnerSlides:[11],
-  materializeLiteralChartWorkbooks:true,
-  tableArithmeticContracts:[
-    {slide:10,table:1,label_column:0,total_row:5,value_columns:[1],component_rows:[2,3,4]},
-    {slide:12,table:1,label_column:0,total_row:7,value_columns:[1],component_rows:[1,2,3,4,5,6]}
-  ],
-  layoutArgs:['--expected-slide-size-emu','15240000,8572500','--validate-bullet-geometry','--validate-heading-fit',...tableOwners.flatMap(n=>['--require-native-table-slide',String(n)])],
-  fontPolicy:{basis:'reference',families:[font],referencePath:reference,referenceSha256:crypto.createHash('sha256').update(await fs.readFile(reference)).digest('hex')},
-  verifyArtifactToolImport:true,receiptPath:receipt});
-await fs.copyFile(receipt,path.join(temp,'validation.json'));
-for(const name of await fs.readdir(root)) {
-  if(name.startsWith('.chart-data-') && !existingChartDirs.has(name)) await fs.rm(path.join(root,name),{recursive:true});
-}
-const output=path.join(here,'Focal Family Executive Pitch.pptx');
-await fs.copyFile(final,output);
-for(let i=0;i<notes.length;i++){
-  // A fresh renderer avoids cross-slide glyph/table cache artifacts in previews.
-  execFileSync(process.execPath,[path.join(here,'render-slide.mjs'),runtimeModules,output,path.join(temp,'renders'),String(i+1)],{stdio:'pipe'});
-}
-console.log(JSON.stringify({output,slides:notes.length,mainSlides:14,backupSlides:5,talkSeconds:elapsed,demoSeconds:notes[4].seconds,model:calculations.eighteenMonths}));
+const chartDirs=new Set((await fs.readdir(root)).filter(n=>n.startsWith('.chart-data-')));
+await finalizePresentation({workspaceDir:root,candidatePath:candidate,finalPath:final,pythonExecutable:python,integrityValidatorPath:path.join(skillDir,'container_tools/inspect_presentation_package_integrity.py'),layoutValidatorPath:path.join(skillDir,'container_tools/inspect_presentation_layout_geometry.py'),explicitTotalSlideCount:19,requiredNativeTableOwnerSlides:tableOwners,requiredNativeChartOwnerSlides:[11],materializeLiteralChartWorkbooks:true,tableArithmeticContracts:[{slide:10,table:1,label_column:0,total_row:5,value_columns:[1],component_rows:[2,3,4]},{slide:12,table:1,label_column:0,total_row:7,value_columns:[1],component_rows:[1,2,3,4,5,6]}],layoutArgs:['--expected-slide-size-emu','15240000,8572500','--validate-bullet-geometry','--validate-heading-fit',...tableOwners.flatMap(n=>['--require-native-table-slide',String(n)])],fontPolicy:{basis:'reference',families:[font],referencePath:reference,referenceSha256:sourceHash},verifyArtifactToolImport:true,receiptPath:path.join(work,`validation-${stamp}.json`)});
+for(const name of await fs.readdir(root))if(name.startsWith('.chart-data-')&&!chartDirs.has(name))await fs.rm(path.join(root,name),{recursive:true});
+await fs.writeFile(path.join(work,'latest.json'),JSON.stringify({source:reference,candidate,final,canonical,talkSeconds:elapsed,demoSeconds:180},null,2)+'\n');
+console.log(JSON.stringify({final,canonical,slides:19,main:14,backups:5,talkSeconds:elapsed,demoSeconds:180}));
+// Publish only after rendering and native PowerPoint review; see README.md.

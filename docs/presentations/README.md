@@ -1,6 +1,6 @@
 # Prototype presentation
 
-The final investor presentation now has its own [Focal Family executive-pitch folder](executive-pitch/README.md), with 14-minute timing and a three-minute Family demo. The files below remain the earlier prototype presentation.
+The final investor presentation now has its own [Focal Family executive-pitch folder](executive-pitch/README.md), with an 11:30 speaking plan within the 12-minute limit and a three-minute Family demo. The files below remain the earlier prototype presentation.
 
 [Focal Prototype Presentation](<Focal Prototype Presentation.pptx>) is the editable class deck. It includes the problem and discovery findings, one hypothesis for each prototype, live-demo links, scope decisions, deliberate cuts, and a prompt for the class vote. Speaker notes contain the proposed timings, demo scripts, evidence sources, and limits of each experiment.
 
