@@ -52,8 +52,8 @@ def validate_setup(setup):
             raise ValueError(f"Invalid {key} selection.")
     if type(setup.get("distance_mm")) is not int or setup["distance_mm"] not in (1500, 3000):
         raise ValueError("Choose a supported viewing distance.")
-    if type(setup.get("reference_px")) is not int or not 160 <= setup["reference_px"] <= 600:
-        raise ValueError("Reference width must be between 160 and 600 CSS pixels.")
+    if type(setup.get("reference_px")) is not int or not 24 <= setup["reference_px"] <= 800:
+        raise ValueError("Reference width must be between 24 and 800 CSS pixels.")
     return {k: setup[k] for k in ("profile", "eye", "glasses", "screen", "distance_mm", "reference_px")}
 
 

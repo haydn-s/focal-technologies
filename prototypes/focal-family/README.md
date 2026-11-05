@@ -17,6 +17,19 @@ Prototype C won the class vote. The team's view is that C's **delivery and polis
 | **B · Focal Family** | The persona and story: parent and child together, child labels instead of names, and the reason for checking (school letter, concern). Also: the parent's observations, next steps, prepared questions, an editable message and a take-home note. **B's check-and-history engine (`vision.py`) is copied unchanged**, so a history saved in B restores here |
 | **A · Focal Monitor** | Results over time: 7, 30 and 90-day windows, change against the previous window, a trend chart, and a clearly labeled fictional history |
 
+## The look (from the team's React UI)
+
+Qingyi's React UI candidate (PR #10, `prototypes/focal-family-ui/`) set the visual direction the team liked. This app now uses that design and keeps its own tested logic:
+
+- **Palette and type:** warm paper background, Focal navy, Plus Jakarta Sans for text and Fraunces for headlines. Set in `.streamlit/config.toml` next to `app.py`, so it applies only to this app and stays light on a dark-mode laptop.
+- **Layout:** a top bar with the logo lockup and page links; a two-column welcome with a labeled "Illustrative example" plan card; white section cards; choices shown as chips.
+- **Check:** "your child / you" role cards, the letter in its own card, and answers on an arrow pad (up, left, right, down), as in the React UI.
+- **Setup:** a top-down room sketch that follows the chosen distance.
+- **Result:** tiles for letters shown, directions matched (with "can't tell" counted) and each size.
+- **Feedback:** short toasts when a check is saved, a reminder is set or the fictional note is loaded.
+
+What stayed from this app on purpose: letters drawn to size from the card calibration, history across 7, 30 and 90 days with export and restore, and a parent note that starts empty unless the parent chooses the labeled fictional example.
+
 ## The journey (matches the pitch's demo order)
 
 1. **Welcome:** "Got a school vision letter? Make the next step easy." Three promises, how it works, and expanders for *Why trust this*, *What this is not* and *For schools (proposed pilot)*.
@@ -53,7 +66,7 @@ python -m pip install -r prototypes/focal-family/requirements.txt
 python -m streamlit run prototypes/focal-family/app.py --server.port 8504
 ```
 
-Tests (30: next-step logic, message and take-home note, history compatibility with B, DMV scoring and state lines, and every click path, family and DMV, using Streamlit's AppTest):
+Tests (32: next-step logic, message and take-home note, history compatibility with B, DMV scoring and state lines, every click path, family and DMV, using Streamlit's AppTest, plus the theme):
 
 ```bash
 cd prototypes/focal-family

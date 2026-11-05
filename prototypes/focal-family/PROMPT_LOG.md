@@ -53,6 +53,41 @@ where the presentation focuses the protoype should focus there too.
 
 ---
 
-## Prompts 3+ (add as we iterate)
+## Prompt 3: Take the React UI's look where it excels
+
+```text
+can you just make our demo like his where his excels?
+```
+
+**Trying to learn:** The team liked Qingyi's React UI (PR #10) for its look. Can this app get that look in a few hours before class, without losing what the React version lacks: calibrated letter sizes, history over time, and a note that never starts with made-up content?
+
+**What the AI did:**
+1. **Ran the React UI locally and clicked through it** to see what it does well: warm paper and navy palette, serif headlines, a top bar, a two-column welcome with an example plan card, chip-style choices, a room diagram, an arrow pad, result tiles and toasts.
+2. **Brought those into this app** without changing its logic. A theme file next to `app.py` applies only here and keeps the app light even on a dark-mode laptop.
+3. **Kept this app's substance:** card-calibrated letter sizes, 7/30/90-day history with export and restore, the "keep the follow-up" card, and an empty note unless the parent picks the labeled fictional example.
+4. **Fixed a bug found while clicking through:** pages didn't always open at the top, because the browser reused the scroll helper's frame without running it again. The helper now changes on every page.
+
+**Verified:** 32 automated tests (2 new: the theme stays light and scoped to this app; the scroll helper changes on every page). Clicked through welcome → setup → practice → check → result → history → note at desktop size, and checked the welcome page at phone size.
+
+---
+
+## Prompt 4: Calibration that works on a projector
+
+```text
+ow while i remember can you make the card calibration range even wider. last time it was close when presenting but on a project screen the smallest wasn't small enough.
+```
+
+**Trying to learn:** Can the setup be calibrated honestly on the class projector? A card held against a projected image spans only a few dozen pixels, below the old minimum.
+
+**What changed:**
+- The card width now goes from 24 to 800 CSS pixels (it was 160 to 600), with − and + buttons for 2-pixel steps and the current width shown.
+- B's engine (`vision.py`) accepts the same range. The change is made identically in B's copy, so the two stay the same and B's saved histories still restore.
+- Prototype C's slider gets the same range (it was 180 to 560).
+
+**Verified:** 33 tests, including a full check calibrated at 26 pixels. A, B and C suites pass.
+
+---
+
+## Prompts 5+ (add as we iterate)
 
 Log each new prompt in the same format. Likely next ones: team review against the pitch, deployment, and rehearsing the 3-minute demo.
