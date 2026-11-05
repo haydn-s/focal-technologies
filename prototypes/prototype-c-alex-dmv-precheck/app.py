@@ -597,8 +597,10 @@ def page_setup():
         "Slide until the blue box is exactly as wide as your card."
     )
     card_px = st.session_state.card_px
-    html(f"""<div class="fc-calib"><div class="fc-idcard" style="width:{card_px}px; height:{card_px * 53.98 / 85.6:.0f}px;">Match your card here</div></div>""")
-    st.slider("Card width", min_value=180, max_value=560, value=st.session_state.card_px, key="w_card",
+    label = "Match your card here" if card_px >= 150 else ""
+    html(f"""<div class="fc-calib"><div class="fc-idcard" style="width:{card_px}px; height:{card_px * 53.98 / 85.6:.0f}px;">{label}</div></div>""")
+    # 24 px covers projectors and big shared screens, where a card spans only a few dozen pixels.
+    st.slider("Card width", min_value=24, max_value=800, value=st.session_state.card_px, key="w_card",
               on_change=persist, args=("w_card", "card_px"), label_visibility="collapsed")
     st.caption("No card handy? Leave it as is. Most laptop screens are close.")
 

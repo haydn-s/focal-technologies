@@ -225,6 +225,25 @@ class TestClickableFlow(unittest.TestCase):
         at.button(key="nav_welcome").click().run()
         self.assertEqual(at.session_state["scroll_count"], 3)
 
+    def test_projector_sized_calibration_works(self):
+        # On a projector a bank card spans only a few dozen pixels.
+        at = self.new_app()
+        at.button(key="btn_start").click().run()
+        at.slider(key="w_card").set_value(30).run()
+        for _ in range(5):
+            at.button(key="btn_card_minus").click().run()
+        self.assertEqual(at.session_state["w_card"], 24)  # never below the minimum
+        at.button(key="btn_card_plus").click().run()
+        self.assertEqual(at.session_state["w_card"], 26)
+        for i in range(4):
+            at.checkbox(key=f"chk_{i}").check().run()
+        at.button(key="btn_begin").click().run()
+        at.button(key="prac_right").click().run()
+        answer_all(at, correct=12)
+        self.assertFalse(at.exception)
+        self.assertEqual(at.session_state["check"]["setup"]["reference_px"], 26)
+        self.assertIn("matched 12 of 12 directions", all_markdown(at))
+
     def test_welcome_speaks_to_parents(self):
         at = self.new_app()
         text = all_markdown(at)

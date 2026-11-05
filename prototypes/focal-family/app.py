@@ -717,13 +717,33 @@ def page_welcome_expanders():
         )
 
 
+# Card widths the calibration allows, in CSS pixels. Small values are for projectors and big shared
+# screens, where a card covers only a few dozen pixels; large ones are for 4K monitors at 100% zoom.
+CARD_MIN_PX, CARD_MAX_PX = 24, 800
+
+
+def nudge_card(delta: int):
+    st.session_state.w_card = min(CARD_MAX_PX, max(CARD_MIN_PX, int(st.session_state.w_card) + delta))
+
+
 def render_calibration(number: int):
     """Card calibration shared by the family check and the DMV pre-check (same setting)."""
     section(number, "Size the letters to your screen",
-            "Hold any bank card or ID flat against the screen. Slide until the blue box is exactly as wide as the card.")
+            "Hold any bank card or ID flat against the screen. Slide until the blue box is exactly as wide as the card. "
+            "Use − and + to fine-tune.")
     card_px = st.session_state.w_card
-    html(f"""<div class="fc-calib"><div class="fc-idcard" style="width:{card_px}px; height:{card_px * 53.98 / 85.6:.0f}px;">Match your card here</div></div>""")
-    st.slider("Card width", min_value=160, max_value=600, key="w_card", label_visibility="collapsed")
+    label = "Match your card here" if card_px >= 150 else ""
+    html(f"""<div class="fc-calib"><div class="fc-idcard" style="width:{card_px}px; height:{card_px * 53.98 / 85.6:.0f}px;">{label}</div></div>""")
+    minus, slider, plus = st.columns([1, 7, 1], vertical_alignment="center")
+    with minus:
+        st.button("−", key="btn_card_minus", help="Make the box 2 pixels narrower", on_click=nudge_card, args=(-2,),
+                  **full_width())
+    with slider:
+        st.slider("Card width", min_value=CARD_MIN_PX, max_value=CARD_MAX_PX, key="w_card", label_visibility="collapsed")
+    with plus:
+        st.button("+", key="btn_card_plus", help="Make the box 2 pixels wider", on_click=nudge_card, args=(2,),
+                  **full_width())
+    st.caption(f"Box width: {card_px} px. On a projector or a big shared screen the box gets very small; that's expected.")
 
 
 def page_setup():

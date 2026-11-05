@@ -71,6 +71,23 @@ can you just make our demo like his where his excels?
 
 ---
 
-## Prompts 4+ (add as we iterate)
+## Prompt 4: Calibration that works on a projector
+
+```text
+ow while i remember can you make the card calibration range even wider. last time it was close when presenting but on a project screen the smallest wasn't small enough.
+```
+
+**Trying to learn:** Can the setup be calibrated honestly on the class projector? A card held against a projected image spans only a few dozen pixels, below the old minimum.
+
+**What changed:**
+- The card width now goes from 24 to 800 CSS pixels (it was 160 to 600), with − and + buttons for 2-pixel steps and the current width shown.
+- B's engine (`vision.py`) accepts the same range. The change is made identically in B's copy, so the two stay the same and B's saved histories still restore.
+- Prototype C's slider gets the same range (it was 180 to 560).
+
+**Verified:** 33 tests, including a full check calibrated at 26 pixels. A, B and C suites pass.
+
+---
+
+## Prompts 5+ (add as we iterate)
 
 Log each new prompt in the same format. Likely next ones: team review against the pitch, deployment, and rehearsing the 3-minute demo.
