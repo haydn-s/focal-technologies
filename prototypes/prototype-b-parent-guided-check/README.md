@@ -62,13 +62,12 @@ The entry point and port remain the same. The published [Family app](https://foc
 
 ## Three-minute investor demo
 
-Prepare the local upgraded app, with the physical setup already checked. Use a second tab for a fictional parent-summary example.
+The [executive-pitch guide](../../docs/presentations/executive-pitch/README.md#three-minute-demo) holds the current sequence for the 11:30 talk; rehearse from that guide. In summary, use the public app with two tabs prepared before presenting, parent action first:
 
-1. **0:00–0:35:** show setup, enter the live task and complete practice.
-2. **0:35–1:30:** complete 12 responses, show per-size results and save once.
-3. **1:30–1:55:** open My saved checks and identify the newly saved result.
-4. **1:55–2:25:** explicitly switch to Fictional example history. Compare 7, 30 and 90 days and identify these as made-up task responses.
-5. **2:25–2:40:** return to My saved checks and show the JSON export/restore controls.
-6. **2:40–3:00:** show the prepared parent note and close. Explain that clinical interpretation and partner reporting require further work.
+1. **0:00–0:40, Qingyi (Tab A, Parent activity → Explore a fictional example):** the school concern, parent-selected next step and action checklist.
+2. **0:40–1:30, Qingyi:** expand the questions and message, make one short edit and point to the downloads. Nothing is sent or booked.
+3. **1:30–1:50, Burak (Tab B, Live vision check, setup measured and practice done):** one or two software-test responses. Do not complete or save a new check on stage.
+4. **1:50–2:30, Burak:** Performance history → Fictional example history, one window, identified as made up.
+5. **2:30–3:00, Burak:** return to Tab A's parent note; school reporting and staff-savings evidence are funded work.
 
-Use the updated deck's screenshots if the live app stalls. Rehearse the actual click sequence and timing with both presenters. Browser software-test inputs and illustrative history are not participant outcomes.
+Wake the app before class. After a ten-second stall, use the deck's slide 4 parent-note screenshot, with slide 5's task screenshot as supporting context. Browser software-test inputs and illustrative history are not participant outcomes.

@@ -1,66 +1,67 @@
 [
   {
     "title": "Focal Family",
-    "seconds": 30,
     "speaker": "Haydn",
-    "template": 0,
-    "script": "A parent gets a school letter about their child's vision. The letter says what to do, but fitting that next step into family life is another job. Focal Family helps a parent record observations, try a guided visual task and review performance across visits. We are seeking $600,000 to turn our working Family prototype into a product schools can buy and families can use for free. Fan will explain why we chose this problem.",
+    "seconds": 25,
+    "script": "A school vision letter identifies a concern. A family still has to arrange care and prepare the next conversation. Focal Family helps parents take that next step. We are seeking $600,000 to test family follow-through and build a product schools could buy, with free access for families.",
     "sources": [
       "Team-selected product direction, October 30, 2026. Proposed investment terms and model.json."
     ]
   },
   {
-    "title": "The work after a school letter",
-    "seconds": 55,
+    "title": "Why we chose the school-letter moment",
     "speaker": "Fan",
-    "template": 1,
-    "script": "Imagine Pat, a working parent of a six-year-old. A screening letter arrives, the child has been moving closer to a book, and Pat wants to speak with someone who can help. This is an illustrative story, not a customer testimonial. The parent has to remember observations, gather questions and arrange the next conversation. Staff may then need to contact the family again. Head Start's guidance explicitly includes family support and follow-up after referral. That is the workflow we want to improve. Focal Family gives the parent a useful output today: a note they can take to a school or eye appointment. A professional referral remains the reason to seek care. Completing our activity never determines whether care is needed.",
+    "seconds": 40,
+    "script": "We started the semester testing three home vision-check ideas. Across five real interviews, the recurring barrier was arranging care: long waits, extra visits and uncertainty between exams. So we chose Family and a clear moment to act, a school vision letter. That use case is our proposal; interviews did not prove it. A randomized Michigan study of 162 children found documented eye exams within sixteen weeks for 65 percent with enhanced communication versus 48 percent with usual follow-up. That supports testing parent preparation, not Focal itself.",
     "sources": [
+      "docs/research/customer-discovery/interview-workbook.docx: five in-person interviews, one with a parent (Fan, My Mother). Recurring themes: appointment waits, inconvenient visits and uncertainty between exams. Exploratory context, not validation of school-referral demand.",
       "https://headstart.gov/publication/vision-screening-referrals",
-      "Customer-discovery workbook: Parent Pat is a hypothetical persona, not an observed customer journey."
+      "Customer-discovery workbook: Parent Pat is a hypothetical persona, not an observed customer journey.",
+      "https://www.sciencedirect.com/science/article/pii/S1091853120300483",
+      "Musch et al., Journal of AAPOS 24(2), 2020, DOI 10.1016/j.jaapos.2019.12.012. Wayne County, Michigan, study conducted 2017; n=162; 52/80 versus 39/82 completed documented eye examinations within 16 weeks. This is external intervention evidence, not Focal performance.",
+      "https://nc.preventblindness.org/wp-content/uploads/sites/14/2023/06/2023-24-Participant-Guide.pdf",
+      "The school-letter journey is illustrative; the real parent interview concerns scheduling and monitoring, not a demonstrated school-referral purchase need."
     ]
   },
   {
-    "title": "Parents use it. Schools would pay",
-    "seconds": 50,
+    "title": "Parents use it. Schools are the proposed buyer",
     "speaker": "Fan",
-    "template": 1,
-    "script": "Our first user is a parent of a child aged four to ten, especially after a screening letter or a concern raised at school. Our proposed buyer is a district student-services leader, with a school nurse as the day-to-day champion. The buyer would pay for less staff follow-up work and better visibility into the family's chosen next step. We need to prove both. Discovery included five real people and five AI-simulated interviews. Only one real interview was with a parent. That parent already kept examination records and described difficulty arranging appointments. This steered us toward preparation, but it does not prove demand for our product. Our next evidence must come from families using it and school buyers deciding whether it earns a budget.",
+    "seconds": 35,
+    "script": "Parents of children aged four to ten use the free experience. A district student-services budget owner is our proposed purchaser; school nurses would champion and use the follow-up workflow. The annual site license would combine parent preparation with permitted status and staff reporting. That school product still needs building. We have five real interviews, including one parent, and five AI simulations. The budget source and willingness to pay must be tested with real school buyers.",
     "sources": [
       "docs/research/customer-discovery/interview-workbook.docx: Fan, My Mother, in-person interview",
       "docs/research/customer-discovery/presentation.pptx: slides 2 and 6",
-      "School buyer and purchasing case are proposed hypotheses."
+      "School buyer and purchasing case are proposed hypotheses.",
+      "The school license and reporting are proposed future deliverables, not existing customers or a deployed school-facing product."
     ]
   },
   {
-    "title": "A check, a history and a parent note",
-    "seconds": 45,
+    "title": "Prepare the next conversation",
     "speaker": "Qingyi",
-    "template": 4,
-    "script": "Family now brings the parent journey and experimental testing into one Streamlit app. A parent can run twelve direction-matching responses, with a card-width setup, a measured viewing distance and an eye selection. Completed checks can be saved, exported and restored on another visit. The history view compares seven, thirty or ninety days using the same child, eye and setup. The parent activity still captures observations and prepares an editable note. The screenshot shows a separately labeled fictional history. We demonstrate software capabilities today. A trend in task responses cannot establish a clinical change in vision.",
+    "seconds": 35,
+    "script": "The main output is a prepared parent conversation. A parent records observations, chooses a next step, and edits a note for the school nurse or eye doctor. Nothing is booked or sent. The optional direction task and history provide supporting activities; they do not decide whether a child needs care. A school referral still stands. This screenshot is a clearly labeled fictional example. We will now show the parent action first.",
     "sources": [
-      "prototypes/prototype-b-parent-guided-check/vision.py, vision_ui.py and app.py",
-      "Screenshot: current local app, fictional-history mode. No participant outcomes.",
-      "https://www.aao.org/education/clinical-statement/vision-screening-infants-children-2022"
+      "https://focal-demo-b.streamlit.app/",
+      "Actual public-app screenshot captured November 4, 2026 after Explore a fictional example. The message contains the on-screen fictional-example label. No participant data, booking or message transmission.",
+      "Prototype B README and current public user interface. Task output does not establish clinical acuity."
     ]
   },
   {
     "title": "Focal Family live demo",
+    "speaker": "Qingyi 90 seconds, Burak 90 seconds",
     "seconds": 180,
-    "speaker": "Qingyi 90s, Burak 90s",
-    "template": 7,
-    "script": "0:00-0:20 Qingyi: Open the local upgraded app at http://127.0.0.1:8502. Select Live vision check. Show the child label, eye choice, card-width bar and measured viewing distance. Use a prepared setup for presentation time. Say: 'This is a software demonstration. These are not a child's clinical results.'\n0:20-0:35 Qingyi: Begin live check and complete the large practice E. Say: 'The parent enters the direction the child identifies.'\n0:35-1:20 Qingyi: Complete twelve responses across three symbol sizes, deliberately using Can't tell once. Do not read off a predetermined random answer sequence. Show Pause / Resume only if ahead of schedule.\n1:20-1:30 Qingyi: Show the per-size breakdown, save the completed check once and hand to Burak.\n1:30-1:55 Burak: Open Performance history, My saved checks. Point to the new result, matching setup and absence of a previous-window comparison when there is too little history.\n1:55-2:25 Burak: Switch explicitly to Fictional example history. Say: 'These dates and responses are made up to demonstrate the timeline.' Compare 7, 30 and 90 days. Explain average task accuracy and change in percentage points, without claiming better or worse eyesight.\n2:25-2:40 Burak: Switch back to My saved checks. Show Download history JSON and the restore control. Say: 'Families carry their file between visits. We have not built an account or shared database.'\n2:40-2:55 Burak: Open a second prepared Parent activity summary tab and show the editable note. Keep the history and task results distinct from the parent's observations.\n2:55-3:00 Burak: Say: 'Funding now tests reliable use, real follow-through and buyer demand.' Return to slide 6.\nFallback: If the app stalls for ten seconds, use screenshots on slides 5 and 4. The history screenshot is fictional and the test screenshot is a software-test session. Return to slide 6 at 3:00. The published Streamlit main-branch app will only include these upgrades after deployment of this branch or its merge.",
+    "script": "Qingyi, first 90 seconds. Use two preloaded public-app tabs. Tab A: Parent activity, Explore a fictional example. At 0:00 identify the example as fictional, explain the school concern and parent-selected next step, and show the checklist. By 0:40 expand Add questions and prepare a message. Show a selected question, make one short demonstration edit to the draft, and point to the summary/message downloads without downloading on stage. Say that the parent decides what to share; nothing is sent or booked. At 1:30 hand over to Burak.\n\nBurak, next 90 seconds. Tab B: Live vision check, physically prepared setup with practice completed before the talk. At 1:30 explain that the child points and the parent taps; demonstrate only one or two software-test responses. Do not finish or save a new check during this short demo. The purpose is to show the controls, not a clinical result. By 1:50 open Performance history, explicitly select Fictional example history and show one time window. Say the records are made up and cannot demonstrate eyesight improvement. At 2:30 return to Tab A's parent note. Close on the action: the parent has a next step and a message they control. School status and reporting remain funded work; the pilot will test family action and net staff effort. Return to slide 6 at 3:00.\n\nPrepare both tabs before presenting and keep the fictional note/history distinct from software-test responses. If loading or navigation stalls for ten seconds, use slide 4's fictional note screenshot as the main fallback and slide 5's task screenshot only as supporting context. Do not spend the buffer troubleshooting. Finish within three minutes.",
     "sources": [
-      "Current upgraded local Streamlit app at http://127.0.0.1:8502",
-      "prototypes/prototype-b-parent-guided-check/README.md. Public deployment may still run the older branch."
+      "https://focal-demo-b.streamlit.app/",
+      "Public Prototype B with Parent activity, Live vision check and Performance history, observed November 4, 2026. Two tabs keep the separate fictional parent-note example distinct from the live check. Preload and recheck before class. No switch to the master prototype is assumed.",
+      "Revised November 5, 2026: 90 seconds for parent preparation; 60 seconds for the optional task/history; 30 seconds returning to the parent action. No complete check, new save or file restore is required on stage."
     ]
   },
   {
     "title": "The investment tests follow-through",
-    "seconds": 55,
     "speaker": "Burak",
-    "template": 1,
-    "script": "We can now show the test interaction, a saved history and the parent note. The next question is whether families can use them reliably and whether a school will pay for better follow-through. First we will test usability and same-setup repeatability. Any claim about clinical accuracy requires a separate adviser-led validation study. Our proposed ten-site, two-hundred-family feasibility pilot then compares usual referral information with the same information plus Focal. We measure thirty-day next steps and staff effort, distinguishing parent reports from confirmed actions. A proposed fifteen-point improvement is a decision gate, not a result we have achieved. Partner permissions and reporting remain funded work. This investment moves us from a working demonstration to evidence for a purchasing decision.",
+    "seconds": 45,
+    "script": "Funding buys the school workflow and evidence of buyer value. Parent preparation already works; permitted school status and reporting need building. We will first test independent use and understanding, then run a proposed ten-site feasibility pilot against usual referral information. The decision gate is a fifteen-percentage-point improvement in completed next steps at thirty days, alongside measured net staff effort. Parent reports and verified actions stay separate. Clinical accuracy is a different question and is not established by this pilot.",
     "sources": [
       "Prototype capabilities: prototypes/prototype-b-parent-guided-check/README.md",
       "Pilot size, endpoints, and success gates are proposed targets. No completed pilot or signed customer is documented in the repo.",
@@ -68,77 +69,76 @@
     ]
   },
   {
-    "title": "We compete on the parent workflow",
-    "seconds": 55,
+    "title": "Our proposed advantage: easier follow-through",
     "speaker": "Fan",
-    "template": 1,
-    "script": "Schools can already use letters and staff calls. That is familiar and personal, but it leaves staff to repeat outreach manually. Focal would organize parent preparation in one place. GoCheck Kids offers professional screening and clinical-record integration using its configured device. Family would support the at-home preparation around that clinical visit. Peek already supports screening, referral tracking and reminders. Its broad program platform is a serious competitor, and we must test whether our focused family experience fits schools better. The new task and history improve our demonstration, but they are copyable and are not clinically validated. We would win through usable family workflows, measured follow-through and distribution that leads to renewals. Those are advantages we have to earn.",
+    "seconds": 40,
+    "script": "Letters and calls provide familiar contact. Our proposed addition is reusable parent preparation that could reduce repeated explanation. GoCheck Kids provides professional screening and clinical-record integration; Focal would complement it at home. Peek already has referral tracking, reminders and reporting. We therefore have to earn our place through easier parent completion and less net staff work. Those are advantages to test against existing workflows, not proven superiority or unique referral technology.",
     "sources": [
       "https://headstart.gov/publication/vision-screening-referrals",
       "https://www.gocheckkids.com/",
       "https://peekvision.org/",
       "https://peekvision.org/wp-content/uploads/2023/11/Peek-Vision-Brochure.pdf",
-      "Competitive fit and limitations are team analysis, not a head-to-head trial."
+      "Competitive fit and limitations are team analysis, not a head-to-head trial.",
+      "https://www.gocheckkids.com/ : clinician-operated configured device; EHR integration.",
+      "https://peekvision.org/wp-content/uploads/2023/11/Peek-Vision-Brochure.pdf : referral reminders, reporting and configurable workflows."
     ]
   },
   {
     "title": "A school-first market worth testing",
-    "seconds": 55,
     "speaker": "Haydn",
-    "template": 1,
-    "script": "We size the opportunity using billable school sites, not the global number of people with vision problems. NCES reports 52,450 public elementary schools in the 2021-22 school year. At our proposed annual price of $2,400 per school, that represents a $125.9 million theoretical annual opportunity. That historical site count is a benchmark, not a current list of qualified buyers. For planning, we assume ten percent could match our workflow and buying conditions, or roughly $12.6 million. That filter is still unvalidated. Our year-three goal is 550 paying schools, producing $1.32 million in annual recurring revenue at year end. Pediatric practices and private schools may become expansion channels, but neither contributes to these numbers. First, we need evidence that a school pays and renews.",
+    "seconds": 40,
+    "script": "The national benchmark is 52,450 public elementary schools in 2021-22. At the proposed annual price, that is $125.9 million. Our first outreach is in North Carolina. A pilot-fit site needs a referral workflow, a nurse champion and a district budget owner. We have not counted qualifying sites, so the $12.6 million subset remains an illustrative ten-percent allowance, not a measured market. The year-three target is 550 paid sites, or $1.32 million exit ARR.",
     "sources": [
       "https://nces.ed.gov/programs/digest/d22/tables/dt22_216.10.asp : Elementary row, 2021-22, 52,450",
-      "model.json: $2,400 price, 10% serviceable assumption and 550 year-three sites. Market dollars are calculations, not published market-research estimates."
+      "model.json: $2,400 price, 10% serviceable assumption and 550 year-three sites. Market dollars are calculations, not published market-research estimates.",
+      "Eligibility criteria are proposed filters, not a measured count. The national 10% allowance is not the size of the North Carolina launch market."
     ]
   },
   {
-    "title": "One school pilot can open a district",
-    "seconds": 55,
+    "title": "How ten pilots could become fifty paid schools",
     "speaker": "Haydn",
-    "template": 1,
-    "script": "We would begin with founder-led outreach to school nurses and district student-services leaders in North Carolina. A screening letter provides a relevant moment for a parent to receive the link. We would recruit pilot sites, agree the outcomes with the budget owner and evaluate staff effort as well as family behavior. If a pilot meets those gates, we would sell an annual district contract priced by participating school. The year-one planning funnel is forty buyer conversations, ten pilot sites and expansion to fifty paying sites, potentially across five district contracts. These are targets, not a pipeline we already have. School purchasing is seasonal, and privacy and IT review can delay a sale. We will test that cycle before hiring a larger sales team. Pediatric partnerships come after the first school renewal evidence.",
+    "seconds": 35,
+    "script": "Here is the assumed path to fifty paying schools. Forty qualified district-buyer conversations lead to ten districts piloting one school each. If five districts buy an average of ten school licenses, we reach fifty sites by year-end. This assumes half the pilot districts convert and purchasing completes in time. We will test budget ownership and procurement early. There are no signed pilots or committed contracts in this funnel.",
     "sources": [
       "Proposed go-to-market assumptions. No named institution or partnership is implied.",
-      "model.json: 50 paying sites at year-one end, net of cancellations."
+      "model.json: 50 paying sites at year-one end, net of cancellations.",
+      "Planning scenario: 40 district-buyer conversations; 10 districts with 1 pilot school each; 5 paying district contracts averaging 10 school sites = 50 year-end sites. 25% pilot entry and 50% pilot-district conversion are unvalidated assumptions. Districts license sites; site counts are net of cancellations."
     ]
   },
   {
-    "title": "$2,400 per school. Free for families",
-    "seconds": 55,
+    "title": "$2,400 proposed annual school license",
     "speaker": "Hadley",
-    "template": 1,
-    "script": "Our proposed revenue model is an annual $2,400 license for each participating school, with families using the experience free of charge. A district can buy multiple schools on one contract. The paid product would include school-specific preparation materials, permitted follow-up status and staff reporting, once built and tested. We assume $600 in direct annual delivery cost per site: $240 for hosting and messages, $300 for onboarding and support, and $60 for billing and delivery tools. That leaves $1,800 in gross profit, or a 75 percent gross margin, before operating expenses. At a target acquisition cost of $2,400 per site, payback would take sixteen months. As a simple pricing test, saving sixty staff hours at a hypothetical forty dollars per hour equals the annual fee. We have not measured that saving.",
+    "seconds": 45,
+    "script": "Families use Focal free. Schools would pay $2,400 annually for preparation materials and, once built, permitted status and reporting. At an assumed forty dollars per staff hour, sixty net hours saved per school per year only covers the license. Value must exceed that threshold, including the work Focal adds. We will measure time per referred family and actual annual volume. Assumed direct costs remain $600 per site, leaving $1,800 gross profit and a 75 percent margin before operating expenses.",
     "sources": [
-      "model.json. All prices, costs, acquisition targets and staff-time values are illustrative planning assumptions. No insurance reimbursement or referral commissions are assumed."
+      "model.json. All prices, costs, acquisition targets and staff-time values are illustrative planning assumptions. No insurance reimbursement or referral commissions are assumed.",
+      "School-specific materials, permitted status and staff reporting are the proposed paid offering; the school-facing status/reporting workflow is not built yet. No measured staff-time savings or school purchases are claimed.",
+      "Buyer value calculation: annual referred families × net staff minutes saved per family ÷ 60 × assumed $40/hour. Net time subtracts onboarding and added ongoing work. 60 net hours equals the $2,400 fee; adoption should require value above the fee. No measured savings are claimed."
     ]
   },
   {
     "title": "A route to $1.32M in year-end ARR",
-    "seconds": 70,
     "speaker": "Hadley",
-    "template": 1,
-    "script": "This forecast starts when funding arrives. We model fifty paying schools at the end of year one, two hundred fifty at the end of year two and five hundred fifty at the end of year three. Revenue grows as those sites come online. Recognized revenue is $42,000, $324,000 and $960,000 across the three years. The $1.32 million headline is year-three exit recurring revenue, not revenue earned during that year. Direct costs remain twenty-five percent of revenue. Operating expenses grow from $300,000 to $450,000 to $660,000 as we build the product and distribution. That produces operating losses of $268,500 and $207,000, followed by a $60,000 operating surplus in year three. At the year-three cost base, break-even requires about 367 average active schools. A twenty-percent price reduction would turn that surplus into a $132,000 loss. This is a model of what must become true, not a prediction supported by current sales.",
+    "seconds": 55,
+    "script": "The forecast starts when funded. Year-end paying sites rise from fifty to two hundred fifty, then five hundred fifty. Recognized revenue is $42,000, $324,000 and $960,000. The $1.32 million headline is year-three exit ARR, not that year's revenue. COGS remains twenty-five percent of revenue. OPEX is $300,000, $450,000 and $660,000. Operating results are losses of $268,500 and $207,000, then a $60,000 surplus. The model is sensitive: a twenty-percent price cut makes year three a $132,000 loss. Adoption and timely collection are assumptions.",
     "sources": [
       "model.json and calculated-model.json generated by build.mjs. Assumes linear site growth within half-years and collection in the same period. Excludes taxes, financing costs, capex and working-capital delays."
     ]
   },
   {
     "title": "$600K funds the next 18 months",
-    "seconds": 55,
     "speaker": "Hadley",
-    "template": 1,
-    "script": "The raise funds a sequence of milestones. Months zero through three establish parent usability, repeatability protocols and the clinical study design. Months four through nine target the ten-site feasibility pilot and first school contracts. Months ten through eighteen target paid expansion, 120 paid sites and early renewal decisions. The eighteen-month budget remains $260,000 for product and research, $110,000 for pilots and sales, $60,000 for privacy, security and specialist review, $80,000 for administration and insurance and $36,000 for service delivery. That is $546,000 before revenue plus a $54,000 reserve. Base-case receipts of $144,000 leave $198,000 cash. These milestones gate hiring. The budget does not imply that a regulated clinical product or a completed efficacy study already exists.",
+    "seconds": 45,
+    "script": "The $600,000 raise funds eighteen months. We allocate $260,000 to product and research, $110,000 to pilots and sales, $60,000 to privacy and specialist review, $80,000 to administration and insurance, and $36,000 to delivery. That is $546,000 plus a $54,000 reserve. We test parent usability and buyer budgets first, then pilots and contracts, then paid expansion and renewals. Base-case receipts leave $198,000 cash. Hiring and rollout depend on paid demand and collection timing.",
     "sources": [
       "model.json: sum of first three half-years. Use-of-funds total equals $600,000 including reserve. Renewal, clinical-content review and site targets are proposed work, not completed achievements."
     ]
   },
   {
     "title": "Five owners for the next milestones",
-    "seconds": 45,
-    "speaker": "Qingyi 25s, Burak 20s",
-    "template": 1,
-    "script": "Qingyi, 25 seconds: 'Our five-person team has built and documented three product experiments, and we have selected Family for this pitch. Haydn will own school access and fundraising. Fan will own customer evidence and messaging. I will own the parent experience and usability research. The first milestone is a workflow families understand without help.'\nBurak, 20 seconds: 'I will own delivery, security implementation and partner integration. Hadley will own pricing, unit economics and runway. We plan to recruit pediatric eye-care and school-health advisers. Those advisers are a hiring need, not credentials we already have. Each investment milestone has a named owner.'",
+    "speaker": "Qingyi 20 seconds, Burak 20 seconds",
+    "seconds": 40,
+    "script": "Qingyi, 20 seconds: Our five-person team has built three product experiments. Haydn owns school access and fundraising, Fan customer evidence and messaging, and I own the parent experience and usability. Each investment milestone has a named owner.\n\nBurak, 20 seconds: I own delivery, security implementation and integration. Hadley owns pricing and runway. We still need pediatric eye-care and school-health advisers. Our prototypes demonstrate execution; they do not establish clinical expertise.",
     "sources": [
       "docs/strategy/business-model-presentation.pdf, slide 1: team names and roles",
       "Prototype repository: working experiments. Future ownership is proposed for this pitch."
@@ -146,19 +146,17 @@
   },
   {
     "title": "$600K for 15% equity",
-    "seconds": 35,
     "speaker": "Haydn",
-    "template": 12,
-    "script": "We are asking for $600,000 for fifteen percent of the company, an illustrative $3.4 million pre-money and $4 million post-money valuation. The investment funds eighteen months to prove that families take their next step, schools see enough value to renew, and delivery can support the economics we showed. The working parent experience is already here. The next milestone is a business that schools choose to pay for. Help us turn a parent's concern into a prepared conversation and a follow-through process schools can trust. Thank you. We welcome your questions.",
+    "seconds": 30,
+    "script": "We are asking for $600,000 for fifteen percent equity, implying a proposed $3.4 million pre-money valuation. The next eighteen months must show that parents complete follow-up actions, schools get value worth renewing, and delivery supports sustainable economics. The parent experience works today. Your investment would fund the evidence and school product needed to turn it into a business. Thank you.",
     "sources": [
       "Proposed classroom financing terms, subject to negotiation. These are not existing financing commitments or a professional valuation. model.json."
     ]
   },
   {
     "title": "Backup: the financial assumptions",
-    "seconds": 0,
     "speaker": "Hadley",
-    "template": 1,
+    "seconds": 0,
     "script": "Revenue uses average active paying sites, not year-end sites. First half-year averages are 5, 30, 85, 185, 325 and 475. Each average site earns $1,200 for a six-month period and costs $300 to serve. Operating expenses are fully detailed in model.json. Site counts are net of cancellations, so gross wins must also replace losses. Working capital is simplified. The acquisition-cost target is $2,400 per site, which implies 16 months of gross-profit payback at $150 per month. A 90% annual retention target remains untested. At a 20% price cut, year-three revenue becomes $768,000 while direct delivery costs remain $240,000, giving a $132,000 operating loss after $660,000 OPEX. At 25% higher unit delivery cost, year-three COGS is $300,000 and operating result is zero. No clinical billing, referral fee or family subscription is in the base case.",
     "sources": [
       "model.json. All forward-looking figures are illustrative, not actual results."
@@ -166,33 +164,39 @@
   },
   {
     "title": "Backup: the pilot must earn a renewal",
-    "seconds": 0,
     "speaker": "Fan and Qingyi",
-    "template": 1,
-    "script": "Proposed first study: 10 school sites, approximately 200 consenting families, usual information versus usual information plus Focal, allocated within sites where feasible. Never withhold or delay a professional referral. This is a feasibility design, not a powered clinical efficacy trial. Agree the selected next-step definition, observation window and measurement plan before enrollment. Primary proposed outcome: a completed family-selected school contact or appointment-related action within 30 days, report parent statements separately from verified completion. Attendance at an examination is a separate endpoint. Compare staff time spent per family. Predefine exclusions and report missing follow-up. Proposed gates: at least 80% unaided workflow completion, 90% understanding that it is not screening, a 15-point uplift in next-step completion versus usual information, and willingness to renew at the proposed price. The 15-point gate is a business decision threshold, not an established effect. If families misunderstand the activity or the buyer sees no return, revise before scaling.",
+    "seconds": 0,
+    "script": "Proposed first study: 10 school sites, approximately 200 consenting families, usual information versus usual information plus Focal, allocated within sites where feasible. Never withhold or delay a professional referral. This is a feasibility design, not a powered clinical efficacy trial. Agree the selected next-step definition, observation window and measurement plan before enrollment. Primary proposed outcome: a completed family-selected school contact or appointment-related action within 30 days, report parent statements separately from verified completion. Attendance at an examination is a separate endpoint. Compare staff time spent per family. Predefine exclusions and report missing follow-up. Proposed gates: at least 80% unaided workflow completion, 90% understanding that it is not screening, a 15-point uplift in next-step completion versus usual information, and willingness to renew at the proposed price. The 15-point gate is a business decision threshold, not an established effect. If families misunderstand the activity or the buyer sees no return, revise before scaling.\n\nBuyer economics: record staff minutes per referred family under usual follow-up and with Focal, including onboarding and ongoing work. Annualize only using each school's actual annual referral volume. At an assumed $40/hour, 60 net hours saved per site per year covers only the $2,400 fee. The pilot's roughly 200 families are not an annual per-school volume assumption. Test value above the fee and a real paid renewal, rather than treating stated renewal intent as revenue.",
     "sources": [
       "Prototype B README: original proposed usability criteria",
-      "New pilot proposal. Clinical and school partners must review study procedures before use."
+      "New pilot proposal. Clinical and school partners must review study procedures before use.",
+      "Buyer-value threshold and $40/hour cost are proposed assumptions. No measured savings or paid renewal exists."
     ]
   },
   {
     "title": "Backup: evidence and competitive limits",
-    "seconds": 0,
     "speaker": "Fan",
-    "template": 1,
+    "seconds": 0,
     "script": "One real parent described preserving historical records and inconvenience around examinations. That supports studying preparation, not a universal unmet need or willingness to pay. Five AI interviews helped generate hypotheses and are not validation. No measured Family conversion, school pilot, paid customer or renewal result appears in the repo. Existing letters and calls are the baseline to beat. GoCheck Kids focuses on professional screening and integrated clinical records. Peek already offers a screening-to-treatment pathway and automated reminders; it cannot be dismissed as merely an acuity app. Focal's proposed parent-and-child preparation focus is a hypothesis about adoption and fit. None of these comparisons establishes superior clinical performance, lower cost or a defensible patent. We should partner or integrate where incumbents already perform well.",
     "sources": [
       "docs/research/customer-discovery/interview-workbook.docx",
       "https://www.gocheckkids.com/",
       "https://peekvision.org/",
-      "https://peekvision.org/wp-content/uploads/2023/11/Peek-Vision-Brochure.pdf"
+      "https://peekvision.org/wp-content/uploads/2023/11/Peek-Vision-Brochure.pdf",
+      "",
+      "Additional external evidence",
+      "https://www.sciencedirect.com/science/article/pii/S1091853120300483",
+      "Musch et al. (2020): randomized Michigan study of 162 first- and third-grade children after failed screening, conducted in 2017. Enhanced communication increased documented examinations within 16 weeks from 39/82 to 52/80. This does not validate Focal's effect, home task or purchase price.",
+      "https://media.governmentnavigator.com/media/bid/1780911549_816D261C_ESBD_524471_1780701856884_TEA_Bonfire_ESBD_Notification_%2826-012%29.pdf",
+      "TEA-issued solicitation 701-26-012, Statewide Vision Screening Data Collection Initiative, due July 20, 2026. The linked document is a public copy of the agency notice. It seeks statewide data-collection/reporting SaaS; it is not an award, a Family customer, or evidence that individual schools will pay $2,400.",
+      "https://nc.preventblindness.org/wp-content/uploads/sites/14/2023/06/2023-24-Participant-Guide.pdf",
+      "Prevent Blindness NC 2023–24 participant guide, section 6.3, documents parent contact and referral follow-up work. The state's workflow is context, not endorsement of Focal."
     ]
   },
   {
     "title": "Backup: product boundaries and risks",
-    "seconds": 0,
     "speaker": "Burak",
-    "template": 1,
+    "seconds": 0,
     "script": "The upgraded app records experimental direction-matching responses and retains saved checks in the current browser session. Families may download and restore a validated-format history file. There is no account, shared database, camera, prescription, diagnosis, booking or automatic message sending. The 20/x labels describe symbol geometry, not measured acuity. Same-setup comparisons avoid combining different children, eyes, correction, distance or reference widths. Attention, learning, guessing and self-reported setup still limit interpretation. This app must never clear a child from a professional referral. Production partner reporting needs appropriate permissions, secure storage, access control and expert review. Usability, clinical accuracy, school demand and renewal are separate questions that we must test before expanding claims.",
     "sources": [
       "prototypes/prototype-b-parent-guided-check/vision.py, vision_ui.py and README.md",
@@ -201,16 +205,17 @@
   },
   {
     "title": "Backup: sources and demo recovery",
-    "seconds": 0,
     "speaker": "Any presenter",
-    "template": 1,
-    "script": "External sources checked October 30, 2026. NCES uses the 2021-22 elementary-school count as a historical benchmark. Pricing and market filters are authored assumptions. Head Start provides context for referral follow-up, not endorsement of Focal. Competitor product claims come from their official websites and may change. Local sources are the customer-discovery workbook, business-model team roster, selected prototype deck and current Family README/code. Run the upgraded branch locally and prepare a second parent-summary tab. If the demo fails, show slide 5's live-task screenshot and slide 4's explicitly fictional history. Explain the controls and rejoin slide 6. Live checks and example history remain separate. Stop the demo at three minutes. Backup slides are outside the fourteen-minute main talk.",
+    "seconds": 0,
+    "script": "The main talk is planned for 11 minutes 30 seconds including a three-minute demo, leaving 30 seconds before the twelve-minute limit. All five members speak: Haydn 2:10, Fan 1:55, Qingyi 2:25, Burak 2:35, Hadley 2:25. These are allocations, not a measured rehearsal.\n\nUse the public Prototype B link. Before class, wake the app, prepare Tab A at the fictional parent note and Tab B at the experimental task with practice completed, and check that Performance history opens. The November 5 readiness check found that the app initially slept, then loaded the expected task/history workspaces after wake-up. It was not a timed team rehearsal or a completed new live check.\n\nDemo order: 0:00 parent next step; 0:40 editable note; 1:30 optional task and fictional history; 2:30 return to the parent action. If anything stalls for ten seconds, use slide 4's fictional note and, if useful, slide 5's task screenshot. Return to slide 6 at three minutes.\n\nExternal evidence supports the communication problem and an adjacent procurement category, not Focal efficacy, school willingness to pay, or our home task. The school count is explicitly historical. Price, the ten-percent market allowance, district conversions, forecasts and investment terms remain planning assumptions.",
     "sources": [
       "https://nces.ed.gov/programs/digest/d22/tables/dt22_216.10.asp",
       "https://headstart.gov/publication/vision-screening-referrals",
       "https://www.gocheckkids.com/",
       "https://peekvision.org/",
-      "https://peekvision.org/wp-content/uploads/2023/11/Peek-Vision-Brochure.pdf",
+      "https://www.sciencedirect.com/science/article/pii/S1091853120300483",
+      "https://media.governmentnavigator.com/media/bid/1780911549_816D261C_ESBD_524471_1780701856884_TEA_Bonfire_ESBD_Notification_%2826-012%29.pdf",
+      "https://nc.preventblindness.org/wp-content/uploads/sites/14/2023/06/2023-24-Participant-Guide.pdf",
       "https://focal-demo-b.streamlit.app/"
     ]
   }

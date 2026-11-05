@@ -1,99 +1,135 @@
-# Focal Family executive pitch
+# Focal Family final investor presentation
 
-[Open the editable pitch deck](<Focal Family Executive Pitch.pptx>).
+[Open the current 12-minute pitch deck](<Focal Family Executive Pitch - Final 12min.pptx>).
 
-This investor presentation contains **14 main slides and 5 hidden backup slides**. The full presentation is **14 minutes, including a 3-minute Focal Family demo**. The user confirmed the revised in-class time limit on October 30, 2026. Use Family only; the other prototypes are background research.
+Use this file and its speaker notes for the final presentation. It has **14 main slides and 5 hidden backups**, with **11 minutes 30 seconds** allocated to the talk, including a **3-minute demo**. The remaining 30 seconds is a buffer before the assignment's 12-minute limit. All five team members speak. These are planned allocations; a timed team rehearsal is still required.
 
-The deck reuses the Focal Prototype Presentation's visual style, master, dimensions, font, logo and Family screenshots. Each slide includes a suggested script, presenter, time window, sources and assumptions in its speaker notes. The screenshots show the existing prototype, including a clearly labeled fictional history. Backup slides remain accessible through the slide navigator for Q&A.
+The [older 14-minute deck](<Focal Family Executive Pitch.pptx>) is retained as an archive. Its timing and demo sequence are superseded by this guide and the current deck. Do not rehearse from the archived version.
+
+## Investment story
+
+Focal Family helps a parent prepare the next conversation after a school vision letter. The core output is a parent-selected next step and an editable note. The experimental direction task and history are optional supporting activities; neither decides whether a child needs care nor cancels a referral.
+
+The team began the semester with three home vision-check experiments. Exploratory discovery included five real interviews, only one with a parent, and five AI simulations. Across the real interviews, the recurring barrier was arranging care: appointment waits, inconvenient visits and uncertainty between exams. The team chose Family to test whether preparation helps at a clear moment to act; discovery did not prove that this is the winning market. The real parent described scheduling friction and inconvenient additional visits, and already maintained historical exam records. That supports investigating a parent workflow; it does not establish school-referral demand or willingness to pay. The school-letter scenario is illustrative. The published Michigan trial supports enhanced communication, not Focal's effectiveness or clinical accuracy.
+
+The proposed business model remains school licensing with free access for families. District student-services budget owners are the proposed purchasers, and school nurses are users and champions. Permitted school status and staff reporting still need building. There are no documented paid Family customers, signed school pilots, renewals or clinical validation results in the project materials.
 
 ## Run of show
 
 | Slide | Topic | Presenter | Duration | Clock |
 | --- | --- | --- | --- | --- |
-| 1 | Focal Family and the ask | Haydn | 0:30 | 0:00–0:30 |
-| 2 | The work after a school letter | Fan | 0:55 | 0:30–1:25 |
-| 3 | Parent user and school buyer | Fan | 0:50 | 1:25–2:15 |
-| 4 | Working parent experience | Qingyi | 0:45 | 2:15–3:00 |
-| 5 | Family demo | Qingyi, then Burak | **3:00** | **3:00–6:00** |
-| 6 | What funding will test and build | Burak | 0:55 | 6:00–6:55 |
-| 7 | Alternatives and differentiation | Fan | 0:55 | 6:55–7:50 |
-| 8 | Market size | Haydn | 0:55 | 7:50–8:45 |
-| 9 | School and district sales channel | Haydn | 0:55 | 8:45–9:40 |
-| 10 | Pricing and unit economics | Hadley | 0:55 | 9:40–10:35 |
-| 11 | Three-year financial model | Hadley | 1:10 | 10:35–11:45 |
-| 12 | Use of funds and milestones | Hadley | 0:55 | 11:45–12:40 |
-| 13 | Team responsibilities | Qingyi 0:25, Burak 0:20 | 0:45 | 12:40–13:25 |
-| 14 | Investment terms and close | Haydn | 0:35 | 13:25–14:00 |
+| 1 | Focal Family and the ask | Haydn | 0:25 | 0:00–0:25 |
+| 2 | Why we chose the school-letter moment | Fan | 0:40 | 0:25–1:05 |
+| 3 | Parent user and proposed school buyer | Fan | 0:35 | 1:05–1:40 |
+| 4 | Prepare the next conversation | Qingyi | 0:35 | 1:40–2:15 |
+| 5 | Parent action first: live demo | Qingyi, then Burak | **3:00** | **2:15–5:15** |
+| 6 | What funding builds and tests | Burak | 0:45 | 5:15–6:00 |
+| 7 | Proposed competitive advantage | Fan | 0:40 | 6:00–6:40 |
+| 8 | Market benchmark and eligibility | Haydn | 0:40 | 6:40–7:20 |
+| 9 | District sales assumptions | Haydn | 0:35 | 7:20–7:55 |
+| 10 | Price, buyer value and delivery costs | Hadley | 0:45 | 7:55–8:40 |
+| 11 | Three-year financial model | Hadley | 0:55 | 8:40–9:35 |
+| 12 | Uses of funds and milestones | Hadley | 0:45 | 9:35–10:20 |
+| 13 | Team responsibilities | Qingyi 0:20, Burak 0:20 | 0:40 | 10:20–11:00 |
+| 14 | Investment terms and close | Haydn | 0:30 | 11:00–11:30 |
 
-Total allocation: Haydn 2:55, Fan 2:40, Qingyi 2:40, Burak 2:45, Hadley 3:00. Demo time includes clicking, pauses and the speaker handoff. The notes suggest roughly 130–150 spoken words per minute outside the demo. Rehearsal must confirm actual timing; the planned schedule is not a measured delivery time.
+Total allocation: **Haydn 2:10; Fan 1:55; Qingyi 2:25; Burak 2:35; Hadley 2:25**. Demo time includes switching tabs, clicking and the handoff. Backup slides are outside the timed talk.
 
 ## Three-minute demo
 
-Use the upgraded Streamlit app on `focal-family-updates`, locally at [127.0.0.1:8502](http://127.0.0.1:8502). The public app can still be running the earlier version until this branch is deployed or merged. Keep a second tab prepared with the parent-summary fictional example.
+Use the [public Prototype B app](https://focal-demo-b.streamlit.app/). The deck's screenshots and instructions refer to this app, not the separate master prototype or React UI candidate.
 
-1. **0:00–0:35, Qingyi:** show the prechecked screen/distance setup and complete direction practice.
-2. **0:35–1:20, Qingyi:** complete 12 direction responses across three sizes, using “Can't tell” once. Pause/resume is optional if ahead of time.
-3. **1:20–1:30:** show the per-size breakdown, save once and hand off to Burak.
-4. **1:30–1:55, Burak:** open My saved checks and point to the new result. Explain that a previous-window comparison needs earlier data.
-5. **1:55–2:25, Burak:** explicitly choose Fictional example history and compare 7-, 30- and 90-day windows. Identify the series as made up.
-6. **2:25–2:40, Burak:** return to My saved checks and show history export/restore.
-7. **2:40–3:00, Burak:** show the prepared parent note and return to slide 6.
+Prepare two tabs before presenting:
 
-After ten seconds of a technical failure, use slide 5's live-task screenshot and slide 4's fictional-history screenshot. The screenshots come from the upgraded local app. The task screenshot uses software-test inputs, and the historical example is entirely fictional. Task accuracy and changes in it are not measurements of clinical acuity or eyesight progression. Retain normal professional referrals.
+- **Tab A:** Parent activity → Explore a fictional example. Have the next-step checklist and the expandable message draft ready. Identify the data as fictional.
+- **Tab B:** Live vision check with the physical setup actually measured and matched, and practice completed. Know how to reach Performance history and select its separately labeled fictional history. Do not represent unmeasured setup as completed.
 
-## Assignment coverage and open evidence
-
-| Required section | Main slides | What the revised deck makes explicit |
+| Demo clock | Presenter | Action |
 | --- | --- | --- |
-| Story, problem and why we chose it | 1–3 | Parent scenario, scheduling friction, one real parent interview and limits of the evidence |
-| Customer and willingness to pay | 3, 10 | Parent user, district buyer, nurse champion and a staff-time pricing test |
-| Segment size | 8 | Historical school count, proposed price and explicitly assumed reachable subset |
-| Unique value and solution | 4–6 | Live task, history and parent note, with experimental results clearly bounded |
-| Existing alternatives and how to compete | 7 | Letters/calls, GoCheck Kids and Peek: strengths, workflow gaps and Focal's proposed response |
-| Revenue model and channels | 9–10 | Annual school licenses, free parent access and pilot-to-district expansion |
-| Revenue and expenses over time | 11 | Three-year forecast, COGS, OPEX, operating result and year-end ARR |
-| COGS/OPEX detail and use of funds | 10–12 | Per-school delivery costs, budget categories and an 18-month milestone sequence |
-| Team and funding terms | 13–14 | Named owners and a proposed $600K raise for 15% equity |
-| All speakers, demo and Q&A | Notes, slide 5, backups | Five presenters, exactly 3 minutes allocated to the demo, 14 minutes total |
+| 0:00–0:40 | Qingyi | Explain the fictional school concern, parent-selected next step and action checklist. |
+| 0:40–1:30 | Qingyi | Expand the questions and message, make one short demonstration edit, and point to the downloads. Explain that the parent controls sharing; nothing is sent or booked. |
+| 1:30–1:50 | Burak | Show the prepared experimental task and one or two software-test responses. Explain that the child points and the parent taps. Do not complete or save a new check on stage. |
+| 1:50–2:30 | Burak | Open Performance history, explicitly choose Fictional example history and show one window. Identify the records as made up; they do not demonstrate eyesight improvement. |
+| 2:30–3:00 | Burak | Return to Tab A's parent note. Close on the action the parent can take, then explain that school reporting and evidence of staff savings are funded work. Return to slide 6. |
 
-Every major deck section is present. The remaining gaps are evidence: parent repeatability/usability, clinical validation, a qualified buyer pipeline, measured staff savings, paid demand and renewals. The deck treats these as milestones and assumptions rather than inventing traction. The separate executive summary still requires the instructor's outline.
+This allocation gives 90 seconds to parent preparation, 60 seconds to the optional task/history, and 30 seconds to the parent action and buyer-value hypothesis. A complete twelve-response check, new saved result, export and restore are deliberately outside the stage sequence.
 
-## Proposed commercial model
+Wake the app before class. The November 5 readiness check encountered an inactive app, then confirmed that the expected task/history workspaces loaded after wake-up. That check was not a full live-check run or a timed team rehearsal.
 
-The user authorized a proposed model because pricing and funding were not established in the repo. These figures are **assumptions**, not customer results or commitments.
+After ten seconds of a technical stall, switch to **slide 4's fictional parent-note screenshot**. Use slide 5's task screenshot only as supporting context. The fallback should still tell the parent-action story. Return to slide 6 within the three-minute allocation.
 
-- Annual school license: **$2,400 per site**, free for families. A district may purchase several sites.
-- Direct annual delivery cost: **$600 per site**. Gross margin: **75%**.
-- Raise: **$600,000 for 15% equity**, implying $3.4M pre-money and $4.0M post-money. Classroom proposal, subject to negotiation.
-- First 18 months: **$546,000** gross expenses plus **$54,000** reserve. Modeled revenue of $144,000 would leave $198,000 cash.
-- Revenue: **$42K / $324K / $960K** over years 1–3. Year-three exit ARR: **$1.32M**, based on 550 paid sites.
-- Operating result: **−$268.5K / −$207K / +$60K**. No tax, interest, capex or collection-delay assumptions.
-- Existing prototype: parent activity and note, experimental direction task, saved session checks, time-window comparisons and history export/restore. Accounts, shared persistent storage, clinical validation, real reminders and partner reporting require further work.
+## Commercial assumptions and evidence gates
 
-The market calculation uses the **2021–22 NCES historical count of 52,450 public elementary schools**, multiplied by the proposed price. The 10% serviceable subset is explicitly illustrative. This is not an independently measured current addressable market. The source is linked in the deck and in [model.json](model.json).
+| Assumption | Current proposal | What must be established |
+| --- | --- | --- |
+| Payer and users | District buyer; school nurse champion/user; free parent access | Budget owner, budget source, procurement path and staff workflow |
+| Annual license | $2,400 per school site | Buyer value and an actual paid purchase/renewal |
+| Staff-time pricing test | At an assumed $40/hour, 60 net hours/year offsets the fee | Value above the fee, after onboarding and ongoing work; measure time per referred family and actual annual volume |
+| Year-one funnel | 40 district-buyer conversations → 10 districts with one pilot school each → 5 contracts averaging 10 paid school sites | 25% pilot entry, 50% pilot-district conversion, contract scope and purchasing timing; none is a commitment |
+| Initial geography | North Carolina founder outreach | Reachable districts and a qualified buyer list |
+| Pilot eligibility | Referral workflow, nurse champion, district budget owner and feasible procurement | A count of qualifying sites; the national 10% allowance is not that count |
+| Proposed pilot | 10 sites, about 200 consenting families | Independent use, comprehension, 30-day action completion, net staff effort and purchasing behavior |
+| Competitive advantage | Easier parent completion and less net school staff work | Comparison with usual letters/calls and existing products; no superiority has been demonstrated |
 
-The research contains five real interviews, only one with a parent, and five AI simulations. It contains no documented paid Family customers, school partnerships, completed Family pilot or retention results. The story and financial model preserve those limits.
+Do not treat the pilot's roughly 200 families as an annual per-school volume. Annualize staff savings using each school's actual annual referral count. A parent's reported next step is distinct from verified completion or attendance at an examination. Stated renewal intent is distinct from paid renewal.
+
+GoCheck Kids already serves professional screening and EHR integration. Peek already provides referral tracking, reminders and reporting. Focal's proposed advantage is a better-fitting parent preparation workflow; the pitch does not claim unique referral technology, a patent, or superior clinical performance.
+
+## Financial assumptions
+
+The financial totals are unchanged. All forward-looking figures are planning assumptions, not customer results or commitments.
+
+- Annual license: **$2,400 per site**; families pay nothing.
+- Annual direct delivery costs: **$600 per site** ($240 hosting/messages, $300 onboarding/support, $60 billing/tools). Gross margin: **75%**, or **$1,800 per site** before OPEX.
+- Acquisition-cost target: **$2,400 per site**, implying **16 months** of gross-profit payback; shown in the backup notes.
+- Raise: **$600,000 for 15% equity**, implying **$3.4M pre-money / $4.0M post-money**. Proposed classroom terms, subject to negotiation.
+- First 18 months: **$546,000** gross expenses plus **$54,000** reserve. Assumed revenue of **$144,000** leaves **$198,000** cash.
+- Annual revenue: **$42K / $324K / $960K**. Year-three exit ARR: **$1.32M** at 550 paid school sites.
+- Operating results: **−$268.5K / −$207K / +$60K**. Receipts and expenses are assumed in the same period; taxes, interest, capex and collection delays are excluded.
+
+The national market benchmark is **52,450 public elementary schools in 2021–22**, multiplied by the proposed price. The **10% national eligible-site allowance remains unvalidated**. It is not a measured serviceable market or a North Carolina market count. Private schools and pediatric practices remain outside the base forecast.
+
+## Assignment coverage
+
+| Requirement | Slides | Coverage |
+| --- | --- | --- |
+| Story, problem, why this problem and value proposition | 1–4 | School-letter scenario, discovery limits, communication evidence and a parent-controlled next step |
+| Customer, payer, willingness to pay and market size | 3, 8, 10 | District purchasing hypothesis, eligibility criteria and explicit staff-value pricing test |
+| Solution and current capability | 4–6 | Working parent experience; supporting task/history; funded school workflow clearly distinguished |
+| Alternatives and how to compete | 7 | Letters/calls, GoCheck Kids and Peek; strengths, proposed fit and measurable conditions for winning |
+| Revenue model and go-to-market channels | 9–10 | Annual site licensing, district sales, free families and an explicit conversion scenario |
+| Revenue and expense assumptions over time | 11, 15 | Three-year revenue, COGS, OPEX, operating results and financial sensitivity |
+| Use of funds and milestones | 12 | Reconciled 18-month budget and staged evidence, contracts and renewals |
+| Team participation and funding terms | Notes, 13–14 | Five speakers, $600K ask and 15% proposed equity |
+| Timing and Q&A | Notes, 15–19 | 11:30 plan, 30-second buffer and five hidden backups |
+
+The separate executive-summary assignment requires 3–5 pages following the instructor's specific outline. That outline and a completed executive summary are not present in this folder; this deck does not replace that deliverable.
 
 ## Editing and rebuilding
 
-- [notes.json](notes.json): slide titles, timing, scripts and citations.
-- [model.json](model.json): editable planning inputs and assumptions.
-- [calculated-model.json](calculated-model.json): generated half-year calculations and reconciled totals.
-- [build.mjs](build.mjs): imports and adapts the existing prototype deck, creates editable tables and a chart, exports the PPTX, validates its package and renders the final slides.
+- [notes.json](notes.json) is the current 11:30 script, presenter allocation and source record.
+- [model.json](model.json) records financial inputs, proposed eligibility, district funnel and buyer-value assumptions.
+- [calculated-model.json](calculated-model.json) contains the reconciled calculations.
+- [build.mjs](build.mjs) imports the current 12-minute PPTX and updates the targeted text, native table cells and notes while preserving its design, screenshots, masters and financial chart. It does not regenerate the deck from the old prototype presentation.
 
-To rebuild with the Codex bundled runtime, run:
+With the bundled runtime paths returned by `load_workspace_dependencies`, run:
 
 ```sh
 "$FOCAL_NODE" docs/presentations/executive-pitch/build.mjs \
   "$FOCAL_NODE_MODULES" "$FOCAL_PYTHON" "$FOCAL_PRESENTATIONS_SKILL"
 ```
 
-Set these task-specific variables to the runtime Node executable, module directory, Python executable and presentations skill directory returned by `load_workspace_dependencies`. The builder uses `@oai/artifact-tool`. Temporary renders, intermediate decks and validation reports stay under the ignored `build/executive-pitch/` directory. The final PPTX is a byte-for-byte copy of the validated export.
+Outside ChatGPT, a machine with the Codex desktop runtime has these under `~/.cache/codex-runtimes/codex-primary-runtime/`: `dependencies/node/bin/node`, `dependencies/node/node_modules`, `dependencies/python/bin/python3` and `plugins/openai-primary-runtime/plugins/presentations/skills/presentations`. An optional fourth argument selects an alternative source PPTX. Each run saves a private source snapshot and produces a separately validated candidate under the ignored `build/final-presentation-updates/` directory. `latest.json` identifies the candidate and intended destination. The builder does **not** replace the published deck automatically: render and inspect the candidate, then copy it unchanged to `Focal Family Executive Pitch - Final 12min.pptx` and reopen it in PowerPoint. Avoid overwriting an open presentation with unsaved edits.
 
-Changes to layout copy or narrative assumptions may also require updating the builder: the JSON files are not a generic slide-layout engine. Direct PowerPoint edits remain possible, but a rebuild will replace them. Preserve a separate copy if editing manually.
+The slide 11 chart referenced a `Chart Data` sheet that was never embedded (true of the originally committed file as well), so only its cached values existed. The builder checks those values against the model, converts them to literal series and embeds a new workbook snapshot of the same values so PowerPoint's Edit Data works. It does not change the forecast or claim original formulas. The financial inputs are guarded against accidental drift. A deliberate pricing or forecasting change requires updating both the model and the affected slide content/checks.
 
-## Before class
+## Rehearsal record
 
-Rehearse twice with all presenters, preload the demo, and verify that the proposed commercial assumptions represent the team's intended pitch. Review source claims and financial sensitivities for Q&A. The deck is not a submitted Canvas assignment, and no investor outreach or financing agreement has occurred.
+Record actual results rather than treating the planned schedule as a completed rehearsal.
 
-The separate 3–5-page executive-summary assignment is outside this deck. Its required course outline is not present in the repo and was not replaced with an invented outline.
+| Run | Date | Actual duration | Demo duration | Issues and changes |
+| --- | --- | --- | --- | --- |
+| Full-team rehearsal 1 | Not recorded | Not recorded | Not recorded | Pending |
+| Full-team rehearsal 2 | Not recorded | Not recorded | Not recorded | Pending |
+
+Before class, verify the two prepared demo tabs, screenshot fallback, presenter handoffs, hidden-slide access and the correct upload file. Canvas submission is not recorded here.

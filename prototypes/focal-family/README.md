@@ -79,7 +79,7 @@ Create a new Streamlit Community Cloud app from this repository, with main file 
 
 ## Three-minute investor demo
 
-This follows the pitch's existing run of show for slide 5, the same steps and presenters, in this app:
+The final pitch demos the public Prototype B app with a parent-first sequence; rehearse from the [executive-pitch guide](../../docs/presentations/executive-pitch/README.md#three-minute-demo). The task-first sequence below follows the earlier 14-minute run of show and is kept only as an alternative for this master app:
 
 | Clock | Presenter | What to do |
 |---|---|---|

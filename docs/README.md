@@ -35,9 +35,9 @@ This is the shared reference library for the three product experiments. It combi
 
 ## Executive investor pitch
 
-- [Focal Family executive pitch](<presentations/executive-pitch/Focal Family Executive Pitch.pptx>): 14 main slides plus 5 backups, with timed speaker notes.
-- [Focal Family executive pitch — separate 12-minute version](<presentations/executive-pitch/Focal Family Executive Pitch - Final 12min.pptx>): Additional version for the 12-minute presentation limit. The original deck above is retained.
-- [Fourteen-minute run of show and three-minute Family demo](presentations/executive-pitch/README.md)
+- [Current Focal Family final investor pitch](<presentations/executive-pitch/Focal Family Executive Pitch - Final 12min.pptx>): 14 main slides plus 5 hidden backups; an 11:30 plan within the 12-minute limit.
+- [Current run of show and three-minute Family demo](presentations/executive-pitch/README.md)
+- [Archived 14-minute investor pitch](<presentations/executive-pitch/Focal Family Executive Pitch.pptx>): Earlier version, retained for reference.
 - [Assignment requirements and updated timing](assignments/executive-pitch-assignment.md)
 
 ## Prototype presentation archive

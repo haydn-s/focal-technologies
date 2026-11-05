@@ -1,9 +1,9 @@
 # Investor pitch deck requirements
 
-Source: assignment text supplied by Haydn on October 30, 2026, with subsequent in-class timing correction.
+Source: assignment text supplied by Haydn on October 30, 2026 and supplied again for the final-deck review on November 5, 2026. The current final deck follows the latest 12-minute limit.
 
 - 10–15 main slides, excluding backup slides.
-- **14-minute total presentation**, superseding the original 10–12-minute guidance. Reserve **3 minutes for the product demo**.
+- **10–12-minute presentation, with a 12-minute maximum.** The current deck plans **11:30**, including a **3-minute product demo**, leaving 30 seconds of buffer. The earlier 14-minute version is archived.
 - Use **Focal Family (Prototype B)** for the final presentation.
 - Every team member must speak.
 - Pitch investors for funding with a persuasive story, not a business-model progress update.
