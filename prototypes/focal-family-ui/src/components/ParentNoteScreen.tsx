@@ -171,10 +171,10 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
       {/* Page Header */}
       <div className="animate-reveal-up flex flex-wrap items-end justify-between gap-4 border-b border-[#20304D]/12 pb-6">
         <div>
-          <p className="text-xs font-semibold tracking-wider text-[#286D65] uppercase">
+          <p className="text-xs font-semibold tracking-wider text-[#10265F] uppercase">
             Parent note builder <span aria-hidden="true">·</span> Next-step plan
           </p>
-          <h1 className="mt-1 text-2xl font-semibold text-[#20304D] sm:text-3xl">
+          <h1 className="mt-1 text-2xl font-semibold text-[#10265F] sm:text-3xl">
             Prepare your editable note for the school nurse or eye doctor
           </h1>
           <p className="mt-1.5 max-w-[68ch] text-sm text-[#20304D]/80">
@@ -187,22 +187,22 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
         <button
           type="button"
           onClick={onStartCheck}
-          className="inline-flex min-h-[44px] whitespace-nowrap shrink-0 items-center gap-2 rounded-full border border-[#20304D]/20 bg-white px-5 py-2 text-xs font-semibold text-[#20304D] transition-all hover:border-[#286D65] hover:bg-[#E5EEE8] active:scale-[0.98]"
+          className="inline-flex min-h-[44px] whitespace-nowrap shrink-0 items-center gap-2 rounded-full border border-[#20304D]/20 bg-white px-5 py-2 text-xs font-semibold text-[#10265F] transition-all hover:border-[#3E9BE0] hover:bg-[#F7F5F0] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#3E9BE0]"
         >
           <span>Run or update letter activity</span>
         </button>
       </div>
 
-      {/* Interactive Note Detail Tuner Bar (inspired by UI demo slider bar) */}
+      {/* Interactive Note Detail Tuner Bar */}
       <section
         aria-label="Note detail level tuner"
         className="animate-reveal-up animate-reveal-delay-1 mt-6 rounded-2xl border border-[#20304D]/12 bg-white/90 p-5 shadow-xs backdrop-blur-xs"
       >
         <div className="flex flex-col justify-between gap-5 md:flex-row md:items-center">
           <div>
-            <h2 className="flex items-center gap-2 text-sm font-bold text-[#20304D]">
+            <h2 className="flex items-center gap-2 text-sm font-bold text-[#10265F]">
               <svg
-                className="h-4 w-4 text-[#286D65]"
+                className="h-4 w-4 text-[#3E9BE0]"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -230,7 +230,7 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
           <div className="w-full max-w-md space-y-2">
             <div className="flex justify-between text-xs font-medium text-[#20304D]/80">
               <span>Concise summary</span>
-              <span className="font-semibold text-[#286D65]">
+              <span className="font-semibold text-[#10265F]">
                 {detailLabel}
               </span>
               <span>Detailed + Questions</span>
@@ -281,10 +281,10 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
                       }));
                       onShowToast?.(`Recipient set to ${rec}`);
                     }}
-                    className={`min-h-[44px] whitespace-nowrap shrink-0 rounded-full border px-4 py-2 text-left text-xs font-medium transition-all ${
+                    className={`min-h-[44px] whitespace-nowrap shrink-0 rounded-full border px-4 py-2 text-left text-xs font-medium transition-all focus-visible:outline-2 focus-visible:outline-[#3E9BE0] ${
                       selected
-                        ? 'border-[#286D65] bg-[#286D65] font-semibold text-white shadow-xs'
-                        : 'border-[#20304D]/15 bg-white text-[#20304D]/85 hover:border-[#286D65]/40 hover:bg-[#F7F5F0]'
+                        ? 'border-[#10265F] bg-[#10265F] font-semibold text-white shadow-xs'
+                        : 'border-[#20304D]/15 bg-white text-[#20304D]/85 hover:border-[#3E9BE0]/50 hover:bg-[#F7F5F0]'
                     }`}
                   >
                     {rec}
@@ -314,7 +314,7 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
                 }));
                 onShowToast?.('Updated approximate timing');
               }}
-              className="mt-2 min-h-[44px] w-full rounded-xl border border-[#20304D]/25 bg-[#F7F5F0]/60 px-3.5 py-2.5 text-sm text-[#20304D] focus:border-[#286D65] focus:bg-white focus:outline-2 focus:outline-[#286D65]"
+              className="mt-2 min-h-[44px] w-full rounded-xl border border-[#20304D]/25 bg-[#F7F5F0]/60 px-3.5 py-2.5 text-sm text-[#20304D] focus:border-[#3E9BE0] focus:bg-white focus:outline-2 focus:outline-[#3E9BE0]"
             >
               {ONSET_OPTIONS.map((option) => (
                 <option key={option} value={option}>
@@ -376,7 +376,7 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
                   }));
                 }}
                 placeholder="e.g., Sits close to the TV or squints at distant street signs"
-                className="mt-1.5 min-h-[44px] w-full rounded-xl border border-[#20304D]/20 bg-[#F7F5F0]/50 px-3.5 py-2 text-sm text-[#20304D] focus:border-[#286D65] focus:bg-white focus:outline-2 focus:outline-[#286D65]"
+                className="mt-1.5 min-h-[44px] w-full rounded-xl border border-[#20304D]/20 bg-[#F7F5F0]/50 px-3.5 py-2 text-sm text-[#20304D] focus:border-[#3E9BE0] focus:bg-white focus:outline-2 focus:outline-[#3E9BE0]"
               />
             </div>
           </fieldset>
@@ -423,7 +423,7 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
               <div>
                 <h2
                   id="live-note-heading"
-                  className="text-base font-semibold text-[#20304D]"
+                  className="text-base font-semibold text-[#10265F]"
                 >
                   Live parent note preview
                 </h2>
@@ -437,7 +437,7 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
                 <button
                   type="button"
                   onClick={() => onSetManualNoteOverride(null)}
-                  className="min-h-[36px] rounded-full border border-[#20304D]/20 px-3.5 py-1 text-xs font-medium text-[#20304D] hover:bg-[#F7F5F0]"
+                  className="min-h-[36px] rounded-full border border-[#20304D]/20 px-3.5 py-1 text-xs font-medium text-[#10265F] hover:border-[#3E9BE0] hover:bg-[#F7F5F0]"
                 >
                   Reset to auto-generated text
                 </button>
@@ -457,7 +457,7 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
                 rows={15}
                 value={activeNoteText}
                 onChange={(e) => onSetManualNoteOverride(e.target.value)}
-                className="mt-2 w-full rounded-xl border border-[#20304D]/25 bg-[#F7F5F0]/60 p-4 text-sm leading-relaxed text-[#20304D] focus:border-[#286D65] focus:bg-white focus:outline-2 focus:outline-[#286D65]"
+                className="mt-2 w-full rounded-xl border border-[#20304D]/25 bg-[#F7F5F0]/60 p-4 text-sm leading-relaxed text-[#20304D] focus:border-[#3E9BE0] focus:bg-white focus:outline-2 focus:outline-[#3E9BE0]"
               />
             </div>
 
@@ -466,7 +466,7 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
               <button
                 type="button"
                 onClick={handleCopyNote}
-                className="btn-sheen inline-flex min-h-[48px] whitespace-nowrap shrink-0 items-center gap-2 rounded-full bg-[#286D65] px-6 py-2.5 text-sm font-semibold text-white shadow-xs transition-all hover:bg-[#1f5650] active:scale-[0.98]"
+                className="btn-sheen inline-flex min-h-[48px] whitespace-nowrap shrink-0 items-center gap-2 rounded-full bg-[#10265F] px-6 py-2.5 text-sm font-semibold text-white shadow-xs transition-all hover:bg-[#0B1B46] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
               >
                 <svg
                   className="h-4 w-4"
@@ -485,10 +485,10 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
               <button
                 type="button"
                 onClick={handleDownloadTxt}
-                className="inline-flex min-h-[48px] whitespace-nowrap shrink-0 items-center gap-2 rounded-full border border-[#20304D]/25 bg-white px-6 py-2.5 text-sm font-semibold text-[#20304D] transition-all hover:border-[#286D65] hover:bg-[#F7F5F0] active:scale-[0.98]"
+                className="inline-flex min-h-[48px] whitespace-nowrap shrink-0 items-center gap-2 rounded-full border border-[#20304D]/25 bg-white px-6 py-2.5 text-sm font-semibold text-[#10265F] transition-all hover:border-[#3E9BE0] hover:bg-[#F7F5F0] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
               >
                 <svg
-                  className="h-4 w-4 text-[#286D65]"
+                  className="h-4 w-4 text-[#3E9BE0]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -507,7 +507,7 @@ export const ParentNoteScreen: React.FC<ParentNoteScreenProps> = ({
               <p
                 role="status"
                 aria-live="polite"
-                className="mt-3 text-xs font-semibold text-[#286D65]"
+                className="mt-3 text-xs font-semibold text-[#1F5C55]"
               >
                 {copyFeedback || downloadFeedback}
               </p>

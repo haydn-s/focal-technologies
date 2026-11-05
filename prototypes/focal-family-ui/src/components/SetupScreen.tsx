@@ -71,10 +71,10 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
       <div className="mb-8 animate-reveal-up">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold tracking-wider text-[#286D65] uppercase">
+            <p className="text-xs font-semibold tracking-wider text-[#10265F] uppercase">
               Guided setup <span aria-hidden="true">·</span> Step {setup.step} of 3
             </p>
-            <h1 className="mt-1 text-2xl font-semibold text-[#20304D] sm:text-3xl">
+            <h1 className="mt-1 text-2xl font-semibold text-[#10265F] sm:text-3xl">
               {setup.step === 1 && '1. Child and glasses'}
               {setup.step === 2 && '2. Screen and distance'}
               {setup.step === 3 && '3. Ready to begin'}
@@ -84,13 +84,13 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
           <button
             type="button"
             onClick={onCancelToWelcome}
-            className="min-h-[44px] whitespace-nowrap shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-[#20304D]/80 underline decoration-[#20304D]/30 underline-offset-4 hover:text-[#20304D]"
+            className="min-h-[44px] whitespace-nowrap shrink-0 rounded-lg px-3 py-2 text-sm font-medium text-[#20304D]/80 underline decoration-[#3E9BE0] underline-offset-4 transition-colors hover:text-[#10265F] focus-visible:outline-2 focus-visible:outline-[#3E9BE0]"
           >
             Return to welcome
           </button>
         </div>
 
-        {/* 3-Step Visual Progress Bar */}
+        {/* 3-Step Visual Progress Bar (Active: Logo Deep Blue #10265F, Completed: Auxiliary Teal/Sage) */}
         <nav aria-label="Setup steps" className="mt-6 grid grid-cols-3 gap-3">
           {[
             { num: 1 as const, title: '1. Child & glasses' },
@@ -105,18 +105,18 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
                 type="button"
                 onClick={() => setStep(item.num)}
                 aria-current={isActive ? 'step' : undefined}
-                className={`min-h-[44px] rounded-xl border px-3 py-2.5 text-left transition-all duration-200 ${
+                className={`min-h-[44px] rounded-xl border px-3 py-2.5 text-left transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0] ${
                   isActive
-                    ? 'border-[#286D65] bg-[#E5EEE8] font-semibold text-[#20304D] shadow-xs -translate-y-0.5'
+                    ? 'border-[#10265F] bg-[#10265F] font-semibold text-white shadow-xs -translate-y-0.5'
                     : isDone
-                      ? 'border-[#20304D]/20 bg-white font-medium text-[#20304D] hover:border-[#286D65]/40'
-                      : 'border-[#20304D]/10 bg-white/60 text-[#20304D]/65 hover:bg-white'
+                      ? 'border-[#286D65]/35 bg-[#E5EEE8]/75 font-medium text-[#20304D] hover:border-[#286D65]'
+                      : 'border-[#20304D]/12 bg-white/70 text-[#20304D]/65 hover:border-[#3E9BE0]/40 hover:bg-white'
                 }`}
               >
                 <div className="flex items-center justify-between text-xs sm:text-sm">
                   <span className="truncate">{item.title}</span>
                   {isDone && (
-                    <span className="ml-1 inline-flex items-center gap-1 text-xs font-semibold text-[#286D65]">
+                    <span className="ml-1 inline-flex items-center gap-1 text-xs font-semibold text-[#1F5C55]">
                       <span>✓</span>
                       <span>Saved</span>
                     </span>
@@ -157,7 +157,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
                   }))
                 }
                 placeholder="e.g., Child A (Age 7)"
-                className="mt-2.5 min-h-[44px] w-full max-w-md rounded-xl border border-[#20304D]/25 bg-[#F7F5F0]/50 px-3.5 py-2.5 text-base text-[#20304D] transition-colors focus:border-[#286D65] focus:bg-white focus:outline-2 focus:outline-[#286D65]"
+                className="mt-2.5 min-h-[44px] w-full max-w-md rounded-xl border border-[#20304D]/25 bg-[#F7F5F0]/50 px-3.5 py-2.5 text-base text-[#20304D] transition-colors focus:border-[#3E9BE0] focus:bg-white focus:outline-2 focus:outline-[#3E9BE0]"
               />
             </div>
 
@@ -176,10 +176,10 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
                       onClick={() =>
                         onUpdateSetup((prev) => ({ ...prev, ageGroup: group }))
                       }
-                      className={`min-h-[48px] rounded-xl border px-4 py-3 text-left text-sm font-medium transition-all duration-200 ${
+                      className={`min-h-[48px] rounded-xl border px-4 py-3 text-left text-sm font-medium transition-all duration-200 focus-visible:outline-2 focus-visible:outline-[#3E9BE0] ${
                         selected
-                          ? 'border-[#286D65] bg-[#E5EEE8] font-semibold text-[#20304D] shadow-2xs -translate-y-0.5'
-                          : 'border-[#20304D]/15 bg-white text-[#20304D]/85 hover:border-[#286D65]/35 hover:bg-[#F7F5F0]'
+                          ? 'border-[#10265F] bg-[#10265F]/[0.06] ring-1 ring-[#10265F] font-semibold text-[#10265F] shadow-2xs -translate-y-0.5'
+                          : 'border-[#20304D]/15 bg-white text-[#20304D]/85 hover:border-[#3E9BE0]/50 hover:bg-[#F7F5F0]'
                       }`}
                     >
                       {group}
@@ -207,10 +207,10 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
                           reason: reasonOption,
                         }))
                       }
-                      className={`min-h-[48px] rounded-xl border px-4 py-3 text-left text-sm transition-all duration-200 ${
+                      className={`min-h-[48px] rounded-xl border px-4 py-3 text-left text-sm transition-all duration-200 focus-visible:outline-2 focus-visible:outline-[#3E9BE0] ${
                         selected
-                          ? 'border-[#286D65] bg-[#E5EEE8] font-semibold text-[#20304D] shadow-2xs -translate-y-0.5'
-                          : 'border-[#20304D]/15 bg-white text-[#20304D]/85 hover:border-[#286D65]/35 hover:bg-[#F7F5F0]'
+                          ? 'border-[#10265F] bg-[#10265F]/[0.06] ring-1 ring-[#10265F] font-semibold text-[#10265F] shadow-2xs -translate-y-0.5'
+                          : 'border-[#20304D]/15 bg-white text-[#20304D]/85 hover:border-[#3E9BE0]/50 hover:bg-[#F7F5F0]'
                       }`}
                     >
                       {reasonOption}
@@ -242,10 +242,10 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
                           glassesStatus: option,
                         }))
                       }
-                      className={`min-h-[48px] rounded-xl border px-4 py-3 text-left text-sm transition-all duration-200 ${
+                      className={`min-h-[48px] rounded-xl border px-4 py-3 text-left text-sm transition-all duration-200 focus-visible:outline-2 focus-visible:outline-[#3E9BE0] ${
                         selected
-                          ? 'border-[#286D65] bg-[#E5EEE8] font-semibold text-[#20304D] shadow-2xs -translate-y-0.5'
-                          : 'border-[#20304D]/15 bg-white text-[#20304D]/85 hover:border-[#286D65]/35 hover:bg-[#F7F5F0]'
+                          ? 'border-[#10265F] bg-[#10265F]/[0.06] ring-1 ring-[#10265F] font-semibold text-[#10265F] shadow-2xs -translate-y-0.5'
+                          : 'border-[#20304D]/15 bg-white text-[#20304D]/85 hover:border-[#3E9BE0]/50 hover:bg-[#F7F5F0]'
                       }`}
                     >
                       {option}
@@ -283,10 +283,10 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
                           distancePreset: dist,
                         }))
                       }
-                      className={`min-h-[48px] rounded-xl border px-4 py-3 text-left text-sm transition-all duration-200 ${
+                      className={`min-h-[48px] rounded-xl border px-4 py-3 text-left text-sm transition-all duration-200 focus-visible:outline-2 focus-visible:outline-[#3E9BE0] ${
                         selected
-                          ? 'border-[#286D65] bg-[#E5EEE8] font-semibold text-[#20304D] shadow-2xs -translate-y-0.5'
-                          : 'border-[#20304D]/15 bg-white text-[#20304D]/85 hover:border-[#286D65]/35 hover:bg-[#F7F5F0]'
+                          ? 'border-[#10265F] bg-[#10265F]/[0.06] ring-1 ring-[#10265F] font-semibold text-[#10265F] shadow-2xs -translate-y-0.5'
+                          : 'border-[#20304D]/15 bg-white text-[#20304D]/85 hover:border-[#3E9BE0]/50 hover:bg-[#F7F5F0]'
                       }`}
                     >
                       <span>{dist}</span>
@@ -901,7 +901,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
               <button
                 type="button"
                 onClick={() => setStep((setup.step - 1) as 1 | 2)}
-                className="min-h-[44px] whitespace-nowrap shrink-0 rounded-full border border-[#20304D]/25 bg-white px-5 py-2.5 text-sm font-semibold text-[#20304D] transition-all hover:bg-[#F7F5F0] active:scale-[0.98]"
+                className="min-h-[44px] whitespace-nowrap shrink-0 rounded-full border border-[#20304D]/25 bg-white px-5 py-2.5 text-sm font-semibold text-[#20304D] transition-all hover:border-[#3E9BE0] hover:bg-[#F7F5F0] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
               >
                 ← Back to Step {setup.step - 1}
               </button>
@@ -909,7 +909,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
               <button
                 type="button"
                 onClick={onCancelToWelcome}
-                className="min-h-[44px] whitespace-nowrap shrink-0 rounded-full border border-[#20304D]/20 bg-white px-5 py-2.5 text-sm font-medium text-[#20304D]/80 transition-all hover:bg-[#F7F5F0]"
+                className="min-h-[44px] whitespace-nowrap shrink-0 rounded-full border border-[#20304D]/20 bg-white px-5 py-2.5 text-sm font-medium text-[#20304D]/80 transition-all hover:border-[#3E9BE0] hover:bg-[#F7F5F0] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
               >
                 Back to welcome
               </button>
@@ -922,7 +922,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
                 type="button"
                 disabled={!stepReady}
                 onClick={() => setStep((setup.step + 1) as 2 | 3)}
-                className="btn-sheen min-h-[48px] whitespace-nowrap shrink-0 rounded-full bg-[#286D65] px-7 py-2.5 text-sm font-semibold text-white shadow-xs transition-all hover:bg-[#1f5650] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-45"
+                className="btn-sheen min-h-[48px] whitespace-nowrap shrink-0 rounded-full bg-[#10265F] px-7 py-2.5 text-sm font-semibold text-white shadow-xs transition-all hover:bg-[#0B1B46] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0] disabled:cursor-not-allowed disabled:opacity-45"
               >
                 Continue to Step {setup.step + 1} →
               </button>
@@ -931,7 +931,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
                 type="button"
                 disabled={!stepReady}
                 onClick={onStartActivity}
-                className="btn-sheen min-h-[48px] whitespace-nowrap shrink-0 rounded-full bg-[#286D65] px-7 py-2.5 text-sm font-semibold text-white shadow-xs transition-all hover:bg-[#1f5650] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-45"
+                className="btn-sheen min-h-[48px] whitespace-nowrap shrink-0 rounded-full bg-[#10265F] px-7 py-2.5 text-sm font-semibold text-white shadow-xs transition-all hover:bg-[#0B1B46] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0] disabled:cursor-not-allowed disabled:opacity-45"
               >
                 Begin letter activity →
               </button>

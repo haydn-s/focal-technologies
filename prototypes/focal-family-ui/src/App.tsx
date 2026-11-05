@@ -157,7 +157,7 @@ export default function App() {
               navigateTo('welcome');
             }}
             aria-label="Focal Family Home"
-            className="inline-flex items-center whitespace-nowrap shrink-0 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#286D65]"
+            className="inline-flex items-center whitespace-nowrap shrink-0 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
           >
             <FocalLogo className="h-9 sm:h-10 w-auto" />
           </a>
@@ -174,9 +174,9 @@ export default function App() {
                 navigateTo('welcome');
               }}
               aria-current={currentScreen === 'welcome' ? 'page' : undefined}
-              className={`whitespace-nowrap shrink-0 py-1 transition-colors hover:text-[#20304D] hover:underline hover:underline-offset-4 ${
+              className={`whitespace-nowrap shrink-0 rounded-xs py-1 transition-colors hover:text-[#10265F] hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0] ${
                 currentScreen === 'welcome'
-                  ? 'font-semibold text-[#20304D] underline decoration-[#286D65] decoration-2 underline-offset-4'
+                  ? 'font-semibold text-[#10265F] underline decoration-[#10265F] decoration-2 underline-offset-4'
                   : ''
               }`}
             >
@@ -189,9 +189,9 @@ export default function App() {
                 navigateTo('setup');
               }}
               aria-current={currentScreen === 'setup' ? 'page' : undefined}
-              className={`hidden md:inline whitespace-nowrap shrink-0 py-1 transition-colors hover:text-[#20304D] hover:underline hover:underline-offset-4 ${
+              className={`hidden md:inline whitespace-nowrap shrink-0 rounded-xs py-1 transition-colors hover:text-[#10265F] hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0] ${
                 currentScreen === 'setup'
-                  ? 'font-semibold text-[#20304D] underline decoration-[#286D65] decoration-2 underline-offset-4'
+                  ? 'font-semibold text-[#10265F] underline decoration-[#10265F] decoration-2 underline-offset-4'
                   : ''
               }`}
             >
@@ -204,9 +204,9 @@ export default function App() {
                 navigateTo('note');
               }}
               aria-current={currentScreen === 'note' ? 'page' : undefined}
-              className={`whitespace-nowrap shrink-0 py-1 transition-colors hover:text-[#20304D] hover:underline hover:underline-offset-4 ${
+              className={`whitespace-nowrap shrink-0 rounded-xs py-1 transition-colors hover:text-[#10265F] hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0] ${
                 currentScreen === 'note'
-                  ? 'font-semibold text-[#20304D] underline decoration-[#286D65] decoration-2 underline-offset-4'
+                  ? 'font-semibold text-[#10265F] underline decoration-[#10265F] decoration-2 underline-offset-4'
                   : ''
               }`}
             >
@@ -219,9 +219,9 @@ export default function App() {
                 navigateTo('history');
               }}
               aria-current={currentScreen === 'history' ? 'page' : undefined}
-              className={`whitespace-nowrap shrink-0 py-1 transition-colors hover:text-[#20304D] hover:underline hover:underline-offset-4 ${
+              className={`whitespace-nowrap shrink-0 rounded-xs py-1 transition-colors hover:text-[#10265F] hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0] ${
                 currentScreen === 'history'
-                  ? 'font-semibold text-[#20304D] underline decoration-[#286D65] decoration-2 underline-offset-4'
+                  ? 'font-semibold text-[#10265F] underline decoration-[#10265F] decoration-2 underline-offset-4'
                   : ''
               }`}
             >
@@ -234,7 +234,7 @@ export default function App() {
             <button
               type="button"
               onClick={handleStartCheck}
-              className="inline-flex min-h-[42px] whitespace-nowrap shrink-0 items-center gap-2 rounded-lg bg-[#1F5C55] px-4 py-2 text-sm font-semibold text-white shadow-2xs transition-colors duration-[180ms] hover:bg-[#174741] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1F5C55]"
+              className="inline-flex min-h-[42px] whitespace-nowrap shrink-0 items-center gap-2 rounded-lg bg-[#10265F] px-4 py-2 text-sm font-semibold text-white shadow-2xs transition-colors duration-[180ms] hover:bg-[#0B1B46] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
             >
               <span>Start a check together</span>
             </button>
@@ -331,7 +331,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => setRadarDrawerOpen(true)}
-              className="group inline-flex min-h-[38px] items-center gap-2 rounded-full border border-[#20304D]/18 bg-[#F7F5F0] px-4 py-1.5 text-xs font-semibold text-[#20304D] transition-all hover:border-[#286D65] hover:bg-[#E5EEE8]"
+              className="group inline-flex min-h-[38px] items-center gap-2 rounded-full border border-[#20304D]/18 bg-[#F7F5F0] px-4 py-1.5 text-xs font-semibold text-[#10265F] transition-all hover:border-[#3E9BE0] hover:bg-[#E5EEE8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
             >
               <svg
                 className="h-3.5 w-3.5 text-[#286D65] transition-transform duration-500 group-hover:rotate-90"
@@ -351,7 +351,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => setDmvModalOpen(true)}
-              className="min-h-[36px] text-xs font-medium text-[#20304D]/75 underline decoration-[#20304D]/30 underline-offset-4 hover:text-[#20304D]"
+              className="min-h-[36px] rounded-xs text-xs font-medium text-[#20304D]/80 underline decoration-[#3E9BE0]/70 underline-offset-4 transition-colors hover:text-[#10265F] hover:decoration-[#3E9BE0] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
             >
               Explore the DMV concept
             </button>
@@ -379,7 +379,7 @@ export default function App() {
       <div
         role="status"
         aria-live="polite"
-        className={`fixed right-6 bottom-6 z-50 flex items-center gap-3 rounded-full border border-[#286D65]/35 bg-[#20304D] px-4 py-2.5 text-xs font-medium text-white shadow-xl transition-all duration-300 ${
+        className={`fixed right-6 bottom-6 z-50 flex items-center gap-3 rounded-full border border-[#3E9BE0]/40 bg-[#10265F] px-4 py-2.5 text-xs font-medium text-white shadow-xl transition-all duration-300 ${
           toastMessage
             ? 'translate-y-0 opacity-100'
             : 'pointer-events-none translate-y-12 opacity-0'

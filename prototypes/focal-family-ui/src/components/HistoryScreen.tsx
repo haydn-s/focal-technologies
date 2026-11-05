@@ -31,10 +31,10 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
       {/* Header */}
       <div className="animate-reveal-up flex flex-wrap items-end justify-between gap-4 border-b border-[#20304D]/12 pb-6">
         <div>
-          <p className="text-xs font-semibold tracking-wider text-[#286D65] uppercase">
+          <p className="text-xs font-semibold tracking-wider text-[#10265F] uppercase">
             Activity & observation log
           </p>
-          <h1 className="mt-1 text-2xl font-semibold text-[#20304D] sm:text-3xl">
+          <h1 className="mt-1 text-2xl font-semibold text-[#10265F] sm:text-3xl">
             Previous activities and observations
           </h1>
           <p className="mt-1.5 max-w-[68ch] text-sm text-[#20304D]/80">
@@ -48,14 +48,14 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
           <button
             type="button"
             onClick={() => onNavigate('note')}
-            className="min-h-[44px] whitespace-nowrap shrink-0 rounded-full border border-[#20304D]/25 bg-white px-5 py-2 text-xs font-semibold text-[#20304D] transition-all hover:bg-[#F7F5F0]"
+            className="min-h-[44px] whitespace-nowrap shrink-0 rounded-full border border-[#20304D]/25 bg-white px-5 py-2 text-xs font-semibold text-[#10265F] transition-all hover:border-[#3E9BE0] hover:bg-[#F7F5F0] focus-visible:outline-2 focus-visible:outline-[#3E9BE0]"
           >
             Open parent note
           </button>
           <button
             type="button"
             onClick={onStartCheck}
-            className="btn-sheen min-h-[44px] whitespace-nowrap shrink-0 rounded-full bg-[#286D65] px-5 py-2 text-xs font-semibold text-white transition-all hover:bg-[#1f5650]"
+            className="btn-sheen min-h-[44px] whitespace-nowrap shrink-0 rounded-full bg-[#10265F] px-5 py-2 text-xs font-semibold text-white transition-all hover:bg-[#0B1B46] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
           >
             Start new activity
           </button>
@@ -71,7 +71,7 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
           <div>
             <h2
               id="activity-chart-heading"
-              className="text-lg font-semibold text-[#20304D]"
+              className="text-lg font-semibold text-[#10265F]"
             >
               Directional activity responses per session (out of 12 trials)
             </h2>
@@ -135,8 +135,8 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
                 ? isSelected
                   ? '#F2CDAE'
                   : '#E5EEE8'
-                : '#286D65';
-              const stroke = item.isFictional ? '#20304D' : '#286D65';
+                : '#10265F';
+              const stroke = item.isFictional ? '#20304D' : '#10265F';
 
               return (
                 <g
@@ -199,9 +199,9 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
           </svg>
 
           {activeBarItem && (
-            <div className="animate-scale-in mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#286D65]/25 bg-white px-4 py-2.5 text-xs text-[#20304D]">
+            <div className="animate-scale-in mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#3E9BE0]/40 bg-white px-4 py-2.5 text-xs text-[#20304D]">
               <div>
-                <span className="font-semibold text-[#286D65]">
+                <span className="font-semibold text-[#10265F]">
                   {activeBarItem.isFictional
                     ? 'Fictional example: '
                     : 'Current session: '}
@@ -213,7 +213,7 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedBarId(null)}
-                className="font-semibold text-[#286D65] underline"
+                className="font-semibold text-[#10265F] underline decoration-[#3E9BE0] underline-offset-2"
               >
                 Clear selection
               </button>
@@ -227,7 +227,7 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
                 <span>Fictional example data</span>
               </span>
               <span className="flex items-center gap-2">
-                <span className="inline-block h-3 w-3 rounded-xs bg-[#286D65]" />
+                <span className="inline-block h-3 w-3 rounded-xs bg-[#10265F]" />
                 <span>Recorded in this browser session</span>
               </span>
             </div>
@@ -248,7 +248,7 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
           <div>
             <h2
               id="session-records-heading"
-              className="text-base font-semibold text-[#20304D]"
+              className="text-base font-semibold text-[#10265F]"
             >
               Records created in this browser session
             </h2>
@@ -273,7 +273,7 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({
             <button
               type="button"
               onClick={onStartCheck}
-              className="mt-3 min-h-[44px] rounded-lg bg-[#286D65] px-4 py-2 text-xs font-semibold text-white hover:bg-[#1f5650]"
+              className="mt-3 min-h-[44px] rounded-lg bg-[#10265F] px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#0B1B46] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
             >
               Start a check together
             </button>

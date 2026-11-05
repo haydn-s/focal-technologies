@@ -455,6 +455,18 @@ Haydn also selected the Focal Prototype Presentation as the visual reference and
 
 **Learning and verification:** Production build, TypeScript checking, and all six supplied logic tests pass. React/HTML browser parity, end-to-end interactions, and clinical validity were not verified. This packaging request is repository maintenance and does not count as an additional product-development prompt. The supplied ZIP does not establish the full history of prompts used to generate the UI.
 
+### R12 Refresh the Family UI on the existing PR
+
+**Date and author:** November 5, 2026, Qingyi Hu. Packaging tool: Codex; supplied UI update: Gemini / Google AI Studio.
+
+**Actual prompt:**
+
+> 那就更新原PR吧。我们还没merge
+
+**Intent and result:** Update `family-react-ui-preview` / PR #10 from `untitled-2026-11-5-14-32-13.zip`. Import the brand-blue theme into the React app and HTML snapshot, retaining packaging fixes, Focal page metadata, and the original logo. Exclude the nested old ZIP, template metadata, and unused reference files.
+
+**Learning and verification:** Production build, TypeScript checking, and all six supplied logic tests pass. No clinical or browser-performance validation is claimed. This repository update request is not an additional product-development prompt.
+
 ## Entry format for teammates
 
 For each actual prompt, add:

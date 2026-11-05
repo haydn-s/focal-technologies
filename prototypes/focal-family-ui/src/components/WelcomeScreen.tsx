@@ -21,7 +21,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
           {/* Left Column: Clean warm off-white background with initial reveal */}
           <div className="animate-reveal-up flex flex-col justify-center lg:col-span-7">
-            <p className="text-xs font-semibold tracking-wider text-[#1F5C55] uppercase">
+            <p className="text-xs font-semibold tracking-wider text-[#10265F] uppercase">
               FOR PARENTS OF CHILDREN 4–10
             </p>
 
@@ -29,21 +29,24 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
               className="mt-3 text-4xl font-semibold leading-[1.12] tracking-tight text-[#20304D] sm:text-5xl lg:text-[3.25rem]"
               style={{ textWrap: 'balance' }}
             >
-              Got a school vision letter? Make the next step easy.
+              Got a school vision letter?{' '}
+              <span className="text-[#10265F] underline decoration-[#3E9BE0]/45 decoration-2 underline-offset-[6px]">
+                Make the next step easy.
+              </span>
             </h1>
 
-            <p className="mt-5 max-w-[54ch] text-base leading-relaxed text-[#20304D]/80 sm:text-lg">
+            <p className="mt-5 max-w-[54ch] text-base leading-relaxed text-[#20304D]/85 sm:text-lg">
               Try a calm, 3-minute directional letter activity together at home,
               note what you observe, and prepare a clear, editable summary for
               your school nurse or eye doctor.
             </p>
 
-            {/* Primary & Secondary Actions (180ms color transition, deeper primary button) */}
+            {/* Primary & Secondary Actions (180ms color transition, Logo deep blue primary button & bright blue link accent) */}
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <button
                 type="button"
                 onClick={onStartCheck}
-                className="inline-flex min-h-[48px] shrink-0 items-center justify-center whitespace-nowrap rounded-lg bg-[#1F5C55] px-6 py-3 text-base font-semibold text-white shadow-xs transition-colors duration-[180ms] hover:bg-[#174741] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1F5C55]"
+                className="inline-flex min-h-[48px] shrink-0 items-center justify-center whitespace-nowrap rounded-lg bg-[#10265F] px-6 py-3 text-base font-semibold text-white shadow-xs transition-colors duration-[180ms] hover:bg-[#0B1B46] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
               >
                 Start a check together
               </button>
@@ -51,13 +54,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
               <button
                 type="button"
                 onClick={() => onNavigate('note')}
-                className="inline-flex min-h-[48px] shrink-0 items-center justify-center whitespace-nowrap rounded-lg px-3 py-3 text-base font-semibold text-[#20304D] underline decoration-[#20304D]/35 underline-offset-4 transition-colors duration-[180ms] hover:text-[#1F5C55] hover:decoration-[#1F5C55]"
+                className="inline-flex min-h-[48px] shrink-0 items-center justify-center whitespace-nowrap rounded-lg px-3 py-3 text-base font-semibold text-[#10265F] underline decoration-[#3E9BE0] decoration-2 underline-offset-4 transition-colors duration-[180ms] hover:text-[#3E9BE0] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
               >
                 Preview a parent note
               </button>
             </div>
 
-            <p className="mt-6 text-sm font-medium text-[#20304D]/70">
+            <p className="mt-6 text-sm font-medium text-[#20304D]/75">
               Free for families <span aria-hidden="true">·</span> No account{' '}
               <span aria-hidden="true">·</span> No camera
             </p>
@@ -69,7 +72,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
               aria-label="Illustrative example of Your next-step plan"
               className="refined-card refined-card-hover rounded-2xl bg-white p-6 sm:p-7"
             >
-              {/* Card Header with small document icon */}
+              {/* Card Header with small document icon (auxiliary teal accent) */}
               <div className="flex items-center justify-between gap-3 border-b border-[#20304D]/10 pb-4">
                 <div className="flex items-center gap-2.5">
                   <span
@@ -91,7 +94,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                       <line x1="16" y1="17" x2="8" y2="17" />
                     </svg>
                   </span>
-                  <h2 className="text-base font-semibold text-[#20304D]">
+                  <h2 className="text-base font-semibold text-[#10265F]">
                     Your next-step plan
                   </h2>
                 </div>
@@ -162,7 +165,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
 
               {/* 3. Three-line parent-note excerpt */}
               <div className="mt-5 rounded-xl bg-[#F7F5F0] p-3.5">
-                <p className="text-xs font-semibold text-[#20304D]/75">
+                <p className="text-xs font-semibold text-[#10265F]">
                   Prepared parent note
                 </p>
                 <p className="mt-1 text-sm leading-relaxed text-[#20304D]/85">
@@ -183,11 +186,11 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-baseline">
             <h2
               id="how-it-works-heading"
-              className="text-lg font-semibold text-[#20304D]"
+              className="text-lg font-semibold text-[#10265F]"
             >
               How Focal Family works
             </h2>
-            <p className="text-sm text-[#20304D]/70">
+            <p className="text-sm text-[#20304D]/75">
               Set up together → Try the letter activity → Prepare your next step
             </p>
           </div>
@@ -224,13 +227,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                 className="refined-card refined-card-hover flex flex-col justify-between rounded-xl bg-white p-6"
               >
                 <div>
-                  <span className="text-xs font-semibold tracking-wider text-[#1F5C55] uppercase">
+                  <span className="text-xs font-semibold tracking-wider text-[#10265F] uppercase">
                     {item.step}
                   </span>
-                  <h3 className="mt-2 text-base font-semibold text-[#20304D]">
+                  <h3 className="mt-2 text-base font-semibold text-[#10265F]">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#20304D]/75">
+                  <p className="mt-2 text-sm leading-relaxed text-[#20304D]/80">
                     {item.description}
                   </p>
                 </div>
@@ -239,7 +242,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                   <button
                     type="button"
                     onClick={item.onClick}
-                    className="text-sm font-semibold text-[#1F5C55] transition-colors duration-[180ms] hover:text-[#174741] hover:underline hover:underline-offset-4"
+                    className="rounded-xs text-sm font-semibold text-[#10265F] underline decoration-[#3E9BE0] decoration-1 underline-offset-4 transition-colors duration-[180ms] hover:text-[#3E9BE0] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
                   >
                     {item.actionLabel}
                   </button>
@@ -249,13 +252,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
           </div>
         </section>
 
-        {/* Concise, visible statement that this is a prototype and not a diagnosis */}
+        {/* Concise, visible statement that this is a prototype and not a diagnosis (auxiliary light teal prompt) */}
         <section
           aria-label="Prototype and non-diagnostic notice"
-          className="animate-reveal-up animate-reveal-delay-3 mt-10 rounded-xl border border-[#20304D]/12 bg-[#E5EEE8]/80 px-5 py-4 sm:px-6"
+          className="animate-reveal-up animate-reveal-delay-3 mt-10 rounded-xl border border-[#286D65]/20 bg-[#E5EEE8]/85 px-5 py-4 sm:px-6"
         >
-          <p className="text-sm leading-relaxed text-[#20304D]/85">
-            <strong className="font-semibold text-[#20304D]">
+          <p className="text-sm leading-relaxed text-[#20304D]/90">
+            <strong className="font-semibold text-[#10265F]">
               Student prototype — not a medical diagnosis:
             </strong>{' '}
             Focal Family helps parents organize observations and prepare

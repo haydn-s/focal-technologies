@@ -22,7 +22,7 @@ export const DmvConceptModal: React.FC<DmvConceptModalProps> = ({
         <div className="flex items-baseline justify-between gap-4 border-b border-[#20304D]/10 pb-3">
           <h2
             id="dmv-modal-title"
-            className="text-lg font-semibold text-[#20304D]"
+            className="text-lg font-semibold text-[#10265F]"
           >
             Focal DMV readiness concept (secondary exploration)
           </h2>
@@ -37,7 +37,7 @@ export const DmvConceptModal: React.FC<DmvConceptModalProps> = ({
         </p>
 
         <div className="mt-4 rounded-lg bg-[#F7F5F0] p-4 text-xs leading-relaxed text-[#20304D]/85">
-          <p className="font-semibold text-[#20304D]">
+          <p className="font-semibold text-[#10265F]">
             Why Focal Family is our primary focus:
           </p>
           <p className="mt-1">
@@ -53,7 +53,7 @@ export const DmvConceptModal: React.FC<DmvConceptModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="min-h-[44px] rounded-lg bg-[#286D65] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#1f5650]"
+            className="min-h-[44px] rounded-lg bg-[#10265F] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#0B1B46] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
           >
             Return to Focal Family
           </button>

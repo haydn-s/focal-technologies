@@ -286,7 +286,7 @@ export const SessionRadarDrawer: React.FC<SessionRadarDrawerProps> = ({
                 onClose();
                 onNavigate('setup');
               }}
-              className="min-h-[42px] flex-1 rounded-full border border-[#20304D]/20 bg-white px-4 py-2 text-xs font-semibold text-[#20304D] transition-all hover:border-[#286D65] hover:bg-[#E5EEE8]"
+              className="min-h-[42px] flex-1 rounded-full border border-[#20304D]/20 bg-white px-4 py-2 text-xs font-semibold text-[#10265F] transition-all hover:border-[#3E9BE0] hover:bg-[#F7F5F0] focus-visible:outline-2 focus-visible:outline-[#3E9BE0]"
             >
               Guided setup
             </button>
@@ -296,7 +296,7 @@ export const SessionRadarDrawer: React.FC<SessionRadarDrawerProps> = ({
                 onClose();
                 onNavigate('note');
               }}
-              className="min-h-[42px] flex-1 rounded-full bg-[#286D65] px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-[#1f5650]"
+              className="min-h-[42px] flex-1 rounded-full bg-[#10265F] px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-[#0B1B46] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3E9BE0]"
             >
               Open parent note
             </button>

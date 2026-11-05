@@ -2,6 +2,8 @@
 
 A Gemini / Google AI Studio-generated React UI candidate contributed by Qingyi Hu, imported from `focal-family-2026-11-5-00-59-27.zip` on November 5, 2026. This is a separate prototype; the existing Streamlit implementation in `../focal-family/` remains the current independent demo.
 
+The brand-blue theme refresh was imported from `untitled-2026-11-5-14-32-13.zip` on November 5, 2026. App source and the independent HTML snapshot were updated; packaging fixes and Focal page metadata were retained.
+
 ## Run the React app
 
 Use Node.js 22.12+ (validated with Node.js 24.20.0).
