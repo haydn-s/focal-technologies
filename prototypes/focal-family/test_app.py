@@ -152,6 +152,19 @@ class TestDmvLogic(unittest.TestCase):
         self.assertEqual(dmv.overall_result([{"verdict": "not_yet"}, {"verdict": "on_track"}])["verdict"], "mixed")
 
 
+class TestLook(unittest.TestCase):
+    def test_theme_is_light_and_only_for_this_app(self):
+        # The look follows the team's React UI. It must stay light on a dark-mode laptop, and live
+        # next to app.py so Prototypes A, B and C keep their own themes.
+        import tomllib
+        here = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(here, ".streamlit", "config.toml"), "rb") as handle:
+            theme = tomllib.load(handle)["theme"]
+        self.assertEqual(theme["base"], "light")
+        self.assertEqual(theme["primaryColor"], "#10265F")
+        self.assertFalse(os.path.exists(os.path.join(here, "..", "..", ".streamlit", "config.toml")))
+
+
 # -----------------------------------------------------------------------------
 # Clickable flows
 # -----------------------------------------------------------------------------
@@ -204,6 +217,13 @@ class TestClickableFlow(unittest.TestCase):
         at.run()
         self.assertFalse(at.exception)
         return at
+
+    def test_scroll_helper_changes_on_every_page(self):
+        # A repeated script lets the browser reuse the old frame, so the new page wouldn't open at the top.
+        at = self.new_app()
+        at.button(key="btn_start").click().run()
+        at.button(key="nav_welcome").click().run()
+        self.assertEqual(at.session_state["scroll_count"], 3)
 
     def test_welcome_speaks_to_parents(self):
         at = self.new_app()

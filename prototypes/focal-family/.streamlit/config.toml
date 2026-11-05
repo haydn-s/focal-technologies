@@ -1,0 +1,23 @@
+# Theme for the Focal Family master app only. Streamlit reads this file because it sits next
+# to app.py, so Prototypes A, B and C keep their own look. Palette and fonts follow the team's
+# React UI candidate (prototypes/focal-family-ui): warm paper, Focal navy, Plus Jakarta Sans
+# for text and Fraunces for headlines. Always light, whatever the laptop's dark-mode setting.
+
+[theme]
+base = "light"
+primaryColor = "#10265F"
+backgroundColor = "#F7F5F0"
+secondaryBackgroundColor = "#F3F0E9"
+textColor = "#20304D"
+linkColor = "#10265F"
+borderColor = "#DEDAD1"
+showWidgetBorder = true
+baseRadius = "0.75rem"
+buttonRadius = "0.7rem"
+font = "Plus Jakarta Sans:https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap, sans-serif"
+headingFont = "Fraunces:https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap, Georgia, serif"
+codeFont = "JetBrains Mono:https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap, monospace"
+chartCategoricalColors = ["#10265F", "#3E9BE0", "#286D65"]
+
+[client]
+toolbarMode = "minimal"

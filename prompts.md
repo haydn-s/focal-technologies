@@ -329,6 +329,23 @@ The full entry, with the decisions made, is in the [master prototype's prompt lo
 
 **Verification:** 30 automated tests pass (6 new). Checked the welcome card and a DMV result in the running app.
 
+### M3 Take the React UI's look where it excels
+
+**Session date:** November 5, 2026
+
+**Actual user prompt:**
+
+> can you just make our demo like his where his excels?
+
+**Intent:** Give the Streamlit master the look the team liked in Qingyi's React UI (PR #10) before class, while keeping calibrated letters, history over time and an honest parent note.
+
+**Result:**
+- **Look:** React UI palette and fonts (paper, navy, Plus Jakarta Sans, Fraunces) in a theme file scoped to this app; a top bar, two-column welcome with a labeled example card, white section cards, chip choices, a room sketch, an arrow pad, result tiles and toasts.
+- **Kept:** the logic and tests from M1 and M2.
+- **Fixed:** pages didn't always open at the top after a page change.
+
+**Verification:** 32 automated tests pass (2 new). Clicked through the full family flow in the running app.
+
 ## Shared repository work
 
 These requests supported the demos and their collaboration workflow. They are recorded separately from the product experiments. R1–R5 were made by Haydn and R6–R8 by Burak, on October 21–22, 2026.
