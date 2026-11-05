@@ -460,6 +460,30 @@ Haydn also selected the Focal Prototype Presentation as the visual reference and
 
 **Learning and verification:** Automated logic and Streamlit journey tests cover task sizing, completion guards, history isolation, windows and validated file restore. A local browser walkthrough exercised setup, practice, pause/resume, all 12 responses, save and history. Software-test responses and fictional timeline examples are not customer evidence or clinical validation. Public deployment remains a separate step.
 
+### R11 Package the Family React UI candidate
+
+**Date and author:** November 5, 2026, Qingyi Hu. Packaging tool: Codex; supplied UI implementation: Gemini / Google AI Studio.
+
+**Actual prompt:**
+
+> 我还是更喜欢REACT应用。帮我PR一个你说的保留和可保留的文件。PR到一个新branch里吧。防止branch里的内容太多太乱。最后帮我写一两句话向队友说明我干了啥。
+
+**Intent and result:** Import the supplied React UI into a clean branch and an isolated `prototypes/focal-family-ui/` directory, retaining the standalone HTML snapshot and logo while omitting temporary generation files. Add project-specific setup/provenance documentation and a dependency lockfile; keep the Streamlit demo intact.
+
+**Learning and verification:** Production build, TypeScript checking, and all six supplied logic tests pass. React/HTML browser parity, end-to-end interactions, and clinical validity were not verified. This packaging request is repository maintenance and does not count as an additional product-development prompt. The supplied ZIP does not establish the full history of prompts used to generate the UI.
+
+### R12 Refresh the Family UI on the existing PR
+
+**Date and author:** November 5, 2026, Qingyi Hu. Packaging tool: Codex; supplied UI update: Gemini / Google AI Studio.
+
+**Actual prompt:**
+
+> 那就更新原PR吧。我们还没merge
+
+**Intent and result:** Update `family-react-ui-preview` / PR #10 from `untitled-2026-11-5-14-32-13.zip`. Import the brand-blue theme into the React app and HTML snapshot, retaining packaging fixes, Focal page metadata, and the original logo. Exclude the nested old ZIP, template metadata, and unused reference files.
+
+**Learning and verification:** Production build, TypeScript checking, and all six supplied logic tests pass. No clinical or browser-performance validation is claimed. This repository update request is not an additional product-development prompt.
+
 ## Entry format for teammates
 
 For each actual prompt, add:
