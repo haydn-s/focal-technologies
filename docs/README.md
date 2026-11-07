@@ -40,6 +40,11 @@ This is the shared reference library for the three product experiments. It combi
 - [Archived 14-minute investor pitch](<presentations/executive-pitch/Focal Family Executive Pitch.pptx>): Earlier version, retained for reference.
 - [Assignment requirements and updated timing](assignments/executive-pitch-assignment.md)
 
+## Business plan executive summary
+
+- [Editable Focal Family executive summary](<../Executive Summary/Focal Family Business Plan Executive Summary.docx>): title page, five main pages and two appendices following the supplied outline.
+- [Requirements, evidence and verification guide](<../Executive Summary/README.md>): source mapping and alignment with the final pitch. Keep the DOCX editable until the team is ready to export the submission PDF.
+
 ## Prototype presentation archive
 
 - [Focal Prototype Presentation](<presentations/Focal Prototype Presentation.pptx>)
