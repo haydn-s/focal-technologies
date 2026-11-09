@@ -56,6 +56,8 @@ requirements-dev.txt        Combined installation for local development
 
 ## Project guides
 
+- [Business plan executive summary](<Executive Summary/README.md>): editable DOCX following the supplied outline, with financial detail and source references.
+
 - [Executive investor pitch](docs/presentations/executive-pitch/README.md): Current Focal Family deck, 11:30 run of show, three-minute demo and proposed financial model.
 
 - [Document library](docs/README.md): research, Lean Canvas, business model, and phase workbooks. This consolidates the former `fundamentals` and `Focal Knowledge Base` directories.
